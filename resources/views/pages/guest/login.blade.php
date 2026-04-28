@@ -1,0 +1,155 @@
+@extends('layouts.main')
+
+@section('content')
+
+<section class="login-section">
+    {{-- ================= LEFT ================= --}}
+    <div class="login-left">
+
+        <a href="{{ route('home') }}" class="back-link mb-4">← Kembali ke beranda</a>
+
+        <div class="login-box">
+
+            <div class="mb-4">
+                <h5 class="fw-bold primary-text mb-1">PT Nusantara Turbin dan Propulsi</h5>
+                <small class="text-muted">Careers Portal</small>
+            </div>
+
+            <h2 class="fw-bold mb-2">Masuk ke akun</h2>
+            <p class="text-muted mb-4">Kelola lamaran dan pantau statusmu.</p>
+
+            <form action="{{ route('login.post') }}" method="POST">
+                @csrf
+
+                <div class="mb-3">
+                    <label for="email" class="auth-label">Email</label>
+                    <div class="input-group-custom">
+                        <i class="bi bi-envelope"></i>
+                        <input type="email" id="email" name="email"
+                            placeholder="nama@email.com"
+                            value="{{ old('email') }}" required autocomplete="email">
+                    </div>
+                    @error('email')
+                        <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="auth-label">Password</label>
+                    <div class="input-group-custom">
+                        <i class="bi bi-lock"></i>
+                        <input type="password" id="password" name="password"
+                            placeholder="••••••••" required autocomplete="current-password">
+                    </div>
+                    @error('password')
+                        <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <button type="submit" class="btn btn-secondary-custom w-100 py-2">
+                    Masuk
+                </button>
+
+            </form>
+
+            <div class="d-flex align-items-center my-4 gap-2">
+                <hr class="flex-grow-1 m-0">
+                <small class="text-muted px-2">ATAU</small>
+                <hr class="flex-grow-1 m-0">
+            </div>
+
+            <p class="text-center text-muted mb-0" style="font-size:14px;">
+                Belum punya akun?
+                <a href="{{ route('register') }}" class="primary-text fw-bold text-decoration-none">Daftar Sekarang</a>
+            </p>
+
+            <small class="text-muted login-footer">© 2026 PT Nusantara Turbin dan Propulsi</small>
+
+        </div>
+
+    </div>
+
+
+    {{-- ================= RIGHT ================= --}}
+    <div class="login-right">
+
+        <div class="login-right-bg"></div>
+        <div class="login-right-accent"></div>
+
+        <div class="company-box">
+
+            <div class="company-badge">
+                <i class="bi bi-patch-check-fill"></i>
+                <span>Perusahaan Terpercaya</span>
+            </div>
+
+            <h3 class="fw-bold text-white mb-3">
+                Bergabunglah dengan tim yang membangun masa depan industri Indonesia
+            </h3>
+
+            <p class="company-desc">
+                PT Nusantara Turbin dan Propulsi telah berdiri sejak 1986, melayani industri energi dan manufaktur nasional dengan standar kualitas internasional.
+            </p>
+
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <h5>1986</h5>
+                    <small>Tahun Berdiri</small>
+                </div>
+                <div class="stat-box">
+                    <h5>300+</h5>
+                    <small>Karyawan</small>
+                </div>
+                <div class="stat-box">
+                    <h5>2100+</h5>
+                    <small>Mesin Dikirim</small>
+                </div>
+                <div class="stat-box">
+                    <h5>180+</h5>
+                    <small>Klien Puas</small>
+                </div>
+            </div>
+
+            <div class="company-divider"></div>
+
+            <div class="company-features">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+                    <div class="feature-text">
+                        <strong>Lingkungan Kerja Profesional</strong>
+                        <span>Budaya kolaboratif, inklusif, dan berorientasi pada hasil nyata.</span>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="bi bi-graph-up-arrow"></i></div>
+                    <div class="feature-text">
+                        <strong>Jenjang Karier Jelas</strong>
+                        <span>Program pengembangan SDM terstruktur di setiap level jabatan.</span>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="bi bi-geo-alt"></i></div>
+                    <div class="feature-text">
+                        <strong>Berlokasi di Bandung</strong>
+                        <span>Jl. Pajajaran 154 — jantung industri Jawa Barat.</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{{-- ================= OTP MODAL ================= --}}
+@include('pages.guest.verify-email')
+
+@if(session('show_otp'))
+<div id="otp-auto-trigger"
+     data-email="{{ session('masked_email') }}"
+     style="display:none;">
+</div>
+@endif
+
+@endsection

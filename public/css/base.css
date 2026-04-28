@@ -1,0 +1,62 @@
+/* ================= GOOGLE FONTS ================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+/* ================= VARIABLES ================= */
+:root {
+    --primary-color: #002870;
+    --primary-light: #003a9b;
+    --primary-container: #002870;
+    --secondary-color: #f8b830;
+    --secondary-hover: #eab308;
+    --background: #f6fafe;
+    --surface: #ffffff;
+    --surface-container: #eaeef2;
+    --surface-container-low: #f0f4f8;
+    --surface-container-high: #e5e9ed;
+    --surface-container-highest: #dfe3e7;
+    --on-surface: #171c1f;
+    --on-surface-variant: #444651;
+    --outline: #747682;
+    --outline-variant: #c4c6d2;
+    --gray: #e9edf1;
+    --error: #ba1a1a;
+    --success: #22c55e;
+}
+
+/* ================= GLOBAL ================= */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--background);
+    color: var(--on-surface);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.primary-text {
+    color: var(--primary-color);
+}
+
+/* ================= SECTION TYPOGRAPHY ================= */
+.section-label {
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: var(--on-surface-variant);
+    text-transform: uppercase;
+    font-weight: 600;
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(0, 40, 112, 0.06);
+    border-radius: 50px;
+    margin-bottom: 12px;
+}
+
+.section-title {
+    font-weight: 700;
+    color: var(--primary-color);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
