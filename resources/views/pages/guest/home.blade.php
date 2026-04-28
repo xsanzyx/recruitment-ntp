@@ -29,41 +29,6 @@
     </div>
 </section>
 
-{{-- ================= QUICK STATS ================= --}}
-<section class="stats-section">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-md-4 fade-up">
-                <div class="quick-stat">
-                    <div class="quick-stat-icon">
-                        <i class="bi bi-people-fill"></i>
-                    </div>
-                    <span class="quick-stat-number">300+</span>
-                    <span class="quick-stat-label">Karyawan</span>
-                </div>
-            </div>
-            <div class="col-md-4 fade-up">
-                <div class="quick-stat">
-                    <div class="quick-stat-icon">
-                        <i class="bi bi-clock-history"></i>
-                    </div>
-                    <span class="quick-stat-number">40 Tahun</span>
-                    <span class="quick-stat-label">Pengalaman</span>
-                </div>
-            </div>
-            <div class="col-md-4 fade-up">
-                <div class="quick-stat">
-                    <div class="quick-stat-icon">
-                        <i class="bi bi-emoji-smile-fill"></i>
-                    </div>
-                    <span class="quick-stat-number">180+</span>
-                    <span class="quick-stat-label">Pelanggan Puas</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
 {{-- ================= LOWONGAN ================= --}}
 <section id="lowongan" class="jobs-section">
     <div class="container">
@@ -226,40 +191,60 @@
     </div>
 </section>
 
-{{-- ================= PROSES REKRUTMEN ================= --}}
-<section id="proses" class="process-section">
-    <div class="container">
-        <h2 class="fade-up">Transparan, Cepat, dan Manusiawi</h2>
-        
-        <div class="process-timeline fade-up">
-            <div class="process-step">
-                <div class="process-number primary">1</div>
-                <h4>Kirim Lamaran</h4>
-                <p>Unggah CV dan portofolio terbaikmu.</p>
+<section class="container py-5">
+    <div class="row align-items-start g-5">
+
+        <div class="col-md-5 fade-up">
+            <small class="section-label">Proses Rekrutmen</small>
+            <h2 class="fw-bold primary-text mt-2">
+                Transparan, Cepat, dan <em>Manusiawi</em>
+            </h2>
+            <p class="text-muted mt-3">
+                Proses rekrutmen yang jelas tanpa ribet dan mudah dipahami oleh semua kandidat.
+            </p>
+        </div>
+
+        <div class="col-md-7">
+            <div class="process-item fade-up">
+                <span>01</span>
+                <div>
+                    <strong>Kirim Lamaran</strong>
+                    <p>Pilih posisi yang sesuai dan kirim CV serta portofolio.</p>
+                </div>
             </div>
-            <div class="process-step">
-                <div class="process-number primary">2</div>
-                <h4>Screening Awal</h4>
-                <p>Tim HR meninjau kualifikasi berkas.</p>
+            <div class="process-item fade-up">
+                <span>02</span>
+                <div>
+                    <strong>Screening Awal</strong>
+                    <p>Tim HR akan meninjau dalam 5 hari kerja.</p>
+                </div>
             </div>
-            <div class="process-step">
-                <div class="process-number primary">3</div>
-                <h4>Pantau Status</h4>
-                <p>Cek perkembangan lamaran secara real-time.</p>
+            <div class="process-item fade-up">
+                <span>03</span>
+                <div>
+                    <strong>Pantau Status Lamaran</strong>
+                    <p>Lihat perkembangan lamaran secara real-time.</p>
+                </div>
             </div>
-            <div class="process-step">
-                <div class="process-number primary">4</div>
-                <h4>Wawancara</h4>
-                <p>Diskusi mendalam bersama tim user.</p>
+            <div class="process-item fade-up">
+                <span>04</span>
+                <div>
+                    <strong>Wawancara</strong>
+                    <p>Sesi dengan HR dan tim teknis terkait.</p>
+                </div>
             </div>
-            <div class="process-step">
-                <div class="process-number accent">5</div>
-                <h4>Keputusan Akhir</h4>
-                <p>Selamat bergabung di keluarga besar kami!</p>
+            <div class="process-item fade-up">
+                <span>05</span>
+                <div>
+                    <strong>Keputusan Akhir</strong>
+                    <p>Hasil seleksi akan dikirim melalui email.</p>
+                </div>
             </div>
         </div>
+
     </div>
 </section>
+
 
 {{-- ================= TENTANG KAMI ================= --}}
 <section id="tentang" class="company-section">
@@ -311,17 +296,18 @@
 </section>
 
 {{-- ================= CTA ================= --}}
-<section class="cta-section">
-    <div class="container">
-        <div class="cta-box-big text-center fade-up" style="position: relative; z-index: 1;">
-            <h2 style="position: relative; z-index: 2;">Siap menjadi bagian dari perjalanan kami?</h2>
-            <p style="position: relative; z-index: 2;">
-                Jangan lewatkan kesempatan untuk berkontribusi bagi kemajuan industri Indonesia. 
-                Lamar sekarang atau hubungi tim rekrutmen kami.
-            </p>
-            <div class="d-flex flex-column flex-sm-row justify-content-center gap-3" style="position: relative; z-index: 2;">
-                <button class="cta-btn-primary">Lihat Semua Lowongan</button>
-                <button class="cta-btn-secondary">Hubungi HR</button>
+<section class="container py-5">
+    <div class="cta-box-big fade-up">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h3 class="fw-bold">Siap menjadi bagian dari perjalanan kami?</h3>
+                <p class="text-light">
+                    Kirim lamaranmu hari ini dan bangun sesuatu yang berarti bersama-sama.
+                </p>
+            </div>
+            <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                <button class="btn btn-light me-2">Lihat Semua Lowongan →</button>
+                <button class="btn btn-outline-light">Hubungi HR →</button>
             </div>
         </div>
     </div>
