@@ -120,7 +120,7 @@ Pastikan Anda telah menginstal perangkat lunak berikut:
 ## 👥 Akun Uji Coba (Demo)
 
 Jika Anda baru saja menjalankan `php artisan migrate --seed`, Anda bisa mencoba login dengan akun *default* HR berikut:
-- **Email:** hr@ntp.co.id
+- **Email:** hr@ntp.id
 - **Password:** password
 
 ---
