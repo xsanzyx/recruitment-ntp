@@ -144,7 +144,9 @@ class AuthController extends Controller
             Auth::logout();
             $this->sendOtp($user);
             session(['pending_user_id' => $user->id]);
-            return back()->with('show_otp', true)->with('masked_email', $this->maskEmail($user->email));
+            return redirect()->route('register')
+    ->with('show_otp', true)
+    ->with('masked_email', $this->maskEmail($user->email));
         }
 
         $request->session()->regenerate();
