@@ -1,60 +1,57 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HR\HRDashboardController;
 use App\Http\Controllers\HR\HRJobVacancyController;
 use App\Http\Controllers\HR\HRApplicationController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn() => view('pages.guest.home'))->name('home');
+// =============================================
+//  PUBLIC ROUTES
+// =============================================
+Route::get('/',                fn() => view('pages.guest.home'))->name('home');
+Route::get('/lowongan',        fn() => view('pages.guest.lowongan'))->name('lowongan');
+Route::get('/proses-rekrutmen',fn() => view('pages.guest.proses-rekrutmen'))->name('proses-rekrutmen');
+Route::get('/tentang',         fn() => view('pages.guest.tentang'))->name('tentang');
+Route::get('/kontak',          fn() => view('pages.guest.kontak'))->name('kontak');
+Route::post('/kontak',         [ContactController::class, 'send'])->name('kontak.send');
 
 // =============================================
 //  GUEST ROUTES (belum login)
 // =============================================
 Route::middleware('guest')->group(function () {
 
-    // Login
-    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+    Route::get('/login',   [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login',  [AuthController::class, 'login'])->name('login.post');
 
-    // Register
-    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::get('/register',  [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
-    // OTP (tidak perlu auth, user belum verified)
     Route::post('/auth/verify-otp', [AuthController::class, 'verifyOtp'])->name('otp.verify');
     Route::post('/auth/resend-otp', [AuthController::class, 'resendOtp'])->name('otp.resend');
-
 });
 
 // =============================================
-//  AUTHENTICATED ROUTES (sudah login & verified)
+//  AUTHENTICATED ROUTES
 // =============================================
 Route::middleware(['auth'])->group(function () {
-
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
 });
 
 // =============================================
-//  HR ROUTES (role: hr / admin)
+//  HR ROUTES
 // =============================================
 Route::prefix('hr')->name('hr.')->middleware(['auth', 'hr'])->group(function () {
 
-    // Dashboard
     Route::get('/dashboard', [HRDashboardController::class, 'index'])->name('dashboard');
 
-    // Lowongan (CRUD)
     Route::resource('vacancies', HRJobVacancyController::class);
     Route::patch('vacancies/{id}/toggle-status', [HRJobVacancyController::class, 'toggleStatus'])
         ->name('vacancies.toggle');
 
-    // Kandidat / Lamaran
-    Route::get('applications', [HRApplicationController::class, 'index'])->name('applications.index');
-    Route::get('applications/{id}', [HRApplicationController::class, 'show'])->name('applications.show');
-    Route::patch('applications/{id}/status', [HRApplicationController::class, 'updateStatus'])
-        ->name('applications.updateStatus');
-    Route::patch('applications/bulk-status', [HRApplicationController::class, 'bulkStatus'])
-        ->name('applications.bulkStatus');
-
+    Route::get('applications',              [HRApplicationController::class, 'index'])->name('applications.index');
+    Route::get('applications/{id}',         [HRApplicationController::class, 'show'])->name('applications.show');
+    Route::patch('applications/{id}/status',[HRApplicationController::class, 'updateStatus'])->name('applications.updateStatus');
+    Route::patch('applications/bulk-status',[HRApplicationController::class, 'bulkStatus'])->name('applications.bulkStatus');
 });
