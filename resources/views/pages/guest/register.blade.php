@@ -7,107 +7,118 @@
     {{-- ================= LEFT ================= --}}
     <div class="login-left">
 
-        <a href="{{ route('home') }}" class="back-link mb-2">← Kembali ke beranda</a>
+    <a href="{{ route('home') }}" class="back-link">← Kembali ke beranda</a>
 
-        <div class="login-box">
+    <div class="login-box">
 
-            <div class="mb-2 d-flex align-items-center gap-3">
-                <div class="job-icon">
-                    <i class="bi bi-building"></i>
-                </div>
-                <div>
-                    <h6 class="fw-bold primary-text mb-0">PT Nusantara Turbin dan Propulsi</h6>
-                    <small class="text-muted" style="font-size:11px;letter-spacing:1px;text-transform:uppercase;">Careers Portal</small>
-                </div>
+        <div class="mb-3 d-flex align-items-center gap-3">
+            <div class="job-icon">
+                <i class="bi bi-building"></i>
             </div>
+            <div>
+                <h6 class="fw-bold primary-text mb-0">PT Nusantara Turbin dan Propulsi</h6>
+                <small class="text-muted" style="font-size:11px;letter-spacing:1px;text-transform:uppercase;">
+                    Careers Portal
+                </small>
+            </div>
+        </div>
 
-            <h2 class="fw-bold mb-1">Buat akun baru</h2>
-            <p class="text-muted mb-2">Daftar dan mulai lamar pekerjaan impianmu.</p>
+        <br>
 
-            <form action="{{ route('register.post') }}" method="POST">
-                @csrf
+        <h2 class="fw-bold mb-1">Buat akun baru</h2>
+        <p class="text-muted mb-4">
+            Daftar dan mulai lamar pekerjaan impianmu.
+        </p>
 
-                <div class="row g-2 mb-2">
-                    <div class="col-6">
-                        <label for="first_name" class="auth-label">Nama Depan</label>
-                        <input type="text" id="first_name" name="first_name"
-                            class="form-input-custom" placeholder="contoh. Fajar"
-                            value="{{ old('first_name') }}" required autocomplete="given-name">
+        <form action="{{ route('register.post') }}" method="POST">
+            @csrf
+
+            <div class="row g-3 mb-3">
+                <div class="col-6">
+                    <label class="auth-label">Nama Depan</label>
+                    <input type="text" id="first name" name="first_name"
+                        class="form-input-custom"
+                        placeholder="contoh. Fajar"
+                        value="{{ old('first_name') }}" required autocomplete="given-name">
                         @error('first_name')
                             <small class="text-danger mt-1 d-block">{{ $message }}</small>
                         @enderror
-                    </div>
-                    <div class="col-6">
-                        <label for="last_name" class="auth-label">Nama Belakang</label>
-                        <input type="text" id="last_name" name="last_name"
-                            class="form-input-custom" placeholder="contoh. Zaini Syam"
-                            value="{{ old('last_name') }}" required autocomplete="family-name">
+                </div>
+
+                <div class="col-6">
+                    <label for="last_name" class="auth-label">Nama Belakang</label>
+                    <input type="text" id="last_name" name="last_name"
+                        class="form-input-custom"
+                        placeholder="contoh. Zaini Syam"
+                        value="{{ old('last_name') }}" required autocomplete="family-name">
                         @error('last_name')
                             <small class="text-danger mt-1 d-block">{{ $message }}</small>
                         @enderror
-                    </div>
                 </div>
-
-                <div class="mb-2">
-                    <label for="email" class="auth-label">Email</label>
-                    <div class="input-group-custom">
-                        <i class="bi bi-envelope"></i>
-                        <input type="email" id="email" name="email"
-                            placeholder="nama@email.com"
-                            value="{{ old('email') }}" required autocomplete="email">
-                    </div>
-                    @error('email')
-                        <small class="text-danger mt-1 d-block">{{ $message }}</small>
-                    @enderror
-                </div>
-
-                <div class="mb-2">
-                    <label for="password" class="auth-label">Password</label>
-                    <div class="input-group-custom">
-                        <i class="bi bi-lock"></i>
-                        <input type="password" id="password" name="password"
-                            placeholder="minimal 6 karakter" required autocomplete="new-password">
-                    </div>
-                    @error('password')
-                        <small class="text-danger mt-1 d-block">{{ $message }}</small>
-                    @enderror
-                </div>
-
-                <div class="mb-2 d-flex align-items-start gap-2">
-                    <input type="checkbox" id="terms" name="terms"
-                        class="form-check-input mt-1" required
-                        style="min-width:18px;height:18px;">
-                    <label for="terms" class="form-check-label text-muted" style="font-size:13px;">
-                        Saya setuju dengan
-                        <a href="#" class="primary-text fw-semibold text-decoration-none">Syarat & Ketentuan</a>
-                        dan
-                        <a href="#" class="primary-text fw-semibold text-decoration-none">Kebijakan Privasi</a>
-                    </label>
-                </div>
-
-                <button type="submit" class="btn btn-secondary-custom w-100 py-2">
-                    Daftar Sekarang
-                </button>
-
-            </form>
-
-            <div class="d-flex align-items-center my-2 gap-2">
-                <hr class="flex-grow-1 m-0">
-                <small class="text-muted px-2">ATAU</small>
-                <hr class="flex-grow-1 m-0">
             </div>
 
-            <p class="text-center text-muted mb-0" style="font-size:14px;">
-                Sudah punya akun?
-                <a href="{{ route('login') }}" class="primary-text fw-bold text-decoration-none">Masuk di Sini</a>
-            </p>
+            <div class="mb-3">
+                <label for="email" class="auth-label">Email</label>
+                <div class="input-group-custom">
+                    <i class="bi bi-envelope"></i>
+                    <input type="email" id="email" name="email"
+                        placeholder="nama@email.com"
+                        value="{{ old('email') }}" required autocomplete="email">
+                </div>
+                    @error('email')
+                    <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                    @enderror
+            </div>
 
-            <small class="text-muted login-footer">© 2026 PT Nusantara Turbin dan Propulsi</small>
+            <div class="mb-3">
+                <label for="password" class="auth-label">Password</label>
+                <div class="input-group-custom">
+                    <i class="bi bi-lock"></i>
+                    <input type="password" id="password" name="password"
+                        placeholder="minimal 6 karakter" required autocomplete="new-password">
+                </div>
+                    @error('password')
+                    <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                    @enderror
+            </div>
 
+            <div class="mb-3 d-flex align-items-start gap-2">
+                <input type="checkbox" id="terms" name="terms" class="form-check-input mt-1" required>
+                <label class="text-muted" style="font-size:13px;">
+                    Saya setuju dengan
+                    <a href="#" class="primary-text fw-semibold text-decoration-none">Syarat & Ketentuan</a>
+                    dan
+                    <a href="#" class="primary-text fw-semibold text-decoration-none">Kebijakan Privasi</a>
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-secondary-custom login-btn">
+                Daftar Sekarang
+            </button>
+
+        </form>
+
+        <div class="d-flex align-items-center my-3 gap-2">
+            <hr class="flex-grow-1 m-0">
+            <small class="text-muted px-2">ATAU</small>
+            <hr class="flex-grow-1 m-0">
         </div>
+
+        <p class="text-center text-muted mb-2" style="font-size:14px;">
+            Sudah punya akun?
+            <a href="{{ route('login') }}" class="primary-text fw-bold text-decoration-none">
+                Masuk di Sini
+            </a>
+        </p>
 
     </div>
 
+    {{-- FOOTER PINDAH KE SINI --}}
+    <small class="text-muted login-footer">
+        © 2026 PT Nusantara Turbin dan Propulsi
+    </small>
+
+</div>
 
     {{-- ================= RIGHT ================= --}}
     <div class="login-right">
@@ -132,8 +143,8 @@
 
             <div class="stat-grid">
                 <div class="stat-box">
-                    <h5>3+</h5>
-                    <small>Posisi Terbuka</small>
+                    <h5>Karier</h5>
+                    <small>Terbuka</small>
                 </div>
                 <div class="stat-box">
                     <h5>5 Hari</h5>
