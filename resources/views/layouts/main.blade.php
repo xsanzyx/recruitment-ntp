@@ -56,7 +56,7 @@
         {{-- Brand --}}
         <div class="sidebar-brand d-flex justify-content-between align-items-start">
             <div>
-                <div class="sidebar-brand-name">NTP Careers</div>
+                <div class="sidebar-brand-name">PT. Nusantara Turbin dan Propulsi</div>
                 <div class="sidebar-brand-tag">Careers Portal</div>
             </div>
             <button onclick="toggleSidebar()" class="sidebar-close">✕</button>
