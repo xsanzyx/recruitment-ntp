@@ -42,7 +42,7 @@
             </svg>
         </div>
 
-        <div id="loader-name">PT Nusantara Turbin dan Propulsi</div>
+        <div id="loader-name">PT Nusantara</div>
         <div id="loader-tag">Careers Portal</div>
     </div>
 
