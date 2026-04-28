@@ -1,15 +1,21 @@
-// ================= PAGE LOADER =================
+// =============================================
+//  PAGE LOADER — ganti bagian ini di app.js
+//  Cari: setTimeout(() => { loader.classList.add('hide'); ... })
+//  Ganti dengan blok di bawah ini
+// =============================================
+
 (function () {
     const loader = document.getElementById('page-loader');
     const fill   = document.getElementById('ld-bar-fill');
     const label  = document.getElementById('ld-bar-label');
     if (!loader) return;
 
+    // Progress bar steps — selesai di ~1200ms
     const steps = [
-        { w: 25,  delay: 0,    dur: 300, msg: 'Menginisialisasi...' },
-        { w: 55,  delay: 350,  dur: 500, msg: 'Memuat aset...' },
-        { w: 80,  delay: 900,  dur: 400, msg: 'Menyiapkan halaman...' },
-        { w: 100, delay: 1350, dur: 250, msg: 'Selesai!' },
+        { w: 30,  delay: 0,    dur: 300, msg: 'Menginisialisasi...' },
+        { w: 65,  delay: 350,  dur: 400, msg: 'Memuat aset...' },
+        { w: 90,  delay: 800,  dur: 300, msg: 'Menyiapkan halaman...' },
+        { w: 100, delay: 1100, dur: 200, msg: 'Selesai!' },
     ];
 
     steps.forEach(s => {
@@ -19,12 +25,16 @@
         }, s.delay);
     });
 
-    // Hide loader after progress done
+    // Trigger exit zoom setelah 1.35s
+    // exit animation = 0.8s → total selesai di ~2.15s
+    // page-enter delay = 1.6s — overlap sedikit biar smooth
     setTimeout(() => {
         loader.classList.add('hide');
-    }, 200);
+        loader.addEventListener('animationend', () => {
+            loader.style.display = 'none';
+        }, { once: true });
+    }, 1350);
 })();
-
 
 // ================= PAGE TRANSITION =================
 document.addEventListener('DOMContentLoaded', () => {
