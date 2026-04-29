@@ -24,26 +24,12 @@
     min-height: 100vh;
     position: relative; /* 🔥 penting untuk absolute children */
 }
-
-/* BACK LINK — nempel di atas */
-.login-left .back-link {
-    position: absolute;
-    top: 32px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 520px; /* samain dengan max-width login-box */
-    padding-left: 24px; /* samain dengan px-4 Bootstrap = 24px */
-    font-size: 14px;
-    display: inline-block;
-}
-
 /* FORM AREA */
 .login-left .login-box {
     max-width: 520px;
     width: 100%;
     transform: translateY(
-        -125px
+        -50px
     ); /* 🔥 naikin form ke atas, sesuaikan nilainya */
 }
 
@@ -178,54 +164,52 @@
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 
     min-height: 100vh;
-    position: relative;
 }
 
-/* BACK LINK — absolute di atas, rata kiri dengan form */
-.login-left .back-link {
-    position: absolute;
-    top: 32px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 520px;
-    padding-left: 24px;
-    display: inline-block;
-    text-decoration: none;
-    color: #94a3b8;
-    font-size: 14px;
-    transition:
-        color 0.2s,
-        gap 0.2s;
-}
-
-.login-left .back-link:hover {
-    color: var(--primary-color);
-    gap: 10px;
-}
-
-/* FORM BOX */
 .login-left .login-box {
     max-width: 520px;
     width: 100%;
-    transform: translateY(-40px); /* sesuaikan dengan login */
+    margin-top: auto; /* 🔥 dorong ke tengah dari atas */
+    margin-bottom: auto; /* 🔥 dorong ke tengah dari bawah */
 }
 
-/* FOOTER — absolute di bawah */
+.company-link,
+.company-link:hover,
+.company-link:focus,
+.company-link:visited {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+.company-link h6 {
+    color: var(--primary-color) !important;
+}
+
+.company-link small {
+    color: #94a3b8 !important;
+}
+
+.company-link {
+    transition: opacity 0.2s;
+    display: flex !important;
+    margin-bottom: 24px;
+}
+
+.company-link:hover {
+    opacity: 0.75;
+}
+
 .login-footer {
-    position: absolute;
-    bottom: 24px;
-    left: 0;
-    right: 0;
+    flex-shrink: 0;
     text-align: center;
     font-size: 12px;
+    padding: 20px 0 8px;
+    width: 100%;
 }
 
-/* Button */
 .login-btn {
     width: 100%;
     padding: 13px;
@@ -234,6 +218,43 @@
     border-radius: 10px;
 }
 
+/* tablet */
+@media (max-width: 1024px) {
+    .login-left {
+        width: 50%;
+        min-width: 0;
+    }
+}
+
+/* mobile */
+@media (max-width: 768px) {
+    .login-left {
+        width: 100%;
+        min-width: 0;
+        padding: 24px 20px;
+    }
+
+    .login-left .login-box {
+        max-width: 100%;
+    }
+
+    .login-btn {
+        font-size: 15px;
+        padding: 12px;
+    }
+}
+
+/* small mobile */
+@media (max-width: 480px) {
+    .login-left {
+        padding: 20px 16px;
+    }
+
+    .login-btn {
+        font-size: 14px;
+        padding: 11px;
+    }
+}
 /* =============================================
    RIGHT PANEL
    ============================================= */
