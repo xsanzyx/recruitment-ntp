@@ -60,16 +60,22 @@
                 <h6 style="font-weight:700;color:var(--primary-color);margin-bottom:12px;">Ikuti Kami</h6>
                 <div class="d-flex gap-2">
                     <a href="https://www.instagram.com/ntpindonesia" target="_blank" rel="noopener"
-                       style="width:40px;height:40px;background:rgba(0,40,112,0.08);display:flex;align-items:center;justify-content:center;border-radius:10px;color:var(--primary-color);text-decoration:none;transition:0.2s;"
-                       onmouseover="this.style.background='var(--primary-color)';this.style.color='#fff'"
-                       onmouseout="this.style.background='rgba(0,40,112,0.08)';this.style.color='var(--primary-color)'">
+                    style="width:40px;height:40px;background:rgba(0,40,112,0.08);display:flex;align-items:center;justify-content:center;border-radius:10px;color:var(--primary-color);text-decoration:none;transition:0.2s;"
+                    onmouseover="this.style.background='var(--primary-color)';this.style.color='#fff'"
+                    onmouseout="this.style.background='rgba(0,40,112,0.08)';this.style.color='var(--primary-color)'">
                         <i class="bi bi-instagram"></i>
                     </a>
                     <a href="https://youtube.com/@ntpindonesia2335" target="_blank" rel="noopener"
-                       style="width:40px;height:40px;background:rgba(0,40,112,0.08);display:flex;align-items:center;justify-content:center;border-radius:10px;color:var(--primary-color);text-decoration:none;transition:0.2s;"
-                       onmouseover="this.style.background='var(--primary-color)';this.style.color='#fff'"
-                       onmouseout="this.style.background='rgba(0,40,112,0.08)';this.style.color='var(--primary-color)'">
+                    style="width:40px;height:40px;background:rgba(0,40,112,0.08);display:flex;align-items:center;justify-content:center;border-radius:10px;color:var(--primary-color);text-decoration:none;transition:0.2s;"
+                    onmouseover="this.style.background='var(--primary-color)';this.style.color='#fff'"
+                    onmouseout="this.style.background='rgba(0,40,112,0.08)';this.style.color='var(--primary-color)'">
                         <i class="bi bi-youtube"></i>
+                    </a>
+                    <a href="mailto:info@ntp.id"
+                    style="width:40px;height:40px;background:rgba(0,40,112,0.08);display:flex;align-items:center;justify-content:center;border-radius:10px;color:var(--primary-color);text-decoration:none;transition:0.2s;"
+                    onmouseover="this.style.background='var(--primary-color)';this.style.color='#fff'"
+                    onmouseout="this.style.background='rgba(0,40,112,0.08)';this.style.color='var(--primary-color)'">
+                        <i class="bi bi-envelope-fill"></i>
                     </a>
                 </div>
             </div>
@@ -137,4 +143,4 @@
 
 @include('components.footer')
 
-@endsection
+@endsection 
