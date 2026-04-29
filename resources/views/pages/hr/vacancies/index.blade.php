@@ -4,13 +4,13 @@
 
 @section('content')
 <!-- Header -->
-<header class="mb-lg">
+<header class="mb-8">
     <h1 class="font-h1 text-h1 text-primary-container">Lowongan Kerja</h1>
     <p class="font-body-lg text-body-lg text-on-surface-variant mt-2">Kelola semua lowongan yang Anda buat</p>
 </header>
 
 <!-- Toolbar -->
-<div class="bg-white border border-outline-variant p-sm rounded-xl shadow-sm mb-md flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="bg-white border border-outline-variant p-4 rounded-xl shadow-sm mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
     <form method="GET" action="{{ route('hr.vacancies.index') }}" class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
         <div class="relative w-full sm:w-64">
             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>

@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Header -->
-<header class="mb-lg flex justify-between items-end">
+<header class="mb-8 flex justify-between items-end">
     <div>
         <h1 class="font-h1 text-h1 text-primary">Kandidat & Lamaran</h1>
         <p class="font-body-lg text-body-lg text-on-surface-variant mt-1">Kelola semua lamaran yang masuk</p>
@@ -35,7 +35,7 @@
 </header>
 
 <!-- Filter Bar -->
-<div class="bg-white border border-outline-variant p-sm rounded-xl shadow-sm mb-md">
+<div class="bg-white border border-outline-variant p-5 rounded-xl shadow-sm mb-6">
     <form method="GET" action="{{ route('hr.applications.index') }}" class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
         <!-- Search -->
         <div class="md:col-span-3">

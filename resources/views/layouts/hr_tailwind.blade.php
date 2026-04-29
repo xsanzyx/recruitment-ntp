@@ -85,7 +85,7 @@
         <button onclick="toggleSidebar()" class="sidebar-close flex items-center justify-center">✕</button>
     </div>
 
-    <ul class="sidebar-menu list-none p-0 flex-1">
+    <ul class="sidebar-menu list-none p-0" style="flex:0;">
         <li class="mb-[1px]">
             <a href="{{ route('hr.dashboard') }}" class="{{ request()->routeIs('hr.dashboard') ? 'active' : '' }}">
                 <i class="bi bi-grid-1x2"></i> Dashboard HR
@@ -105,15 +105,25 @@
 
     <div class="sidebar-divider"></div>
 
+    <ul class="sidebar-menu list-none p-0" style="flex:0;">
+        <li class="mb-[1px]">
+            <a href="{{ route('home') }}">
+                <i class="bi bi-house-door"></i> Beranda Publik
+            </a>
+        </li>
+        <li class="mb-[1px]">
+            <a href="{{ route('lowongan') }}">
+                <i class="bi bi-search"></i> Lihat Lowongan
+            </a>
+        </li>
+    </ul>
+
+    <div class="sidebar-divider"></div>
+
     <div class="sidebar-bottom mt-auto">
         <div class="cta-box mb-3 text-center">
             <small class="text-[#94a3b8] block mb-2" style="font-size:11px;">Selamat datang,</small>
             <strong style="color:var(--primary-color);font-size:14px;">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</strong>
-
-            <a href="{{ route('home') }}" class="w-full mt-3 block text-center"
-               style="background:rgba(248,184,48,0.15);color:#f8b830;border:1px solid rgba(248,184,48,0.2);border-radius:8px;font-weight:600;padding:8px 16px;font-size:13px;text-decoration:none;">
-                <i class="bi bi-house-door me-1"></i> Ke Beranda Publik
-            </a>
         </div>
 
         <form method="POST" action="{{ route('logout') }}">
