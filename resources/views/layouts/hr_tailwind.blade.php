@@ -5,36 +5,16 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>@yield('title', 'Dashboard HR') — NTP Careers</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    {{-- 1. Tailwind CSS --}}
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script id="tailwind-config">
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        "secondary-container": "#ffbe37",
-                        "background": "#f6fafe",
-                        "surface": "#f6fafe",
-                        "on-surface": "#171c1f",
                         "primary-container": "#002870",
-                        "on-primary": "#ffffff",
-                        "on-background": "#171c1f",
-                        "on-surface-variant": "#444651",
-                        "outline": "#747682",
-                        "outline-variant": "#c4c6d2",
-                        "error": "#ba1a1a",
-                        "surface-container": "#eaeef2",
-                        "surface-container-low": "#f0f4f8",
-                        "surface-container-high": "#e5e9ed",
-                        "surface-container-lowest": "#ffffff",
                         "primary": "#001544",
-                        "secondary": "#7c5800",
-                    },
-                    spacing: {
-                        "md": "24px", "xs": "8px", "base": "4px",
-                        "xl": "48px", "sm": "16px", "lg": "32px",
-                        "container-max": "1440px"
                     },
                     fontFamily: {
                         "stat-number": ["Inter"], "h3": ["Inter"], "h1": ["Inter"],
@@ -54,148 +34,24 @@
             }
         }
     </script>
+
+    {{-- 2. Icons & Fonts --}}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    {{-- 3. Base & Layout CSS (for exact public sidebar styling) --}}
+    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/layout.css') }}">
+
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; background: #f6fafe; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f6fafe; }
         ::-webkit-scrollbar-thumb { background: #dfe3e7; border-radius: 4px; }
 
-        /* ══════════════════════════════
-           SIDEBAR — dark navy (matches main.blade)
-        ══════════════════════════════ */
-        #hrSidebar {
-            background: linear-gradient(180deg, #001d54 0%, #002870 100%);
-            width: 280px;
-            position: fixed; left: 0; top: 0; height: 100vh;
-            display: flex; flex-direction: column;
-            z-index: 50;
-            overflow: hidden;                          /* clips text on collapse */
-            transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 4px 0 24px rgba(0,0,0,.2);
-        }
-        #hrSidebar.collapsed { width: 72px; }
-
-        /* ── Brand row ── */
-        .hr-brand-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 16px;
-            border-bottom: 1px solid rgba(255,255,255,.08);
-            min-height: 72px;
-            flex-shrink: 0;
-        }
-        .hr-brand-text {
-            display: flex; flex-direction: column;
-            overflow: hidden; white-space: nowrap;
-            transition: opacity 0.2s, width 0.35s;
-            opacity: 1; width: auto;
-        }
-        #hrSidebar.collapsed .hr-brand-text {
-            opacity: 0; width: 0;
-        }
-        .hr-brand-name  { font-size:17px; font-weight:800; color:#fff; letter-spacing:-.01em; }
-        .hr-brand-tag   { font-size:10px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:#f8b830; margin-top:2px; }
-
-        /* Toggle button — always centered when collapsed */
-        .hr-toggle-btn {
-            flex-shrink: 0;
-            width: 36px; height: 36px;
-            border-radius: 10px; border: none; cursor: pointer;
-            background: rgba(255,255,255,.1); color: rgba(255,255,255,.7);
-            display: flex; align-items: center; justify-content: center;
-            transition: background .2s;
-        }
-        .hr-toggle-btn:hover { background: rgba(255,255,255,.18); color: #fff; }
-        #hrSidebar.collapsed .hr-toggle-btn { margin: 0 auto; }
-
-        /* ── Section labels ── */
-        .hr-section-label {
-            font-size: 10px; font-weight: 700; letter-spacing: .12em;
-            text-transform: uppercase; color: rgba(255,255,255,.25);
-            padding: 0 14px; margin: 16px 0 4px;
-            white-space: nowrap;
-            transition: opacity .2s;
-        }
-        #hrSidebar.collapsed .hr-section-label { opacity: 0; }
-
-        /* ── Nav items ── */
-        .hr-nav-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 10px 14px; font-size: 14px; font-weight: 500;
-            color: rgba(255,255,255,.6); border-radius: 10px;
-            text-decoration: none; transition: background .2s, color .2s;
-            margin-bottom: 2px; white-space: nowrap;
-            overflow: hidden;
-        }
-        .hr-nav-item:hover { background: rgba(255,255,255,.08); color: #fff; }
-        .hr-nav-item.active { background: rgba(248,184,48,.12); color: #f8b830; font-weight: 600; }
-        .hr-nav-item .mat-icon { font-size: 20px; width: 22px; text-align: center; flex-shrink: 0; }
-        .hr-nav-item .nav-label { transition: opacity 0.15s, width 0.35s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; }
-        #hrSidebar.collapsed .hr-nav-item .nav-label { opacity: 0; width: 0; overflow: hidden; }
-
-        /* When collapsed, center the icon */
-        #hrSidebar.collapsed .hr-nav-item { padding: 10px 0; justify-content: center; gap: 0; }
-
-        /* ── Divider ── */
-        .hr-divider { height: 1px; background: rgba(255,255,255,.06); margin: 8px 12px; }
-
-        /* ── Footer info box ── */
-        .hr-footer-info {
-            background: rgba(255,255,255,.06);
-            border: 1px solid rgba(255,255,255,.06);
-            border-radius: 12px; padding: 12px 14px; margin-bottom: 10px;
-            transition: opacity .2s, max-height .3s, padding .3s, margin .3s;
-            overflow: hidden; max-height: 100px; opacity: 1;
-        }
-        #hrSidebar.collapsed .hr-footer-info {
-            opacity: 0; max-height: 0; padding: 0; margin: 0;
-        }
-
-        /* ── Logout button (special nav-item) ── */
-        .hr-logout-btn {
-            display: flex; align-items: center; gap: 12px;
-            width: 100%; padding: 10px 14px; font-size: 14px; font-weight: 500;
-            color: rgba(239,68,68,.7); border-radius: 10px;
-            border: 1px solid rgba(239,68,68,.2); background: transparent;
-            cursor: pointer; transition: background .2s, color .2s;
-            white-space: nowrap; overflow: hidden;
-        }
-        .hr-logout-btn:hover { background: rgba(239,68,68,.08); color: #ef4444; }
-        .hr-logout-btn .mat-icon { font-size: 20px; width: 22px; text-align: center; flex-shrink: 0; }
-        .hr-logout-btn .nav-label { transition: opacity .15s; }
-        #hrSidebar.collapsed .hr-logout-btn .nav-label { opacity: 0; width: 0; overflow: hidden; }
-        #hrSidebar.collapsed .hr-logout-btn { padding: 10px 0; justify-content: center; gap: 0; border-color: transparent; }
-
-        /* ══════════════════════════════
-           MAIN CONTENT SHIFT
-        ══════════════════════════════ */
-        #hrMain { margin-left: 280px; transition: margin-left 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
-        #hrMain.collapsed { margin-left: 72px; }
-
-        /* ══════════════════════════════
-           CONTENT BLUR OVERLAY (desktop expand)
-           Matches #overlay in main.blade / layout.css
-        ══════════════════════════════ */
-        #hrBlurOverlay {
-            position: fixed;
-            inset: 0 0 0 280px;          /* sits over main content, right of sidebar */
-            background: rgba(0,20,60,.45);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            opacity: 0; visibility: hidden;
-            transition: opacity .35s cubic-bezier(.4,0,.2,1),
-                        visibility .35s cubic-bezier(.4,0,.2,1);
-            z-index: 49;                  /* below sidebar (50), above content */
-            cursor: pointer;
-        }
-        #hrBlurOverlay.active   { opacity: 1; visibility: visible; }
-        /* When collapsed, overlay is hidden — sidebar icon-only, no need to blur */
-
-        /* ══════════════════════════════
-           MODAL
-        ══════════════════════════════ */
+        /* MODAL */
         #vacancyModal { display: none; }
         #vacancyModal.open { display: flex; }
         @keyframes modalIn {
@@ -203,102 +59,81 @@
             to   { opacity: 1; transform: scale(1) translateY(0); }
         }
         #vacancyModalCard { animation: modalIn .25s cubic-bezier(.22,1,.36,1) both; }
+        
+        /* OVERRIDE TOGGLE BTN Z-INDEX */
+        .toggle-btn { z-index: 998; }
+        
+        /* Main content padding so it doesn't hide behind toggle button */
+        #hrMain { padding-top: 60px; }
+        @media(min-width: 1024px) {
+            #hrMain { padding-top: 20px; }
+            .toggle-btn { top: 20px; left: 20px; }
+        }
     </style>
     @stack('styles')
 </head>
-<body class="bg-background text-on-surface antialiased min-h-screen">
+<body class="text-gray-900 antialiased min-h-screen">
 
-{{-- Mobile overlay --}}
-<div id="hrOverlay" onclick="closeHrSidebar()"
-     class="fixed inset-0 bg-black/60 z-40 hidden lg:hidden"></div>
+{{-- ═══════════════ SIDEBAR (EXACTLY LIKE PUBLIC PAGE) ═══════════════ --}}
+<div id="sidebar" class="sidebar flex flex-col z-[1000]">
 
-{{-- Desktop blur overlay (active when sidebar is expanded) --}}
-<div id="hrBlurOverlay" onclick="toggleHrCollapse()"></div>
-
-{{-- ═══════════════ SIDEBAR ═══════════════ --}}
-<aside id="hrSidebar">
-
-    {{-- Brand + toggle row --}}
-    <div class="hr-brand-row">
-        <div class="hr-brand-text">
-            <div class="hr-brand-name">NTP Careers</div>
-            <div class="hr-brand-tag">HR Panel</div>
+    <div class="sidebar-brand flex justify-between items-start">
+        <div>
+            <div class="sidebar-brand-name">PT. Nusantara Turbin dan Propulsi</div>
+            <div class="sidebar-brand-tag">CAREERS PORTAL</div>
         </div>
-        <button class="hr-toggle-btn" onclick="toggleHrCollapse()" title="Toggle Sidebar">
-            <span class="material-symbols-outlined" style="font-size:18px;">menu</span>
-        </button>
+        <button onclick="toggleSidebar()" class="sidebar-close flex items-center justify-center">✕</button>
     </div>
 
-    {{-- Navigation --}}
-    <nav class="flex-1 overflow-y-auto px-3 pt-3 pb-2">
+    <ul class="sidebar-menu list-none p-0 flex-1">
+        <li class="mb-[1px]">
+            <a href="{{ route('hr.dashboard') }}" class="{{ request()->routeIs('hr.dashboard') ? 'active' : '' }}">
+                <i class="bi bi-grid-1x2"></i> Dashboard HR
+            </a>
+        </li>
+        <li class="mb-[1px]">
+            <a href="{{ route('hr.vacancies.index') }}" class="{{ request()->routeIs('hr.vacancies.*') ? 'active' : '' }}">
+                <i class="bi bi-briefcase"></i> Kelola Lowongan
+            </a>
+        </li>
+        <li class="mb-[1px]">
+            <a href="{{ route('hr.applications.index') }}" class="{{ request()->routeIs('hr.applications.*') ? 'active' : '' }}">
+                <i class="bi bi-people"></i> Kandidat & Lamaran
+            </a>
+        </li>
+    </ul>
 
-        <div class="hr-section-label">Menu</div>
+    <div class="sidebar-divider"></div>
 
-        <a href="{{ route('home') }}"
-           class="hr-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-            <span class="material-symbols-outlined mat-icon">home</span>
-            <span class="nav-label">Beranda</span>
-        </a>
-        <a href="{{ route('home') }}#lowongan" class="hr-nav-item">
-            <span class="material-symbols-outlined mat-icon">public</span>
-            <span class="nav-label">Lihat Lowongan</span>
-        </a>
+    <div class="sidebar-bottom mt-auto">
+        <div class="cta-box mb-3 text-center">
+            <small class="text-[#94a3b8] block mb-2" style="font-size:11px;">Selamat datang,</small>
+            <strong style="color:var(--primary-color);font-size:14px;">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</strong>
 
-        <div class="hr-divider"></div>
-
-        <div class="hr-section-label">Panel HR</div>
-
-        <a href="{{ route('hr.dashboard') }}"
-           class="hr-nav-item {{ request()->routeIs('hr.dashboard') ? 'active' : '' }}">
-            <span class="material-symbols-outlined mat-icon">space_dashboard</span>
-            <span class="nav-label">Dashboard</span>
-        </a>
-        <a href="{{ route('hr.vacancies.index') }}"
-           class="hr-nav-item {{ request()->routeIs('hr.vacancies.*') ? 'active' : '' }}">
-            <span class="material-symbols-outlined mat-icon">post_add</span>
-            <span class="nav-label">Kelola Lowongan</span>
-        </a>
-        <a href="{{ route('hr.applications.index') }}"
-           class="hr-nav-item {{ request()->routeIs('hr.applications.*') ? 'active' : '' }}">
-            <span class="material-symbols-outlined mat-icon">groups</span>
-            <span class="nav-label">Kandidat & Lamaran</span>
-        </a>
-
-    </nav>
-
-    {{-- Footer --}}
-    <div class="px-3 pb-4" style="border-top:1px solid rgba(255,255,255,.06); padding-top:12px;">
-        <div class="hr-footer-info">
-            <div style="font-size:11px; color:rgba(255,255,255,.4); margin-bottom:3px;">Masuk sebagai</div>
-            <div style="font-size:13px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
-            </div>
-            <div style="font-size:10px; font-weight:600; color:#f8b830; text-transform:uppercase; letter-spacing:.08em; margin-top:2px;">
-                {{ ucfirst(Auth::user()->role) }}
-            </div>
+            <a href="{{ route('home') }}" class="w-full mt-3 block text-center"
+               style="background:rgba(248,184,48,0.15);color:#f8b830;border:1px solid rgba(248,184,48,0.2);border-radius:8px;font-weight:600;padding:8px 16px;font-size:13px;text-decoration:none;">
+                <i class="bi bi-house-door me-1"></i> Ke Beranda Publik
+            </a>
         </div>
+
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="hr-logout-btn">
-                <span class="material-symbols-outlined mat-icon">logout</span>
-                <span class="nav-label">Keluar</span>
+            <button type="submit" class="guest-box logout-box w-full text-left" style="width:100%;">
+                <i class="bi bi-box-arrow-right"></i>
+                <div class="text-left leading-tight">
+                    <strong style="color:rgba(239,68,68,0.85);font-size:13px;">Logout</strong><br>
+                    <small style="color:rgba(239,68,68,0.5);font-size:11px;">Keluar dari akun</small>
+                </div>
             </button>
         </form>
     </div>
+</div>
 
-</aside>
+<button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+<div id="overlay" onclick="toggleSidebar()"></div>
 
 {{-- ═══════════════ MAIN CONTENT ═══════════════ --}}
-<main id="hrMain" class="min-h-screen flex flex-col bg-background transition-all">
-
-    {{-- Mobile top bar --}}
-    <div class="lg:hidden flex items-center justify-between px-5 py-4 bg-white border-b border-gray-200 sticky top-0 z-30">
-        <div style="font-size:18px;font-weight:800;color:#002870;">NTP Careers</div>
-        <button onclick="openHrSidebar()" class="text-[#002870] flex items-center">
-            <span class="material-symbols-outlined" style="font-size:28px;">menu</span>
-        </button>
-    </div>
-
+<main id="hrMain" class="min-h-screen flex flex-col transition-all lg:ml-16">
     <div class="p-6 lg:p-8 flex-grow">
         @yield('content')
     </div>
@@ -306,7 +141,7 @@
 
 {{-- ═══════════════ MODAL TAMBAH LOWONGAN ═══════════════ --}}
 <div id="vacancyModal"
-     class="fixed inset-0 z-[999] items-center justify-center p-4"
+     class="fixed inset-0 z-[1001] items-center justify-center p-4"
      style="background:rgba(15,23,42,.6);backdrop-filter:blur(4px);">
 
     <div id="vacancyModalCard"
@@ -351,7 +186,7 @@
                     </div>
                 </div>
 
-                {{-- Row 2: Lokasi + Tipe --}}
+                {{-- Row 2: Divisi + Tipe --}}
                 <div class="grid grid-cols-2 gap-5">
                     <div class="flex flex-col gap-1.5">
                         <label class="text-[11px] font-bold uppercase tracking-wider text-[#002870]">Divisi *</label>
@@ -434,58 +269,18 @@
 <script>setTimeout(()=>{ const el=document.getElementById('flashMsg'); if(el) el.remove(); }, 3500);</script>
 @endif
 
+@if(session('error'))
+<div id="flashMsgErr"
+     class="fixed bottom-6 right-6 z-[9999] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-semibold text-white bg-red-600"
+     style="animation:modalIn .3s both;">
+    <span class="material-symbols-outlined" style="font-size:18px;">error</span>
+    {{ session('error') }}
+</div>
+<script>setTimeout(()=>{ const el=document.getElementById('flashMsgErr'); if(el) el.remove(); }, 3500);</script>
+@endif
+
+<script src="{{ asset('js/app.js') }}"></script>
 <script>
-    /* ── Sidebar collapse (desktop) ── */
-    let hrCollapsed = false;
-
-    function setBlurOverlay(collapsed) {
-        const overlay = document.getElementById('hrBlurOverlay');
-        if (!overlay) return;
-        if (collapsed) {
-            overlay.classList.remove('active');
-        } else {
-            /* Only blur on desktop (lg+) */
-            if (window.innerWidth >= 1024) overlay.classList.add('active');
-        }
-    }
-
-    function toggleHrCollapse() {
-        hrCollapsed = !hrCollapsed;
-        document.getElementById('hrSidebar').classList.toggle('collapsed', hrCollapsed);
-        document.getElementById('hrMain').classList.toggle('collapsed', hrCollapsed);
-        setBlurOverlay(hrCollapsed);
-        localStorage.setItem('hrSidebarCollapsed', hrCollapsed);
-    }
-
-    /* ── Mobile sidebar ── */
-    function openHrSidebar() {
-        document.getElementById('hrSidebar').style.transform = 'translateX(0)';
-        document.getElementById('hrOverlay').classList.remove('hidden');
-    }
-    function closeHrSidebar() {
-        document.getElementById('hrSidebar').style.transform = '';
-        document.getElementById('hrOverlay').classList.add('hidden');
-    }
-
-    /* ── Restore collapse state & sync overlay ── */
-    (function(){
-        if(localStorage.getItem('hrSidebarCollapsed') === 'true') {
-            hrCollapsed = true;
-            document.getElementById('hrSidebar').classList.add('collapsed');
-            document.getElementById('hrMain').classList.add('collapsed');
-        }
-        /* Apply overlay on load (desktop, expanded) */
-        setBlurOverlay(hrCollapsed);
-    })();
-
-    /* Mobile: hide sidebar off-screen by default */
-    if(window.innerWidth < 1024) {
-        document.getElementById('hrSidebar').style.transform = 'translateX(-100%)';
-        /* Remove overlay on mobile */
-        const o = document.getElementById('hrBlurOverlay');
-        if (o) o.classList.remove('active');
-    }
-
     /* ── Vacancy Modal ── */
     function openVacancyModal() {
         document.getElementById('vacancyModal').classList.add('open');

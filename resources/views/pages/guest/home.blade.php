@@ -43,42 +43,48 @@
 
         <div class="d-flex flex-column gap-3">
 
-            <div class="job-card expanded fade-up">
+            @forelse($vacancies as $vacancy)
+            <div class="job-card {{ $loop->first ? 'expanded' : '' }} fade-up">
                 <div class="job-header">
                     <div class="d-flex align-items-center gap-3">
-                        <div class="job-icon primary-bg">
-                            <i class="bi bi-code-slash"></i>
+                        <div class="job-icon {{ $loop->first ? 'primary-bg' : 'light-bg' }}">
+                            <i class="bi bi-briefcase"></i>
                         </div>
                         <div>
-                            <strong style="font-size: 16px; color: var(--primary-color);">Software Engineer</strong><br>
-                            <small style="color: var(--on-surface-variant);">Division: Information Technology</small>
+                            <strong style="font-size: 16px; color: var(--primary-color);">{{ $vacancy->title }}</strong><br>
+                            <small style="color: var(--on-surface-variant);">Division: {{ $vacancy->division }}</small>
                         </div>
                     </div>
-                    <small class="toggle-text" style="color: var(--primary-color); cursor: pointer;">
-                        <i class="bi bi-chevron-up"></i>
+                    <small class="toggle-text" style="color: {{ $loop->first ? 'var(--primary-color)' : 'var(--outline)' }}; cursor: pointer;">
+                        <i class="bi {{ $loop->first ? 'bi-chevron-up' : 'bi-chevron-down' }}"></i>
                     </small>
                 </div>
-                <div class="job-detail show">
+                <div class="job-detail {{ $loop->first ? 'show' : '' }}">
                     <div class="job-detail-inner">
                         <div class="row g-4 mb-4">
                             <div class="col-md-7">
                                 <h6 style="font-weight: 600; color: var(--primary-color); margin-bottom: 12px;">Kualifikasi:</h6>
                                 <ul style="color: var(--on-surface-variant); font-size: 14px; padding-left: 20px;">
-                                    <li class="mb-1">Pendidikan S1 Teknik Informatika atau setara.</li>
-                                    <li class="mb-1">Pengalaman minimal 2 tahun dalam pengembangan aplikasi.</li>
-                                    <li class="mb-1">Menguasai bahasa pemrograman Java, Python, atau Go.</li>
-                                    <li class="mb-1">Memahami konsep Microservices dan RESTful API.</li>
+                                    @foreach(array_filter(array_map('trim', explode("\n", $vacancy->requirements))) as $req)
+                                        @if($req)
+                                        <li class="mb-1">{{ $req }}</li>
+                                        @endif
+                                    @endforeach
                                 </ul>
                             </div>
                             <div class="col-md-5">
                                 <div class="job-info-box">
                                     <div class="job-info-row">
                                         <span class="job-info-label">Divisi</span>
-                                        <span class="job-info-value">Information Technology</span>
+                                        <span class="job-info-value">{{ $vacancy->division }}</span>
                                     </div>
                                     <div class="job-info-row" style="border-top: 1px solid var(--outline-variant); margin-top: 8px; padding-top: 8px;">
                                         <span class="job-info-label">Tipe</span>
-                                        <span class="job-info-value">Full-Time</span>
+                                        <span class="job-info-value">{{ ucfirst($vacancy->type) }}</span>
+                                    </div>
+                                    <div class="job-info-row" style="border-top: 1px solid var(--outline-variant); margin-top: 8px; padding-top: 8px;">
+                                        <span class="job-info-label">Deadline</span>
+                                        <span class="job-info-value">{{ $vacancy->deadline->format('d M Y') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -91,102 +97,12 @@
                     </div>
                 </div>
             </div>
-
-            <div class="job-card fade-up">
-                <div class="job-header">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="job-icon light-bg">
-                            <i class="bi bi-palette-fill"></i>
-                        </div>
-                        <div>
-                            <strong style="font-size: 16px; color: var(--primary-color);">UI/UX Designer</strong><br>
-                            <small style="color: var(--on-surface-variant);">Division: Design & User Experience</small>
-                        </div>
-                    </div>
-                    <small class="toggle-text" style="color: var(--outline); cursor: pointer;">
-                        <i class="bi bi-chevron-down"></i>
-                    </small>
-                </div>
-                <div class="job-detail">
-                    <div class="job-detail-inner">
-                        <div class="row g-4 mb-4">
-                            <div class="col-md-7">
-                                <h6 style="font-weight: 600; color: var(--primary-color); margin-bottom: 12px;">Kualifikasi:</h6>
-                                <ul style="color: var(--on-surface-variant); font-size: 14px; padding-left: 20px;">
-                                    <li class="mb-1">Pendidikan S1 Desain Komunikasi Visual atau setara.</li>
-                                    <li class="mb-1">Menguasai Figma, Adobe XD, atau Sketch.</li>
-                                    <li class="mb-1">Pemahaman design system dan design thinking.</li>
-                                </ul>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="job-info-box">
-                                    <div class="job-info-row">
-                                        <span class="job-info-label">Divisi</span>
-                                        <span class="job-info-value">Design & User Experience</span>
-                                    </div>
-                                    <div class="job-info-row" style="border-top: 1px solid var(--outline-variant); margin-top: 8px; padding-top: 8px;">
-                                        <span class="job-info-label">Tipe</span>
-                                        <span class="job-info-value">Full-Time</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @auth
-                            <button class="btn btn-secondary-custom px-4 py-2" style="border-radius: 10px; font-size: 14px;">Lamar Sekarang</button>
-                        @else
-                            <a href="{{ route('login') }}" class="btn btn-secondary-custom px-4 py-2" style="border-radius: 10px; font-size: 14px;">Login untuk Melamar</a>
-                        @endauth
-                    </div>
-                </div>
+            @empty
+            <div class="text-center py-5">
+                <i class="bi bi-briefcase" style="font-size:40px;color:#cbd5e1;"></i>
+                <p class="mt-3 text-muted">Belum ada lowongan yang tersedia saat ini.</p>
             </div>
-
-            <div class="job-card fade-up">
-                <div class="job-header">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="job-icon light-bg">
-                            <i class="bi bi-megaphone-fill"></i>
-                        </div>
-                        <div>
-                            <strong style="font-size: 16px; color: var(--primary-color);">Marketing Executive</strong><br>
-                            <small style="color: var(--on-surface-variant);">Division: Business Development</small>
-                        </div>
-                    </div>
-                    <small class="toggle-text" style="color: var(--outline); cursor: pointer;">
-                        <i class="bi bi-chevron-down"></i>
-                    </small>
-                </div>
-                <div class="job-detail">
-                    <div class="job-detail-inner">
-                        <div class="row g-4 mb-4">
-                            <div class="col-md-7">
-                                <h6 style="font-weight: 600; color: var(--primary-color); margin-bottom: 12px;">Kualifikasi:</h6>
-                                <ul style="color: var(--on-surface-variant); font-size: 14px; padding-left: 20px;">
-                                    <li class="mb-1">Pendidikan S1 Marketing / Manajemen Bisnis.</li>
-                                    <li class="mb-1">Pengalaman minimal 3 tahun di bidang pemasaran B2B.</li>
-                                    <li class="mb-1">Kemampuan komunikasi dan negosiasi yang kuat.</li>
-                                </ul>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="job-info-box">
-                                    <div class="job-info-row">
-                                        <span class="job-info-label">Divisi</span>
-                                        <span class="job-info-value">Business Development</span>
-                                    </div>
-                                    <div class="job-info-row" style="border-top: 1px solid var(--outline-variant); margin-top: 8px; padding-top: 8px;">
-                                        <span class="job-info-label">Tipe</span>
-                                        <span class="job-info-value">Full-Time</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @auth
-                            <button class="btn btn-secondary-custom px-4 py-2" style="border-radius: 10px; font-size: 14px;">Lamar Sekarang</button>
-                        @else
-                            <a href="{{ route('login') }}" class="btn btn-secondary-custom px-4 py-2" style="border-radius: 10px; font-size: 14px;">Login untuk Melamar</a>
-                        @endauth
-                    </div>
-                </div>
-            </div>
+            @endforelse
 
         </div>
     </div>
