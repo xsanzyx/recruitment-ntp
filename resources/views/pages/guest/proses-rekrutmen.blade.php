@@ -11,7 +11,7 @@
             <p class="hero-subtitle">Proses rekrutmen yang jelas tanpa ribet dan mudah dipahami oleh semua kandidat.</p>
         </div>
 
-        <div class="row g-5 align-items-start">
+        <div class="row g-5 align-items-stretch">
 
             {{-- Steps --}}
             <div class="col-lg-7">
@@ -54,7 +54,7 @@
 
             {{-- Info Panel --}}
             <div class="col-lg-5 fade-up">
-                <div style="background:#f8faff;border-radius:16px;padding:28px;border:1px solid #e8edf5;">
+                <div style="background:#f8faff;border-radius:16px;padding:28px;border:1px solid #e8edf5;height:100%;display:flex;flex-direction:column;">
                     <h5 style="font-weight:700;color:var(--primary-color);margin-bottom:20px;">Info Penting</h5>
 
                     <div class="d-flex gap-3 mb-4">
@@ -87,7 +87,7 @@
                         </div>
                     </div>
 
-                    <div class="d-flex gap-3">
+                    <div class="d-flex gap-3 mb-4">
                         <div style="width:40px;height:40px;background:rgba(0,40,112,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                             <i class="bi bi-patch-check" style="color:var(--primary-color);"></i>
                         </div>
@@ -96,12 +96,12 @@
                             <p style="font-size:13px;color:#64748b;margin:4px 0 0;">Tidak ada biaya pendaftaran. Proses seleksi sepenuhnya transparan.</p>
                         </div>
                     </div>
-                </div>
 
-                <div class="mt-4 text-center">
-                    <a href="{{ route('lowongan') }}" class="btn btn-secondary-custom px-4 py-2" style="border-radius:10px;">
-                        Lihat Lowongan Terbuka →
-                    </a>
+                    <div class="mt-auto pt-3">
+                        <a href="{{ route('lowongan') }}" class="btn btn-secondary-custom w-100 py-2" style="border-radius:10px;">
+                            Lihat Lowongan Terbuka →
+                        </a>
+                    </div>
                 </div>
             </div>
 
