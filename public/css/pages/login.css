@@ -12,56 +12,59 @@
    ============================================= */
 .login-left {
     width: 40%;
-    padding: 24px 64px;
+    min-width: 380px;
+    padding: 40px clamp(24px, 5vw, 48px);
     background: #fff;
 
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-    height: 100vh;
-    position: relative;
+    min-height: 100vh;
+    position: relative; /* 🔥 penting untuk absolute children */
+}
+
+/* BACK LINK — nempel di atas */
+.login-left .back-link {
+    position: absolute;
+    top: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 520px; /* samain dengan max-width login-box */
+    padding-left: 24px; /* samain dengan px-4 Bootstrap = 24px */
+    font-size: 14px;
+    display: inline-block;
 }
 
 /* FORM AREA */
 .login-left .login-box {
-    margin-top: 225px;
-    max-width: 600px;
+    max-width: 520px;
     width: 100%;
+    transform: translateY(
+        -125px
+    ); /* 🔥 naikin form ke atas, sesuaikan nilainya */
 }
 
-/* BACK LINK */
-.login-left .back-link {
+/* FOOTER — nempel di bawah */
+.login-footer {
     position: absolute;
-    top: 100px;
-    left: 100px;
-    font-size: 15px;
-}
-
-/* GENERAL BOX */
-.login-box {
-    width: 100%;
+    bottom: 24px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 12px;
 }
 
 /* TYPOGRAPHY */
-.login-left .login-box h2 {
-    margin-top: 8px;
-}
-
-/* spacing paragraf biar gak mepet */
-.login-left .login-box p {
-    margin-bottom: 28px;
-}
-
-/* Judul */
 .login-box h2 {
     font-size: 28px;
     margin-bottom: 8px;
 }
 
-/* Deskripsi */
 .login-box p {
     font-size: 14px;
-    margin-bottom: 24px;
 }
 
 /* Label */
@@ -80,24 +83,16 @@
 }
 
 /* =============================================
-   🔥 FIX FOOTER KE PALING BAWAH
+   FOOTER
    ============================================= */
-.login-left {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
-
 .login-footer {
-    margin-top: auto;
-    padding-top: 150px;
+    text-align: center;
     font-size: 12px;
+    padding-top: 20px;
 }
 /* =============================================
    CONSISTENT FORM INPUTS — auth pages
    ============================================= */
-
-/* Custom icon input (email, password) */
 .input-group-custom {
     display: flex;
     align-items: center;
@@ -139,7 +134,6 @@
     background: #fff;
 }
 
-/* Standalone input (name fields, etc) — match icon inputs visually */
 .form-input-custom {
     width: 100%;
     height: 46px;
@@ -165,7 +159,6 @@
     background: #fff;
 }
 
-/* Form labels */
 .auth-label {
     font-size: 13px;
     font-weight: 600;
@@ -174,50 +167,71 @@
     display: block;
 }
 
-/* Footer copyright - centered, inside login-box flow */
+/* =============================================
+   LEFT PANEL — sama persis dengan login
+   ============================================= */
 .login-left {
+    width: 40%;
+    min-width: 380px;
+    padding: 40px clamp(24px, 5vw, 48px);
+    background: #fff;
+
     display: flex;
     flex-direction: column;
-    height: 100vh;
-}
-
-.login-left .login-box {
-    margin-top: 200px;
-    max-width: 600px;
-    width: 100%;
-}
-
-.login-footer {
-    margin-top: auto;
-    text-align: center;
-    padding-top: 120px;
-    font-size: 12px;
-}
-
-.login-box {
-    max-width: 420px;
-    margin: 0 auto;
-}
-
-.login-box h2 {
-    letter-spacing: -0.5px;
-}
-
-.back-link {
-    display: inline-flex;
+    justify-content: center;
     align-items: center;
-    gap: 6px;
+
+    min-height: 100vh;
+    position: relative;
+}
+
+/* BACK LINK — absolute di atas, rata kiri dengan form */
+.login-left .back-link {
+    position: absolute;
+    top: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 520px;
+    padding-left: 24px;
+    display: inline-block;
     text-decoration: none;
     color: #94a3b8;
-    font-size: 13px;
+    font-size: 14px;
     transition:
         color 0.2s,
         gap 0.2s;
 }
 
-.back-link:hover {
+.login-left .back-link:hover {
     color: var(--primary-color);
     gap: 10px;
+}
+
+/* FORM BOX */
+.login-left .login-box {
+    max-width: 520px;
+    width: 100%;
+    transform: translateY(-40px); /* sesuaikan dengan login */
+}
+
+/* FOOTER — absolute di bawah */
+.login-footer {
+    position: absolute;
+    bottom: 24px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 12px;
+}
+
+/* Button */
+.login-btn {
+    width: 100%;
+    padding: 13px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
 }
 
 /* =============================================
