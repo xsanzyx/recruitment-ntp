@@ -8,13 +8,11 @@
     <div class="login-left">
 
     <a href="{{ route('home') }}" class="back-link">← Kembali ke beranda</a>
+    <br><br><br>
 
-    <div class="login-box">
+    <div class="login-box px-4 py-4">
 
         <div class="mb-3 d-flex align-items-center gap-3">
-            <div class="job-icon">
-                <i class="bi bi-building"></i>
-            </div>
             <div>
                 <h6 class="fw-bold primary-text mb-0">PT Nusantara Turbin dan Propulsi</h6>
                 <small class="text-muted" style="font-size:11px;letter-spacing:1px;text-transform:uppercase;">
@@ -144,7 +142,7 @@
             <div class="stat-grid">
                 <div class="stat-box">
                     <h5>Karier</h5>
-                    <small>Terbuka</small>
+                    <small> Terbuka</small>
                 </div>
                 <div class="stat-box">
                     <h5>5 Hari</h5>
