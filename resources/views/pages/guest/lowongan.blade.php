@@ -62,6 +62,12 @@
                     <div class="job-detail-inner">
                         <div class="row g-4 mb-4">
                             <div class="col-md-7">
+                                @if($vacancy->description)
+                                <div class="mb-4">
+                                    <h6 style="font-weight:600;color:var(--primary-color);margin-bottom:12px;">Deskripsi Pekerjaan:</h6>
+                                    <p style="color:#64748b;font-size:14px;line-height:1.7;">{{ $vacancy->description }}</p>
+                                </div>
+                                @endif
                                 <h6 style="font-weight:600;color:var(--primary-color);margin-bottom:12px;">Kualifikasi:</h6>
                                 <ul style="color:#64748b;font-size:14px;padding-left:20px;">
                                     @foreach(array_filter(array_map('trim', explode("\n", $vacancy->requirements))) as $req)
