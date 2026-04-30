@@ -31,7 +31,7 @@
     max-width: 520px;
     width: 100%;
     transform: translateY(
-        -50px
+        -125px
     ); /* 🔥 naikin form ke atas, sesuaikan nilainya */
 }
 
@@ -166,9 +166,11 @@
 
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
 
     min-height: 100vh;
+    position: relative;
 }
 
 /* FORM BOX */
@@ -208,13 +210,15 @@
 
 /* FOOTER — absolute di bawah */
 .login-footer {
-    flex-shrink: 0;
+    position: absolute;
+    bottom: 24px;
+    left: 0;
+    right: 0;
     text-align: center;
     font-size: 12px;
-    padding: 20px 0 8px;
-    width: 100%;
 }
 
+/* Button */
 .login-btn {
     width: 100%;
     padding: 13px;
@@ -223,43 +227,6 @@
     border-radius: 10px;
 }
 
-/* tablet */
-@media (max-width: 1024px) {
-    .login-left {
-        width: 50%;
-        min-width: 0;
-    }
-}
-
-/* mobile */
-@media (max-width: 768px) {
-    .login-left {
-        width: 100%;
-        min-width: 0;
-        padding: 24px 20px;
-    }
-
-    .login-left .login-box {
-        max-width: 100%;
-    }
-
-    .login-btn {
-        font-size: 15px;
-        padding: 12px;
-    }
-}
-
-/* small mobile */
-@media (max-width: 480px) {
-    .login-left {
-        padding: 20px 16px;
-    }
-
-    .login-btn {
-        font-size: 14px;
-        padding: 11px;
-    }
-}
 /* =============================================
    RIGHT PANEL
    ============================================= */
@@ -497,72 +464,65 @@
     color: rgba(255, 255, 255, 0.5);
     line-height: 1.6;
 }
+
 /* =============================================
-   RESPONSIVE — MOBILE & TABLET (max 1024px)
+   RESPONSIVE — MOBILE FIX
    ============================================= */
-@media (max-width: 1024px) {
+@media (max-width: 767px) {
+    /* Stack vertikal, allow scroll on mobile */
     .login-section {
         flex-direction: column;
         height: auto;
+        overflow: auto;
     }
 
-    .login-right {
-        display: none; /* 🔥 hilang di tablet & mobile */
-    }
-
+    /* Panel kiri full width, padding wajar, kasih ruang atas buat hamburger */
     .login-left {
         width: 100%;
-        min-width: 0;
-        padding: 32px 24px;
-        min-height: 100vh;
+        padding: 72px 24px 40px; /* top 72px = ruang buat toggle-btn fixed */
+        height: auto;
+        overflow: visible;
     }
 
-    .login-left .login-box {
+    /* login-box full width, no max-width constraint di mobile */
+    .login-box {
         max-width: 100%;
-        padding-top: 32px;
-        padding-bottom: 32px;
     }
 
-    .login-box h2 {
-        font-size: 24px;
+    /* Panel kanan full width, padding lebih kecil */
+    .login-right {
+        width: 100%;
+        padding: 40px 24px;
+        height: auto;
+        min-height: auto;
+        align-items: flex-start;
     }
 
-    .login-btn {
-        font-size: 15px;
-        padding: 12px;
-    }
-}
-
-/* =============================================
-   RESPONSIVE — SMALL MOBILE (max 480px)
-   ============================================= */
-@media (max-width: 480px) {
-    .login-left {
-        padding: 24px 16px;
+    /* Nonaktifkan ring animasi yang oversize di mobile */
+    .login-right::before,
+    .login-right::after {
+        display: none;
     }
 
-    .login-left .login-box {
-        padding-top: 20px;
-        padding-bottom: 20px;
+    /* Company box full width */
+    .company-box {
+        max-width: 100%;
     }
 
-    .login-box h2 {
-        font-size: 22px;
+    /* Stat grid tetap 2 kolom */
+    .stat-grid {
+        grid-template-columns: 1fr 1fr;
     }
 
-    .auth-label {
-        font-size: 12px;
+    /* Judul company box lebih kecil */
+    .company-box h3 {
+        font-size: 20px;
     }
 
-    .input-group-custom,
-    .form-input-custom {
-        height: 42px;
-        font-size: 13px;
-    }
-
-    .login-btn {
-        font-size: 14px;
-        padding: 11px;
+    /* Copyright center */
+    .login-footer {
+        text-align: center;
+        display: block;
     }
 }
 /* =============================================
