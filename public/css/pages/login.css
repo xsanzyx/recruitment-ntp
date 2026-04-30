@@ -31,7 +31,7 @@
     max-width: 520px;
     width: 100%;
     transform: translateY(
-        -125px
+        -50px
     ); /* 🔥 naikin form ke atas, sesuaikan nilainya */
 }
 
@@ -166,11 +166,9 @@
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 
     min-height: 100vh;
-    position: relative;
 }
 
 /* FORM BOX */
@@ -210,15 +208,13 @@
 
 /* FOOTER — absolute di bawah */
 .login-footer {
-    position: absolute;
-    bottom: 24px;
-    left: 0;
-    right: 0;
+    flex-shrink: 0;
     text-align: center;
     font-size: 12px;
+    padding: 20px 0 8px;
+    width: 100%;
 }
 
-/* Button */
 .login-btn {
     width: 100%;
     padding: 13px;
@@ -227,6 +223,43 @@
     border-radius: 10px;
 }
 
+/* tablet */
+@media (max-width: 1024px) {
+    .login-left {
+        width: 50%;
+        min-width: 0;
+    }
+}
+
+/* mobile */
+@media (max-width: 768px) {
+    .login-left {
+        width: 100%;
+        min-width: 0;
+        padding: 24px 20px;
+    }
+
+    .login-left .login-box {
+        max-width: 100%;
+    }
+
+    .login-btn {
+        font-size: 15px;
+        padding: 12px;
+    }
+}
+
+/* small mobile */
+@media (max-width: 480px) {
+    .login-left {
+        padding: 20px 16px;
+    }
+
+    .login-btn {
+        font-size: 14px;
+        padding: 11px;
+    }
+}
 /* =============================================
    RIGHT PANEL
    ============================================= */

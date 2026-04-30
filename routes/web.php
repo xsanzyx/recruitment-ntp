@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\GuestController;
 use App\Http\Controllers\HR\HRDashboardController;
 use App\Http\Controllers\HR\HRJobVacancyController;
 use App\Http\Controllers\HR\HRApplicationController;
@@ -10,8 +11,8 @@ use Illuminate\Support\Facades\Route;
 // =============================================
 //  PUBLIC ROUTES
 // =============================================
-Route::get('/',                fn() => view('pages.guest.home'))->name('home');
-Route::get('/lowongan',        fn() => view('pages.guest.lowongan'))->name('lowongan');
+Route::get('/',                [GuestController::class, 'home'])->name('home');
+Route::get('/lowongan',        [GuestController::class, 'lowongan'])->name('lowongan');
 Route::get('/proses-rekrutmen',fn() => view('pages.guest.proses-rekrutmen'))->name('proses-rekrutmen');
 Route::get('/tentang',         fn() => view('pages.guest.tentang'))->name('tentang');
 Route::get('/kontak',          fn() => view('pages.guest.kontak'))->name('kontak');
