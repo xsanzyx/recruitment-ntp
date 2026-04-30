@@ -251,3 +251,22 @@
     .process-step p { max-width: 100%; }
     .cta-box-big { padding: 32px 24px; }
 }
+/* ================= FOOTER MOBILE ================= */
+@media (max-width: 768px) {
+    .site-footer .col-lg-4 {
+        text-align: center;
+    }
+    .footer-social {
+        justify-content: center;
+    }
+    .footer-contact-item {
+        justify-content: center;
+    }
+    .footer-link {
+        display: block;
+        text-align: center;
+    }
+    .footer-bottom {
+        text-align: center;
+    }
+}

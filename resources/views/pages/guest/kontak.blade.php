@@ -11,72 +11,77 @@
             <p class="hero-subtitle">Tim HR kami siap membantu menjawab pertanyaan seputar rekrutmen dan lowongan.</p>
         </div>
 
-        <div class="row g-5">
-
+<div class="row g-5 align-items-stretch">
             {{-- Info Kontak --}}
             <div class="col-lg-5 fade-up">
-                <h5 style="font-weight:700;color:var(--primary-color);margin-bottom:24px;">Informasi Kontak</h5>
+                <div style="display:flex;flex-direction:column;height:100%;">
 
-                <div class="d-flex flex-column gap-3 mb-5">
-                    <div style="display:flex;align-items:flex-start;gap:14px;padding:16px;background:#f8faff;border-radius:12px;border:1px solid #e8edf5;">
-                        <div style="width:40px;height:40px;background:rgba(0,40,112,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i class="bi bi-envelope-fill" style="color:var(--primary-color);"></i>
-                        </div>
-                        <div>
-                            <strong style="font-size:13px;color:var(--primary-color);">Email HR</strong>
-                            <p style="margin:4px 0 0;font-size:14px;color:#374151;">hr@ntp.co.id</p>
-                        </div>
-                    </div>
-                    <div style="display:flex;align-items:flex-start;gap:14px;padding:16px;background:#f8faff;border-radius:12px;border:1px solid #e8edf5;">
-                        <div style="width:40px;height:40px;background:rgba(0,40,112,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i class="bi bi-telephone-fill" style="color:var(--primary-color);"></i>
-                        </div>
-                        <div>
-                            <strong style="font-size:13px;color:var(--primary-color);">Telepon</strong>
-                            <p style="margin:4px 0 0;font-size:14px;color:#374151;">+62 22 605 5555</p>
-                        </div>
-                    </div>
-                    <div style="display:flex;align-items:flex-start;gap:14px;padding:16px;background:#f8faff;border-radius:12px;border:1px solid #e8edf5;">
-                        <div style="width:40px;height:40px;background:rgba(0,40,112,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i class="bi bi-geo-alt-fill" style="color:var(--primary-color);"></i>
-                        </div>
-                        <div>
-                            <strong style="font-size:13px;color:var(--primary-color);">Alamat</strong>
-                            <p style="margin:4px 0 0;font-size:14px;color:#374151;">Jl. Pajajaran No. 154, Bandung 40174</p>
-                        </div>
-                    </div>
-                    <div style="display:flex;align-items:flex-start;gap:14px;padding:16px;background:#f8faff;border-radius:12px;border:1px solid #e8edf5;">
-                        <div style="width:40px;height:40px;background:rgba(0,40,112,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i class="bi bi-clock" style="color:var(--primary-color);"></i>
-                        </div>
-                        <div>
-                            <strong style="font-size:13px;color:var(--primary-color);">Jam Kerja</strong>
-                            <p style="margin:4px 0 0;font-size:14px;color:#374151;">Senin–Jumat, 08.00–17.00 WIB</p>
-                        </div>
-                    </div>
-                </div>
+                    <h5 style="font-weight:700;color:var(--primary-color);margin-bottom:24px;">Informasi Kontak</h5>
 
-                {{-- Social --}}
-                <h6 style="font-weight:700;color:var(--primary-color);margin-bottom:12px;">Ikuti Kami</h6>
-                <div class="d-flex gap-2">
-                    <a href="https://www.instagram.com/ntpindonesia" target="_blank" rel="noopener"
-                    style="width:40px;height:40px;background:rgba(0,40,112,0.08);display:flex;align-items:center;justify-content:center;border-radius:10px;color:var(--primary-color);text-decoration:none;transition:0.2s;"
-                    onmouseover="this.style.background='var(--primary-color)';this.style.color='#fff'"
-                    onmouseout="this.style.background='rgba(0,40,112,0.08)';this.style.color='var(--primary-color)'">
-                        <i class="bi bi-instagram"></i>
-                    </a>
-                    <a href="https://youtube.com/@ntpindonesia2335" target="_blank" rel="noopener"
-                    style="width:40px;height:40px;background:rgba(0,40,112,0.08);display:flex;align-items:center;justify-content:center;border-radius:10px;color:var(--primary-color);text-decoration:none;transition:0.2s;"
-                    onmouseover="this.style.background='var(--primary-color)';this.style.color='#fff'"
-                    onmouseout="this.style.background='rgba(0,40,112,0.08)';this.style.color='var(--primary-color)'">
-                        <i class="bi bi-youtube"></i>
-                    </a>
-                    <a href="mailto:info@ntp.id"
-                    style="width:40px;height:40px;background:rgba(0,40,112,0.08);display:flex;align-items:center;justify-content:center;border-radius:10px;color:var(--primary-color);text-decoration:none;transition:0.2s;"
-                    onmouseover="this.style.background='var(--primary-color)';this.style.color='#fff'"
-                    onmouseout="this.style.background='rgba(0,40,112,0.08)';this.style.color='var(--primary-color)'">
-                        <i class="bi bi-envelope-fill"></i>
-                    </a>
+                    <div class="d-flex flex-column gap-3">
+                        <div style="display:flex;align-items:flex-start;gap:14px;padding:16px;background:#f8faff;border-radius:12px;border:1px solid #e8edf5;">
+                            <div style="width:40px;height:40px;background:rgba(0,40,112,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="bi bi-envelope-fill" style="color:var(--primary-color);"></i>
+                            </div>
+                            <div>
+                                <strong style="font-size:13px;color:var(--primary-color);">Email HR</strong>
+                                <p style="margin:4px 0 0;font-size:14px;color:#374151;">hr@ntp.co.id</p>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:flex-start;gap:14px;padding:16px;background:#f8faff;border-radius:12px;border:1px solid #e8edf5;">
+                            <div style="width:40px;height:40px;background:rgba(0,40,112,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="bi bi-telephone-fill" style="color:var(--primary-color);"></i>
+                            </div>
+                            <div>
+                                <strong style="font-size:13px;color:var(--primary-color);">Telepon</strong>
+                                <p style="margin:4px 0 0;font-size:14px;color:#374151;">+62 22 605 5555</p>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:flex-start;gap:14px;padding:16px;background:#f8faff;border-radius:12px;border:1px solid #e8edf5;">
+                            <div style="width:40px;height:40px;background:rgba(0,40,112,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="bi bi-geo-alt-fill" style="color:var(--primary-color);"></i>
+                            </div>
+                            <div>
+                                <strong style="font-size:13px;color:var(--primary-color);">Alamat</strong>
+                                <p style="margin:4px 0 0;font-size:14px;color:#374151;">Jl. Pajajaran No. 154, Bandung 40174</p>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:flex-start;gap:14px;padding:16px;background:#f8faff;border-radius:12px;border:1px solid #e8edf5;">
+                            <div style="width:40px;height:40px;background:rgba(0,40,112,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="bi bi-clock" style="color:var(--primary-color);"></i>
+                            </div>
+                            <div>
+                                <strong style="font-size:13px;color:var(--primary-color);">Jam Kerja</strong>
+                                <p style="margin:4px 0 0;font-size:14px;color:#374151;">Senin–Jumat, 08.00–17.00 WIB</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Social nempel di bawah --}}
+                    <div class="mt-auto pt-4">
+                        <h6 style="font-weight:700;color:var(--primary-color);margin-bottom:12px;">Ikuti Kami</h6>
+                        <div class="d-flex gap-2">
+                            <a href="https://www.instagram.com/ntpindonesia" target="_blank" rel="noopener"
+                            style="width:40px;height:40px;background:rgba(0,40,112,0.08);display:flex;align-items:center;justify-content:center;border-radius:10px;color:var(--primary-color);text-decoration:none;transition:0.2s;"
+                            onmouseover="this.style.background='var(--primary-color)';this.style.color='#fff'"
+                            onmouseout="this.style.background='rgba(0,40,112,0.08)';this.style.color='var(--primary-color)'">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                            <a href="https://youtube.com/@ntpindonesia2335" target="_blank" rel="noopener"
+                            style="width:40px;height:40px;background:rgba(0,40,112,0.08);display:flex;align-items:center;justify-content:center;border-radius:10px;color:var(--primary-color);text-decoration:none;transition:0.2s;"
+                            onmouseover="this.style.background='var(--primary-color)';this.style.color='#fff'"
+                            onmouseout="this.style.background='rgba(0,40,112,0.08)';this.style.color='var(--primary-color)'">
+                                <i class="bi bi-youtube"></i>
+                            </a>
+                            <a href="mailto:info@ntp.id"
+                            style="width:40px;height:40px;background:rgba(0,40,112,0.08);display:flex;align-items:center;justify-content:center;border-radius:10px;color:var(--primary-color);text-decoration:none;transition:0.2s;"
+                            onmouseover="this.style.background='var(--primary-color)';this.style.color='#fff'"
+                            onmouseout="this.style.background='rgba(0,40,112,0.08)';this.style.color='var(--primary-color)'">
+                                <i class="bi bi-envelope-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 

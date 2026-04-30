@@ -13,8 +13,16 @@ class Application extends Model
     protected $fillable = [
         'user_id',
         'job_vacancy_id',
+        'phone',
+        'birthdate',
+        'gender',
+        'address',
+        'summary',
+        'education',
+        'experience',
         'cover_letter',
         'resume_path',
+        'documents',
         'status',
         'reviewed_by',
         'review_notes',
@@ -25,6 +33,10 @@ class Application extends Model
     {
         return [
             'applied_at' => 'datetime',
+            'birthdate'  => 'date',
+            'education'  => 'array',
+            'experience' => 'array',
+            'documents'  => 'array',
         ];
     }
 
@@ -32,19 +44,16 @@ class Application extends Model
     //  RELATIONSHIPS
     // =============================================
 
-    /** Kandidat yang melamar */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /** Lowongan yang dilamar */
     public function jobVacancy(): BelongsTo
     {
         return $this->belongsTo(JobVacancy::class);
     }
 
-    /** HR yang mereview lamaran ini */
     public function reviewer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'reviewed_by');
@@ -54,7 +63,6 @@ class Application extends Model
     //  HELPERS
     // =============================================
 
-    /** Label warna status untuk badge UI */
     public function getStatusBadgeAttribute(): string
     {
         return match ($this->status) {
@@ -66,7 +74,6 @@ class Application extends Model
         };
     }
 
-    /** Label teks status yang ramah dibaca */
     public function getStatusLabelAttribute(): string
     {
         return match ($this->status) {

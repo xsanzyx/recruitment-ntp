@@ -1,0 +1,67 @@
+/* ================= STEP INDICATOR ================= */
+.step-pill {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 16px; border-radius: 50px;
+    font-size: 13px; font-weight: 600;
+    background: #f1f5f9; color: #94a3b8;
+    border: 1px solid #e2e8f0;
+    transition: 0.2s; white-space: nowrap;
+}
+.step-pill.active {
+    background: var(--primary-color); color: #fff;
+    border-color: var(--primary-color);
+}
+.step-pill.done {
+    background: rgba(34,197,94,0.1); color: #16a34a;
+    border-color: rgba(34,197,94,0.2);
+}
+.step-line {
+    flex: 1; height: 1px; background: #e2e8f0;
+    min-width: 20px;
+}
+
+/* ================= FORM INPUTS ================= */
+.apply-label {
+    display: block; font-size: 13px; font-weight: 600;
+    color: #374151; margin-bottom: 6px;
+}
+.apply-input {
+    width: 100%; border: 1px solid #e5e7eb;
+    border-radius: 10px; padding: 10px 14px;
+    font-size: 14px; outline: none;
+    background: #f9fafb; transition: 0.2s;
+    color: var(--on-surface);
+    font-family: inherit;
+}
+.apply-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0,40,112,0.08);
+    background: #fff;
+}
+.apply-input:disabled {
+    background: #f1f5f9; color: #94a3b8; cursor: not-allowed;
+}
+
+/* ================= UPLOAD AREA ================= */
+.upload-area {
+    border: 2px dashed #e2e8f0; border-radius: 12px;
+    padding: 32px; text-align: center;
+    position: relative; cursor: pointer;
+    transition: 0.2s; background: #f8faff;
+}
+.upload-area:hover {
+    border-color: var(--primary-color);
+    background: rgba(0,40,112,0.02);
+}
+/* ================= BUTTON KEMBALI ================= */
+#btn-prev {
+    background: #f8faff;
+    color: var(--primary-color);
+    border: 1px solid var(--outline-variant);
+    font-weight: 600;
+    transition: 0.2s;
+}
+#btn-prev:hover {
+    background: rgba(0,40,112,0.06);
+    border-color: var(--primary-color);
+}
