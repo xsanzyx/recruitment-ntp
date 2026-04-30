@@ -4,6 +4,18 @@
 
 <section class="jobs-section" style="padding-top: 100px;">
     <div class="container">
+                {{-- Flash Message --}}
+                @if(session('success'))
+                <div class="fade-up mb-4" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);border-radius:12px;padding:14px 18px;color:#166534;">
+                    <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+                </div>
+                @endif
+
+                @if(session('error'))
+                <div class="fade-up mb-4" style="background:rgba(186,26,26,0.08);border:1px solid rgba(186,26,26,0.2);border-radius:12px;padding:14px 18px;color:#ba1a1a;">
+                    <i class="bi bi-x-circle me-2"></i>{{ session('error') }}
+                </div>
+                @endif
 
         {{-- Header --}}
         <div class="fade-up mb-5">
@@ -98,11 +110,32 @@
                                 </div>
                             </div>
                         </div>
-                        @auth
-                            <button class="btn btn-secondary-custom px-4 py-2" style="border-radius:10px;font-size:14px;">Lamar Sekarang</button>
+                    @auth
+                        @php
+                            $alreadyApplied = auth()->user()->applications()
+                                    ->where('job_vacancy_id', $vacancy->id)
+                                    ->exists();
+                        @endphp
+
+                        @if($alreadyApplied)
+                            <button class="btn px-4 py-2" disabled
+                                style="border-radius:10px;font-size:14px;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;cursor:not-allowed;">
+                                <i class="bi bi-check-circle me-2"></i>Sudah Melamar
+                            </button>
                         @else
-                            <a href="{{ route('login') }}" class="btn btn-secondary-custom px-4 py-2" style="border-radius:10px;font-size:14px;">Login untuk Melamar</a>
-                        @endauth
+                            <a href="{{ route('apply.create', $vacancy->id) }}"
+                            class="btn btn-secondary-custom px-4 py-2"
+                            style="border-radius:10px;font-size:14px;">
+                                Lamar Sekarang
+                            </a>
+                        @endif
+                        @else
+                            <a href="{{ route('login') }}"
+                            class="btn btn-secondary-custom px-4 py-2"
+                            style="border-radius:10px;font-size:14px;">
+                                Login untuk Melamar
+                            </a>
+                    @endauth
                     </div>
                 </div>
             </div>

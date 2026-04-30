@@ -4,6 +4,8 @@
 #page-loader {
     position: fixed;
     inset: 0;
+    height: 100vh;          
+    width: 100vw;           
     background: #002870;
     z-index: 9999;
     display: flex;
@@ -133,10 +135,15 @@
 
 /* =============================================
    PAGE ENTER
-   — delay 1.6s = tunggu loader selesai (1s loader + 0.8s exit + buffer)
-   ============================================= */
+   — delay 0,8s = (1s loader + 0.8s exit + buffer)*/
+
 .page-enter {
-    animation: pageEnter 0.7s cubic-bezier(0.22,1,0.36,1) 1.6s both;
+    animation: pageEnter 0.2s cubic-bezier(0.22,1,0.36,1) 0.2s both;
+}
+
+/* Tambah di bawahnya */
+body.loader-active {
+    overflow: hidden;
 }
 
 @keyframes pageEnter {

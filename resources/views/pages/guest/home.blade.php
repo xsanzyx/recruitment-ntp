@@ -9,7 +9,7 @@
             <div class="col-lg-6 fade-up">
                 <h1 class="hero-title">Gabung Bersama Kami</h1>
                 <p class="hero-subtitle">
-                    Membangun masa depan industri kedirgantaraan Indonesia bersama talenta-talenta terbaik. 
+                    Membangun masa depan industri kedirgantaraan Indonesia bersama talenta-talenta terbaik.
                     Temukan karir impianmu di PT Nusantara Turbin dan Propulsi.
                 </p>
                 <form action="{{ route('lowongan') }}" method="GET" class="search-bar">
@@ -42,7 +42,6 @@
         </div>
 
         <div class="d-flex flex-column gap-3">
-
             @forelse($vacancies as $vacancy)
             <div class="job-card {{ $loop->first ? 'expanded' : '' }} fade-up">
                 <div class="job-header">
@@ -51,11 +50,11 @@
                             <i class="bi bi-briefcase"></i>
                         </div>
                         <div>
-                            <strong style="font-size: 16px; color: var(--primary-color);">{{ $vacancy->title }}</strong><br>
-                            <small style="color: var(--on-surface-variant);">Division: {{ $vacancy->division }}</small>
+                            <strong style="font-size:16px;color:var(--primary-color);">{{ $vacancy->title }}</strong><br>
+                            <small style="color:#64748b;">Division: {{ $vacancy->division }}</small>
                         </div>
                     </div>
-                    <small class="toggle-text" style="color: {{ $loop->first ? 'var(--primary-color)' : 'var(--outline)' }}; cursor: pointer;">
+                    <small class="toggle-text" style="color:var(--primary-color);cursor:pointer;">
                         <i class="bi {{ $loop->first ? 'bi-chevron-up' : 'bi-chevron-down' }}"></i>
                     </small>
                 </div>
@@ -63,17 +62,11 @@
                     <div class="job-detail-inner">
                         <div class="row g-4 mb-4">
                             <div class="col-md-7">
-                                @if($vacancy->description)
-                                <div class="mb-4">
-                                    <h6 style="font-weight: 600; color: var(--primary-color); margin-bottom: 12px;">Deskripsi Pekerjaan:</h6>
-                                    <p style="color: var(--on-surface-variant); font-size: 14px; line-height: 1.7;">{{ $vacancy->description }}</p>
-                                </div>
-                                @endif
-                                <h6 style="font-weight: 600; color: var(--primary-color); margin-bottom: 12px;">Kualifikasi:</h6>
-                                <ul style="color: var(--on-surface-variant); font-size: 14px; padding-left: 20px;">
+                                <h6 style="font-weight:600;color:var(--primary-color);margin-bottom:12px;">Kualifikasi:</h6>
+                                <ul style="color:#64748b;font-size:14px;padding-left:20px;">
                                     @foreach(array_filter(array_map('trim', explode("\n", $vacancy->requirements))) as $req)
                                         @if($req)
-                                        <li class="mb-1">{{ $req }}</li>
+                                            <li class="mb-1">{{ $req }}</li>
                                         @endif
                                     @endforeach
                                 </ul>
@@ -84,22 +77,33 @@
                                         <span class="job-info-label">Divisi</span>
                                         <span class="job-info-value">{{ $vacancy->division }}</span>
                                     </div>
-                                    <div class="job-info-row" style="border-top: 1px solid var(--outline-variant); margin-top: 8px; padding-top: 8px;">
+                                    <div class="job-info-row" style="border-top:1px solid #e5e7eb;margin-top:8px;padding-top:8px;">
                                         <span class="job-info-label">Tipe</span>
                                         <span class="job-info-value">{{ ucfirst($vacancy->type) }}</span>
                                     </div>
-                                    <div class="job-info-row" style="border-top: 1px solid var(--outline-variant); margin-top: 8px; padding-top: 8px;">
+                                    <div class="job-info-row" style="border-top:1px solid #e5e7eb;margin-top:8px;padding-top:8px;">
                                         <span class="job-info-label">Deadline</span>
                                         <span class="job-info-value">{{ $vacancy->deadline->format('d M Y') }}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        {{-- FIX: pakai <a> dengan route, bukan <button> --}}
                         @auth
-                            <button class="btn btn-secondary-custom px-4 py-2" style="border-radius: 10px; font-size: 14px;">Lamar Sekarang</button>
+                            <a href="{{ route('apply.create', $vacancy->id) }}"
+                               class="btn btn-secondary-custom px-4 py-2"
+                               style="border-radius:10px;font-size:14px;">
+                                Lamar Sekarang
+                            </a>
                         @else
-                            <a href="{{ route('login') }}" class="btn btn-secondary-custom px-4 py-2" style="border-radius: 10px; font-size: 14px;">Login untuk Melamar</a>
+                            <a href="{{ route('login') }}"
+                               class="btn btn-secondary-custom px-4 py-2"
+                               style="border-radius:10px;font-size:14px;">
+                                Login untuk Melamar
+                            </a>
                         @endauth
+
                     </div>
                 </div>
             </div>
@@ -109,7 +113,6 @@
                 <p class="mt-3 text-muted">Belum ada lowongan yang tersedia saat ini.</p>
             </div>
             @endforelse
-
         </div>
     </div>
 </section>
@@ -125,42 +128,30 @@
             <p class="text-muted mt-3">
                 Proses rekrutmen yang jelas tanpa ribet dan mudah dipahami oleh semua kandidat.
             </p>
+            <a href="{{ route('proses-rekrutmen') }}" class="btn btn-secondary-custom mt-3 px-4 py-2" style="border-radius:10px;font-size:14px;">
+                Pelajari Lebih Lanjut →
+            </a>
         </div>
         <div class="col-md-7">
             <div class="process-item fade-up">
                 <span>01</span>
-                <div>
-                    <strong>Kirim Lamaran</strong>
-                    <p>Pilih posisi yang sesuai dan kirim CV serta portofolio.</p>
-                </div>
+                <div><strong>Kirim Lamaran</strong><p>Pilih posisi yang sesuai dan kirim CV serta portofolio.</p></div>
             </div>
             <div class="process-item fade-up">
                 <span>02</span>
-                <div>
-                    <strong>Screening Awal</strong>
-                    <p>Tim HR akan meninjau dalam 5 hari kerja.</p>
-                </div>
+                <div><strong>Screening Awal</strong><p>Tim HR akan meninjau dalam 5 hari kerja.</p></div>
             </div>
             <div class="process-item fade-up">
                 <span>03</span>
-                <div>
-                    <strong>Pantau Status Lamaran</strong>
-                    <p>Lihat perkembangan lamaran secara real-time.</p>
-                </div>
+                <div><strong>Pantau Status Lamaran</strong><p>Lihat perkembangan lamaran secara real-time.</p></div>
             </div>
             <div class="process-item fade-up">
                 <span>04</span>
-                <div>
-                    <strong>Wawancara</strong>
-                    <p>Sesi dengan HR dan tim teknis terkait.</p>
-                </div>
+                <div><strong>Wawancara</strong><p>Sesi dengan HR dan tim teknis terkait.</p></div>
             </div>
             <div class="process-item fade-up">
                 <span>05</span>
-                <div>
-                    <strong>Keputusan Akhir</strong>
-                    <p>Hasil seleksi akan dikirim melalui email.</p>
-                </div>
+                <div><strong>Keputusan Akhir</strong><p>Hasil seleksi akan dikirim melalui email.</p></div>
             </div>
         </div>
     </div>
@@ -174,41 +165,24 @@
                 <span class="section-label">Profil Perusahaan</span>
                 <h2>PT Nusantara Turbin dan Propulsi</h2>
                 <p>
-                    Sebagai pemimpin dalam pemeliharaan dan perbaikan mesin turbin di Asia Tenggara, 
-                    kami berkomitmen pada standar kualitas tertinggi. Kami percaya bahwa keunggulan operasional 
+                    Sebagai pemimpin dalam pemeliharaan dan perbaikan mesin turbin di Asia Tenggara,
+                    kami berkomitmen pada standar kualitas tertinggi. Kami percaya bahwa keunggulan operasional
                     dimulai dari sumber daya manusia yang kompeten dan berintegritas.
                 </p>
-                <p style="font-size: 14px;">
-                    Berlokasi strategis di Bandung, kami melayani berbagai klien domestik dan internasional, 
+                <p style="font-size:14px;">
+                    Berlokasi strategis di Bandung, kami melayani berbagai klien domestik dan internasional,
                     mendukung ketahanan energi dan mobilitas udara bangsa.
                 </p>
+                <a href="{{ route('tentang') }}" class="btn btn-secondary-custom mt-3 px-4 py-2" style="border-radius:10px;font-size:14px;">
+                    Pelajari profil perusahaan →
+                </a>
             </div>
             <div class="col-lg-6 fade-up">
                 <div class="row g-3">
-                    <div class="col-6">
-                        <div class="stat-box">
-                            <div class="stat-value">1986</div>
-                            <div class="stat-label">Tahun Berdiri</div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="stat-box">
-                            <div class="stat-value">300+</div>
-                            <div class="stat-label">Karyawan</div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="stat-box">
-                            <div class="stat-value">2100+</div>
-                            <div class="stat-label">Mesin Dikirim</div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="stat-box">
-                            <div class="stat-value">180+</div>
-                            <div class="stat-label">Pelanggan Puas</div>
-                        </div>
-                    </div>
+                    <div class="col-6"><div class="stat-box"><div class="stat-value">1986</div><div class="stat-label">Tahun Berdiri</div></div></div>
+                    <div class="col-6"><div class="stat-box"><div class="stat-value">300+</div><div class="stat-label">Karyawan</div></div></div>
+                    <div class="col-6"><div class="stat-box"><div class="stat-value">2100+</div><div class="stat-label">Mesin Dikirim</div></div></div>
+                    <div class="col-6"><div class="stat-box"><div class="stat-value">180+</div><div class="stat-label">Pelanggan Puas</div></div></div>
                 </div>
             </div>
         </div>
@@ -221,13 +195,11 @@
         <div class="row align-items-center">
             <div class="col-md-6">
                 <h3 class="fw-bold">Siap menjadi bagian dari perjalanan kami?</h3>
-                <p class="text-light">
-                    Kirim lamaranmu hari ini dan bangun sesuatu yang berarti bersama-sama.
-                </p>
+                <p class="text-light">Kirim lamaranmu hari ini dan bangun sesuatu yang berarti bersama-sama.</p>
             </div>
             <div class="col-md-6 text-md-end mt-3 mt-md-0">
                 <a href="{{ route('lowongan') }}" class="btn btn-light me-2">Lihat Semua Lowongan →</a>
-                <a href="{{ route('kontak') }}" class="btn btn-outline-light">Hubungi HR →</a>
+                <a href="{{ route('kontak') }}"   class="btn btn-outline-light">Hubungi HR →</a>
             </div>
         </div>
     </div>
