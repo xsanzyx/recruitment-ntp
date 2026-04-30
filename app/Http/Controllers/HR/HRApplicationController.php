@@ -7,6 +7,7 @@ use App\Models\Application;
 use App\Models\JobVacancy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class HRApplicationController extends Controller
 {
@@ -128,5 +129,33 @@ class HRApplicationController extends Controller
         return redirect()
             ->back()
             ->with('success', "{$count} kandidat berhasil diubah menjadi \"{$label}\".");
+    }
+
+    /**
+     * Download resume atau dokumen kandidat.
+     */
+    public function downloadFile(string $id, string $type, ?int $docIndex = null)
+    {
+        $vacancyIds = JobVacancy::where('created_by', Auth::id())->pluck('id');
+
+        $application = Application::whereIn('job_vacancy_id', $vacancyIds)
+            ->findOrFail($id);
+
+        if ($type === 'resume' && $application->resume_path) {
+            $path = $application->resume_path;
+            $fileName = 'Resume_' . str_replace(' ', '_', $application->user->full_name) . '.pdf';
+        } elseif ($type === 'document' && $docIndex !== null && !empty($application->documents[$docIndex])) {
+            $doc = $application->documents[$docIndex];
+            $path = $doc['path'];
+            $fileName = $doc['name'];
+        } else {
+            abort(404, 'File tidak ditemukan.');
+        }
+
+        if (!Storage::disk('public')->exists($path)) {
+            abort(404, 'File tidak ditemukan di server.');
+        }
+
+        return Storage::disk('public')->download($path, $fileName);
     }
 }
