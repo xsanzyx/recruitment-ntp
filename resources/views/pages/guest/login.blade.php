@@ -6,76 +6,77 @@
     {{-- ================= LEFT ================= --}}
     <div class="login-left">
 
-    {{-- TOP: back link --}}
-    <a href="{{ route('home') }}" class="back-link">← Kembali ke beranda</a>
+        {{-- MIDDLE: form (otomatis center karena justify-content: center) --}}
+        <div class="login-box px-4 py-4">
 
-    {{-- MIDDLE: form (otomatis center karena justify-content: center) --}}
-    <div class="login-box px-4 py-4">
-
-        <div class="mb-3">
-            <h5 class="fw-bold primary-text mb-0">PT Nusantara Turbin dan Propulsi</h5>
-            <small class="text-muted">Careers Portal</small>
-        </div>
-        <br>
-        <h2 class="fw-bold mb-1">Selamat datang kembali</h2>
-        <p class="text-muted mb-3" style="font-size:14px;">
-            Masuk untuk melanjutkan perjalanan karirmu bersama kami.
-        </p>
-
-        <form action="{{ route('login.post') }}" method="POST">
-            @csrf
-
-            <div class="mb-2">
-                <label for="email" class="auth-label mb-1">Email</label>
-                <div class="input-group-custom">
-                    <i class="bi bi-envelope"></i>
-                    <input type="email" id="email" name="email"
-                        placeholder="nama@email.com"
-                        value="{{ old('email') }}" required>
+            <a href="{{ route('home') }}" class="company-link mb-3 d-flex align-items-center gap-3 text-decoration-none">
+                <div class="pb-3">
+                    <h6 class="fw-bold primary-text mb-0">PT Nusantara Turbin dan Propulsi</h6>
+                    <small class="text-muted" style="font-size:11px;letter-spacing:1px;text-transform:uppercase;">
+                        Careers Portal
+                    </small>
                 </div>
-                @error('email')
-                    <small class="text-danger mt-1 d-block">{{ $message }}</small>
-                @enderror
-            </div>
-
-            <div class="mb-3">
-                <label for="password" class="auth-label mb-1">Password</label>
-                <div class="input-group-custom">
-                    <i class="bi bi-lock"></i>
-                    <input type="password" id="password" name="password"
-                        placeholder="••••••••" required>
-                </div>
-                @error('password')
-                    <small class="text-danger mt-1 d-block">{{ $message }}</small>
-                @enderror
-            </div>
-
-            <button type="submit" class="btn btn-secondary-custom w-100 login-btn">
-                Masuk
-            </button>
-        </form>
-
-        <div class="d-flex align-items-center my-3 gap-2">
-            <hr class="flex-grow-1 m-0">
-            <small class="text-muted px-2">ATAU</small>
-            <hr class="flex-grow-1 m-0">
-        </div>
-
-        <p class="text-center text-muted mb-2" style="font-size:13px;">
-            Belum punya akun?
-            <a href="{{ route('register') }}" class="primary-text fw-bold text-decoration-none">
-                Daftar Sekarang
             </a>
-        </p>
+
+            <h2 class="fw-bold mb-1">Selamat datang kembali</h2>
+            <p class="text-muted mb-3" style="font-size:14px;">
+                Masuk untuk melanjutkan perjalanan karirmu bersama kami.
+            </p>
+
+            <form action="{{ route('login.post') }}" method="POST">
+                @csrf
+
+                <div class="mb-2">
+                    <label for="email" class="auth-label mb-1">Email</label>
+                    <div class="input-group-custom">
+                        <i class="bi bi-envelope"></i>
+                        <input type="email" id="email" name="email"
+                            placeholder="nama@email.com"
+                            value="{{ old('email') }}" required>
+                    </div>
+                    @error('email')
+                    <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="auth-label mb-1">Password</label>
+                    <div class="input-group-custom">
+                        <i class="bi bi-lock"></i>
+                        <input type="password" id="password" name="password"
+                            placeholder="••••••••" required>
+                    </div>
+                    @error('password')
+                    <small class="text-danger mt-1 d-block">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <button type="submit" class="btn btn-secondary-custom w-100 login-btn">
+                    Masuk
+                </button>
+            </form>
+
+            <div class="d-flex align-items-center my-3 gap-2">
+                <hr class="flex-grow-1 m-0">
+                <small class="text-muted px-2">ATAU</small>
+                <hr class="flex-grow-1 m-0">
+            </div>
+
+            <p class="text-center text-muted mb-2" style="font-size:13px;">
+                Belum punya akun?
+                <a href="{{ route('register') }}" class="primary-text fw-bold text-decoration-none">
+                    Daftar Sekarang
+                </a>
+            </p>
+
+        </div>
+
+        {{-- BOTTOM: footer --}}
+        <small class="text-muted login-footer">
+            © 2026 PT Nusantara Turbin dan Propulsi
+        </small>
 
     </div>
-
-    {{-- BOTTOM: footer --}}
-    <small class="text-muted login-footer">
-        © 2026 PT Nusantara Turbin dan Propulsi
-    </small>
-
-</div>
 
 
     {{-- ================= RIGHT ================= --}}
@@ -155,8 +156,8 @@
 
 @if(session('show_otp'))
 <div id="otp-auto-trigger"
-     data-email="{{ session('masked_email') }}"
-     style="display:none;">
+    data-email="{{ session('masked_email') }}"
+    style="display:none;">
 </div>
 @endif
 
