@@ -10,7 +10,7 @@
         <div class="login-box px-4 py-4">
 
             <a href="{{ route('home') }}" class="company-link mb-3 d-flex align-items-center gap-3 text-decoration-none">
-                <div class="pb-3">
+                <div class="pt-3 pb-3">
                     <h6 class="fw-bold primary-text mb-0">PT Nusantara Turbin dan Propulsi</h6>
                     <small class="text-muted" style="font-size:11px;letter-spacing:1px;text-transform:uppercase;">
                         Careers Portal
