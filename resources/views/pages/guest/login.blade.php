@@ -17,6 +17,7 @@
                     </small>
                 </div>
             </a>
+
             <h2 class="fw-bold mb-1">Selamat datang kembali</h2>
             <p class="text-muted mb-3" style="font-size:14px;">
                 Masuk untuk melanjutkan perjalanan karirmu bersama kami.

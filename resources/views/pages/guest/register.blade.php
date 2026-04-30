@@ -10,13 +10,14 @@
         <div class="login-box px-4 py-4">
 
             <a href="{{ route('home') }}" class="company-link mb-3 d-flex align-items-center gap-3 text-decoration-none">
-                <div class="pb-2">
+                <div class="pb-3">
                     <h6 class="fw-bold primary-text mb-0">PT Nusantara Turbin dan Propulsi</h6>
                     <small class="text-muted" style="font-size:11px;letter-spacing:1px;text-transform:uppercase;">
                         Careers Portal
                     </small>
                 </div>
             </a>
+
             <h2 class="fw-bold mb-1">Buat akun baru</h2>
             <p class="text-muted mb-4">
                 Daftar dan mulai lamar pekerjaan impianmu.
@@ -41,7 +42,7 @@
                         <label for="last_name" class="auth-label">Nama Belakang</label>
                         <input type="text" id="last_name" name="last_name"
                             class="form-input-custom"
-                            placeholder="contoh. Zaini"
+                            placeholder="contoh. Zaini Syam"
                             value="{{ old('last_name') }}" required autocomplete="family-name">
                         @error('last_name')
                         <small class="text-danger mt-1 d-block">{{ $message }}</small>

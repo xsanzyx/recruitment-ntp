@@ -4,6 +4,7 @@
 .login-section {
     display: flex;
     height: 100vh;
+    width: auto;
     overflow: hidden;
 }
 
@@ -24,6 +25,7 @@
     min-height: 100vh;
     position: relative; /* 🔥 penting untuk absolute children */
 }
+
 /* FORM AREA */
 .login-left .login-box {
     max-width: 520px;
@@ -169,13 +171,14 @@
     min-height: 100vh;
 }
 
+/* FORM BOX */
 .login-left .login-box {
     max-width: 520px;
     width: 100%;
-    margin-top: auto; /* 🔥 dorong ke tengah dari atas */
-    margin-bottom: auto; /* 🔥 dorong ke tengah dari bawah */
+    transform: translateY(-40px); /* sesuaikan dengan login */
 }
 
+/* COMPANY LINK */
 .company-link,
 .company-link:hover,
 .company-link:focus,
@@ -184,7 +187,8 @@
     color: inherit !important;
 }
 
-.company-link h6 {
+.company-link h6,
+.company-link h5 {
     color: var(--primary-color) !important;
 }
 
@@ -202,6 +206,7 @@
     opacity: 0.75;
 }
 
+/* FOOTER — absolute di bawah */
 .login-footer {
     flex-shrink: 0;
     text-align: center;
@@ -492,65 +497,72 @@
     color: rgba(255, 255, 255, 0.5);
     line-height: 1.6;
 }
-
 /* =============================================
-   RESPONSIVE — MOBILE FIX
+   RESPONSIVE — MOBILE & TABLET (max 1024px)
    ============================================= */
-@media (max-width: 767px) {
-    /* Stack vertikal, allow scroll on mobile */
+@media (max-width: 1024px) {
     .login-section {
         flex-direction: column;
         height: auto;
-        overflow: auto;
     }
 
-    /* Panel kiri full width, padding wajar, kasih ruang atas buat hamburger */
+    .login-right {
+        display: none; /* 🔥 hilang di tablet & mobile */
+    }
+
     .login-left {
         width: 100%;
-        padding: 72px 24px 40px; /* top 72px = ruang buat toggle-btn fixed */
-        height: auto;
-        overflow: visible;
+        min-width: 0;
+        padding: 32px 24px;
+        min-height: 100vh;
     }
 
-    /* login-box full width, no max-width constraint di mobile */
-    .login-box {
+    .login-left .login-box {
         max-width: 100%;
+        padding-top: 32px;
+        padding-bottom: 32px;
     }
 
-    /* Panel kanan full width, padding lebih kecil */
-    .login-right {
-        width: 100%;
-        padding: 40px 24px;
-        height: auto;
-        min-height: auto;
-        align-items: flex-start;
+    .login-box h2 {
+        font-size: 24px;
     }
 
-    /* Nonaktifkan ring animasi yang oversize di mobile */
-    .login-right::before,
-    .login-right::after {
-        display: none;
+    .login-btn {
+        font-size: 15px;
+        padding: 12px;
+    }
+}
+
+/* =============================================
+   RESPONSIVE — SMALL MOBILE (max 480px)
+   ============================================= */
+@media (max-width: 480px) {
+    .login-left {
+        padding: 24px 16px;
     }
 
-    /* Company box full width */
-    .company-box {
-        max-width: 100%;
+    .login-left .login-box {
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
 
-    /* Stat grid tetap 2 kolom */
-    .stat-grid {
-        grid-template-columns: 1fr 1fr;
+    .login-box h2 {
+        font-size: 22px;
     }
 
-    /* Judul company box lebih kecil */
-    .company-box h3 {
-        font-size: 20px;
+    .auth-label {
+        font-size: 12px;
     }
 
-    /* Copyright center */
-    .login-footer {
-        text-align: center;
-        display: block;
+    .input-group-custom,
+    .form-input-custom {
+        height: 42px;
+        font-size: 13px;
+    }
+
+    .login-btn {
+        font-size: 14px;
+        padding: 11px;
     }
 }
 /* =============================================
