@@ -66,4 +66,5 @@ Route::prefix('hr')->name('hr.')->middleware(['auth', 'hr'])->group(function () 
     Route::get('applications/{id}',          [HRApplicationController::class, 'show'])->name('applications.show');
     Route::patch('applications/{id}/status', [HRApplicationController::class, 'updateStatus'])->name('applications.updateStatus');
     Route::patch('applications/bulk-status', [HRApplicationController::class, 'bulkStatus'])->name('applications.bulkStatus');
+    Route::get('applications/{id}/download/{type}/{docIndex?}', [HRApplicationController::class, 'downloadFile'])->name('applications.download');
 });
