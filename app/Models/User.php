@@ -11,12 +11,16 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
-        'role',          // 'admin' | 'hr' | 'user'
-        'status',        // 'active' | 'pending' | 'nonactive'
+        'role',
+        'status',
         'last_active_at',
+        'otp_code',
+        'otp_expires_at',
+        'email_verified_at',
     ];
 
     protected $hidden = [
@@ -52,10 +56,15 @@ class User extends Authenticatable
         return $this->status === 'active';
     }
 
+    public function getNameAttribute(): string
+    {
+        return trim("{$this->first_name} {$this->last_name}");
+    }
+
     // Avatar inisial (untuk tampilan UI)
     public function getInitialAttribute(): string
     {
-        return strtoupper(substr($this->name, 0, 1));
+        return strtoupper(substr($this->first_name, 0, 1));
     }
 
     // Label role dalam Bahasa Indonesia
@@ -78,5 +87,15 @@ class User extends Authenticatable
             'nonactive' => 'Nonaktif',
             default     => ucfirst($this->status),
         };
+    }
+
+    /**
+     * Cek apakah OTP valid dan belum kadaluarsa
+     */
+    public function isOtpValid(string $code): bool
+    {
+        return $this->otp_code === $code && 
+               $this->otp_expires_at && 
+               $this->otp_expires_at->isFuture();
     }
 }

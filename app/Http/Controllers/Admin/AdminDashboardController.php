@@ -15,7 +15,7 @@ class AdminDashboardController extends Controller
             'total_user'     => User::count(),
             'total_hr_admin' => User::whereIn('role', ['hr', 'admin'])->count(),
             'total_kandidat' => User::where('role', 'user')->count(),
-            'lowongan_aktif' => JobVacancy::where('status', 'active')->count(),
+            'lowongan_aktif' => JobVacancy::where('status', 'open')->count(),
         ];
 
         $distribusi = [

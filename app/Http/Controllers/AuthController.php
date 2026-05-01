@@ -82,9 +82,10 @@ class AuthController extends Controller
             return response()->json(['success' => false, 'message' => 'Kode salah atau sudah kadaluarsa.'], 422);
         }
 
-        // Tandai email terverifikasi & bersihkan OTP
+        // Tandai email terverifikasi & bersihkan OTP & set status aktif
         $user->update([
             'email_verified_at' => now(),
+            'status'            => 'active',
             'otp_code'          => null,
             'otp_expires_at'    => null,
         ]);
@@ -145,6 +146,16 @@ class AuthController extends Controller
             $this->sendOtp($user);
             session(['pending_user_id' => $user->id]);
             return back()->with('show_otp', true)->with('masked_email', $this->maskEmail($user->email));
+        }
+
+        // Cek apakah status user aktif
+        if ($user->status !== 'active') {
+            $statusMsg = $user->status === 'pending' 
+                ? 'Akun Anda masih pending. Silakan verifikasi OTP.' 
+                : 'Akun Anda telah dinonaktifkan. Silakan hubungi admin.';
+                
+            Auth::logout();
+            return back()->withErrors(['email' => $statusMsg])->withInput();
         }
 
         $request->session()->regenerate();
