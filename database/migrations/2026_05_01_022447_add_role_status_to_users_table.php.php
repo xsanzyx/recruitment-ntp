@@ -1,0 +1,35 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            // Tambah kolom role jika belum ada
+            if (!Schema::hasColumn('users', 'role')) {
+                $table->enum('role', ['admin', 'hr', 'user'])->default('user')->after('email');
+            }
+
+            // Tambah kolom status jika belum ada
+            if (!Schema::hasColumn('users', 'status')) {
+                $table->enum('status', ['active', 'pending', 'nonactive'])->default('pending')->after('role');
+            }
+
+            // Tambah last_active jika belum ada
+            if (!Schema::hasColumn('users', 'last_active_at')) {
+                $table->timestamp('last_active_at')->nullable()->after('status');
+            }
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(['role', 'status', 'last_active_at']);
+        });
+    }
+};
