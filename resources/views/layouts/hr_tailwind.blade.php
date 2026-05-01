@@ -105,6 +105,18 @@
 
     <div class="sidebar-divider"></div>
 
+    @if(Auth::user()->role === 'admin')
+    <ul class="sidebar-menu list-none p-0" style="flex:0;">
+        <li class="mb-[1px]">
+            <a href="{{ route('admin.dashboard') }}">
+                <i class="bi bi-shield-lock"></i> Panel Admin
+            </a>
+        </li>
+    </ul>
+
+    <div class="sidebar-divider"></div>
+    @endif
+
     <ul class="sidebar-menu list-none p-0" style="flex:0;">
         <li class="mb-[1px]">
             <a href="{{ route('home') }}">

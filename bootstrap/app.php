@@ -11,6 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Jalankan pengecekan status user di setiap request web
+        $middleware->web(append: [
+            \App\Http\Middleware\CheckUserStatus::class,
+        ]);
+
         // Daftarkan alias middleware untuk proteksi route berdasarkan role
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,

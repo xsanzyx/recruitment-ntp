@@ -17,7 +17,8 @@ class UserManagementController extends Controller
         if ($request->filled('search')) {
             $q = $request->search;
             $query->where(function ($builder) use ($q) {
-                $builder->where('name', 'like', "%{$q}%")
+                $builder->where('first_name', 'like', "%{$q}%")
+                    ->orWhere('last_name', 'like', "%{$q}%")
                     ->orWhere('email', 'like', "%{$q}%");
             });
         }
@@ -44,19 +45,29 @@ class UserManagementController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-            'role'     => 'required|in:admin,hr,user',
-            'status'   => 'required|in:active,pending,nonactive',
+            'first_name' => 'required|string|max:255',
+            'last_name'  => 'nullable|string|max:255',
+            'email'      => 'required|email|unique:users,email',
+            'password'   => 'required|string|min:8|confirmed',
+            'role'       => 'required|in:admin,hr,kandidat',
+        ], [
+            'first_name.required'  => 'Nama depan wajib diisi.',
+            'email.required'       => 'Email wajib diisi.',
+            'email.unique'         => 'Email ini sudah terdaftar.',
+            'password.required'    => 'Password wajib diisi.',
+            'password.min'         => 'Password minimal 8 karakter.',
+            'password.confirmed'   => 'Konfirmasi password tidak sesuai.',
         ]);
 
+        // User yang dibuat Admin langsung aktif (tidak perlu OTP)
         User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-            'role'     => $request->role,
-            'status'   => $request->status,
+            'first_name'        => $request->first_name,
+            'last_name'         => $request->last_name ?? '',
+            'email'             => $request->email,
+            'password'          => Hash::make($request->password),
+            'role'              => $request->role,
+            'status'            => 'active',
+            'email_verified_at' => now(),
         ]);
 
         return redirect()->route('admin.users.index')
@@ -71,18 +82,25 @@ class UserManagementController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'name'   => 'required|string|max:255',
-            'email'  => ['required', 'email', Rule::unique('users')->ignore($user->id)],
-            'role'   => 'required|in:admin,hr,user',
-            'status' => 'required|in:active,pending,nonactive',
+            'first_name' => 'required|string|max:255',
+            'last_name'  => 'nullable|string|max:255',
+            'email'      => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'role'       => 'required|in:admin,hr,kandidat',
+            'status'     => 'required|in:active,pending,nonactive',
         ]);
 
         $data = [
-            'name'   => $request->name,
-            'email'  => $request->email,
-            'role'   => $request->role,
-            'status' => $request->status,
+            'first_name' => $request->first_name,
+            'last_name'  => $request->last_name ?? '',
+            'email'      => $request->email,
+            'role'       => $request->role,
+            'status'     => $request->status,
         ];
+
+        // Jika admin mengaktifkan user, pastikan email terverifikasi
+        if ($request->status === 'active' && !$user->email_verified_at) {
+            $data['email_verified_at'] = now();
+        }
 
         if ($request->filled('password')) {
             $request->validate(['password' => 'min:8|confirmed']);
@@ -92,7 +110,7 @@ class UserManagementController extends Controller
         $user->update($data);
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'User berhasil diperbarui.');
+            ->with('success', "Data {$user->first_name} berhasil diperbarui (Status: " . ($user->status == 'active' ? 'Aktif' : 'Nonaktif') . ").");
     }
 
     public function destroy(User $user)
@@ -103,7 +121,7 @@ class UserManagementController extends Controller
 
         $user->delete();
 
-        return redirect()->route('pages.admin.users.index')
+        return redirect()->route('admin.users.index')
             ->with('success', 'User berhasil dihapus.');
     }
 }
