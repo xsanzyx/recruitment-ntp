@@ -98,4 +98,20 @@ class User extends Authenticatable
                $this->otp_expires_at && 
                $this->otp_expires_at->isFuture();
     }
+
+    /**
+     * Profil pelamar (hanya untuk role kandidat)
+     */
+    public function profile()
+    {
+        return $this->hasOne(CandidateProfile::class);
+    }
+
+    /**
+     * Lamaran pekerjaan user
+     */
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
 }
