@@ -48,7 +48,7 @@ class User extends Authenticatable
 
     public function isKandidat(): bool
     {
-        return $this->role === 'user';
+        return in_array($this->role, ['user', 'kandidat']);
     }
 
     public function isActive(): bool
@@ -57,6 +57,11 @@ class User extends Authenticatable
     }
 
     public function getNameAttribute(): string
+    {
+        return trim("{$this->first_name} {$this->last_name}");
+    }
+
+    public function getFullNameAttribute(): string
     {
         return trim("{$this->first_name} {$this->last_name}");
     }

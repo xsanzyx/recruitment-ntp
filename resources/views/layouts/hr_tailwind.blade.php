@@ -69,6 +69,15 @@
             #hrMain { padding-top: 20px; }
             .toggle-btn { top: 20px; left: 20px; }
         }
+        
+        /* Fix double arrows on select elements with custom icons */
+        select.appearance-none,
+        .relative > select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: none !important;
+        }
     </style>
     @stack('styles')
 </head>

@@ -12,13 +12,27 @@ use Illuminate\Support\Facades\Storage;
 class HRApplicationController extends Controller
 {
     /**
+     * Helper: Get vacancy IDs visible to the current user.
+     * Admin sees all, HR sees only their own.
+     */
+    private function getVacancyIds()
+    {
+        $user = Auth::user();
+        return $user->role === 'admin'
+            ? JobVacancy::pluck('id')
+            : JobVacancy::where('created_by', $user->id)->pluck('id');
+    }
+
+    /**
      * Daftar semua pelamar dengan filter & pagination.
      * Filter: status, department, education (multi-filter bisa dikombinasikan).
      */
     public function index(Request $request)
     {
-        // Hanya tampilkan lamaran untuk lowongan milik HR ini
-        $vacancyIds = JobVacancy::where('created_by', Auth::id())->pluck('id');
+        $user = Auth::user();
+        $isAdmin = $user->role === 'admin';
+
+        $vacancyIds = $this->getVacancyIds();
 
         $applications = Application::with(['user.profile', 'jobVacancy'])
             ->whereIn('job_vacancy_id', $vacancyIds)
@@ -41,9 +55,11 @@ class HRApplicationController extends Controller
             ->withQueryString();
 
         // Ambil list department unik untuk dropdown filter
-        $departments = JobVacancy::where('created_by', Auth::id())
-            ->distinct()
-            ->pluck('department');
+        $deptQuery = $isAdmin
+            ? JobVacancy::query()
+            : JobVacancy::where('created_by', $user->id);
+
+        $departments = $deptQuery->distinct()->pluck('department');
 
         return view('pages.hr.applications.index', compact('applications', 'departments'));
     }
@@ -53,7 +69,7 @@ class HRApplicationController extends Controller
      */
     public function show(string $id)
     {
-        $vacancyIds = JobVacancy::where('created_by', Auth::id())->pluck('id');
+        $vacancyIds = $this->getVacancyIds();
 
         $application = Application::with(['user.profile', 'jobVacancy', 'reviewer'])
             ->whereIn('job_vacancy_id', $vacancyIds)
@@ -68,7 +84,7 @@ class HRApplicationController extends Controller
      */
     public function updateStatus(Request $request, string $id)
     {
-        $vacancyIds = JobVacancy::where('created_by', Auth::id())->pluck('id');
+        $vacancyIds = $this->getVacancyIds();
 
         $application = Application::whereIn('job_vacancy_id', $vacancyIds)
             ->findOrFail($id);
@@ -110,7 +126,7 @@ class HRApplicationController extends Controller
             'status' => 'required|in:pending,review,lolos,tidak_lolos',
         ]);
 
-        $vacancyIds = JobVacancy::where('created_by', Auth::id())->pluck('id');
+        $vacancyIds = $this->getVacancyIds();
 
         $count = Application::whereIn('job_vacancy_id', $vacancyIds)
             ->whereIn('id', $validated['ids'])
@@ -136,7 +152,7 @@ class HRApplicationController extends Controller
      */
     public function downloadFile(string $id, string $type, ?int $docIndex = null)
     {
-        $vacancyIds = JobVacancy::where('created_by', Auth::id())->pluck('id');
+        $vacancyIds = $this->getVacancyIds();
 
         $application = Application::whereIn('job_vacancy_id', $vacancyIds)
             ->findOrFail($id);
