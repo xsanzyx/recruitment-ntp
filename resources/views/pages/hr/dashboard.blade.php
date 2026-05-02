@@ -4,275 +4,242 @@
 
 @section('content')
 
-{{-- ===== GREETING ===== --}}
-<div class="mb-8">
-    <h1 class="font-h1 text-h1 text-primary">Manajemen Rekrutmen</h1>
-    <p class="text-on-surface-variant font-body-lg mt-1">Kelola lowongan, pantau pelamar, dan update status kandidat dari satu tempat.</p>
+{{-- ===== HEADER ===== --}}
+<div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+    <div>
+        <h1 class="text-[28px] font-extrabold text-[#001544] tracking-tight leading-tight">Recruitment Dashboard</h1>
+        <p class="text-gray-500 text-[15px] mt-1">Manage aerospace engineering talent and active job openings.</p>
+    </div>
+    <div class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-[#001544] shadow-sm">
+        <span class="material-symbols-outlined" style="font-size:18px;">calendar_today</span>
+        {{ now()->translatedFormat('F d, Y') }}
+    </div>
 </div>
 
-{{-- ===== STAT CARDS ===== --}}
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+{{-- ===== 4 STAT CARDS ===== --}}
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
 
     {{-- Card 1: Lowongan Aktif --}}
-    <div class="bg-white p-6 rounded-xl border border-outline-variant hover:shadow-md transition-shadow">
+    <div class="bg-white p-5 rounded-xl border border-gray-100 hover:shadow-md transition-all group">
         <div class="flex justify-between items-start mb-4">
-            <div class="p-3 bg-blue-50 rounded-lg">
-                <span class="material-symbols-outlined text-[#002870]"
-                      style="font-variation-settings:'FILL' 1;">work</span>
+            <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest">Lowongan Aktif</p>
+            <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[#002870]" style="font-size:22px; font-variation-settings:'FILL' 1;">work</span>
             </div>
-            <span class="text-[10px] font-bold text-green-700 bg-green-50 px-2 py-1 rounded-lg">
-                Aktif
-            </span>
         </div>
-        <p class="font-label-caps text-on-surface-variant uppercase mb-1">Lowongan Aktif</p>
-        <h3 class="font-stat-number text-stat-number text-primary">{{ $totalActiveVacancies }}</h3>
+        <h3 class="text-[32px] font-extrabold text-[#001544] leading-none mb-2">{{ $totalActiveVacancies }}</h3>
+        <div class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-green-500" style="font-size:16px;">trending_up</span>
+            <span class="text-[12px] text-gray-400 font-medium">Stable current flow</span>
+        </div>
     </div>
 
     {{-- Card 2: Total Pelamar --}}
-    <div class="bg-white p-6 rounded-xl border border-outline-variant hover:shadow-md transition-shadow">
+    <div class="bg-white p-5 rounded-xl border border-gray-100 hover:shadow-md transition-all group">
         <div class="flex justify-between items-start mb-4">
-            <div class="p-3 bg-yellow-50 rounded-lg">
-                <span class="material-symbols-outlined text-[#f8b830]"
-                      style="font-variation-settings:'FILL' 1;">group</span>
+            <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest">Total Pelamar</p>
+            <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
+                <span class="material-symbols-outlined text-red-500" style="font-size:22px; font-variation-settings:'FILL' 1;">group</span>
             </div>
-            <span class="text-[10px] font-bold text-[#002870] bg-blue-50 px-2 py-1 rounded-lg">
-                {{ $totalApplicantsToday }} Hari ini
-            </span>
         </div>
-        <p class="font-label-caps text-on-surface-variant uppercase mb-1">Total Pelamar</p>
-        <h3 class="font-stat-number text-stat-number text-primary">{{ $totalApplicants }}</h3>
+        <h3 class="text-[32px] font-extrabold text-[#001544] leading-none mb-2">{{ $totalApplicants }}</h3>
+        <div class="flex items-center gap-1.5">
+            <span class="text-[12px] text-gray-400 font-medium">— Monthly intake</span>
+        </div>
     </div>
 
     {{-- Card 3: Belum Diproses --}}
-    <div class="bg-white p-6 rounded-xl border border-outline-variant hover:shadow-md transition-shadow">
+    <div class="bg-white p-5 rounded-xl border border-gray-100 hover:shadow-md transition-all group">
         <div class="flex justify-between items-start mb-4">
-            <div class="p-3 bg-blue-50 rounded-lg">
-                <span class="material-symbols-outlined text-[#002870]"
-                      style="font-variation-settings:'FILL' 1;">pending_actions</span>
+            <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest">Belum Diproses</p>
+            <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center">
+                <span class="material-symbols-outlined text-orange-500" style="font-size:22px; font-variation-settings:'FILL' 1;">pending_actions</span>
             </div>
-            <span class="text-[10px] font-bold text-gray-500 bg-gray-50 px-2 py-1 rounded-lg">
-                Pending
-            </span>
         </div>
-        <p class="font-label-caps text-on-surface-variant uppercase mb-1">Belum Diproses</p>
-        <h3 class="font-stat-number text-stat-number text-primary">{{ $statusCounts['pending'] ?? 0 }}</h3>
+        <h3 class="text-[32px] font-extrabold text-[#001544] leading-none mb-2">{{ $statusCounts['pending'] ?? 0 }}</h3>
+        <div class="flex items-center gap-1.5">
+            @if(($statusCounts['pending'] ?? 0) == 0)
+                <span class="material-symbols-outlined text-green-500" style="font-size:16px;">check_circle</span>
+                <span class="text-[12px] text-gray-400 font-medium">All clear</span>
+            @else
+                <span class="material-symbols-outlined text-orange-500" style="font-size:16px;">schedule</span>
+                <span class="text-[12px] text-gray-400 font-medium">Needs attention</span>
+            @endif
+        </div>
     </div>
 
     {{-- Card 4: Lolos Screening --}}
-    <div class="bg-white p-6 rounded-xl border border-outline-variant hover:shadow-md transition-shadow">
+    <div class="bg-white p-5 rounded-xl border border-gray-100 hover:shadow-md transition-all group">
         <div class="flex justify-between items-start mb-4">
-            <div class="p-3 bg-yellow-50 rounded-lg">
-                <span class="material-symbols-outlined text-[#f8b830]"
-                      style="font-variation-settings:'FILL' 1;">task_alt</span>
+            <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest">Lolos Screening</p>
+            <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
+                <span class="material-symbols-outlined text-green-600" style="font-size:22px; font-variation-settings:'FILL' 1;">task_alt</span>
             </div>
-            <span class="text-[10px] font-bold text-green-700 bg-green-50 px-2 py-1 rounded-lg">
-                Lolos
-            </span>
         </div>
-        <p class="font-label-caps text-on-surface-variant uppercase mb-1">Lolos Screening</p>
-        <h3 class="font-stat-number text-stat-number text-primary">{{ $statusCounts['lolos'] ?? 0 }}</h3>
+        <h3 class="text-[32px] font-extrabold text-[#001544] leading-none mb-2">{{ $statusCounts['lolos'] ?? 0 }}</h3>
+        <div class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-green-500" style="font-size:16px;">verified</span>
+            <span class="text-[12px] text-gray-400 font-medium">Ready for interview</span>
+        </div>
     </div>
 
 </div>
 
-{{-- ===== MAIN BENTO GRID ===== --}}
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+{{-- ===== MAIN 2-COLUMN GRID ===== --}}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
 
     {{-- LEFT: Lowongan Paling Diminati --}}
-    <div class="lg:col-span-1 bg-white border border-outline-variant rounded-xl overflow-hidden flex flex-col">
-        <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-            <h3 class="font-h3 text-h3 text-primary">Lowongan Paling Diminati</h3>
+    <div class="bg-white border border-gray-100 rounded-xl overflow-hidden flex flex-col">
+        <div class="px-6 py-4 border-b border-gray-50 flex justify-between items-center">
+            <h3 class="text-[16px] font-bold text-[#001544]">Lowongan Paling Diminati</h3>
             <a href="{{ route('hr.vacancies.index') }}"
-               class="text-xs font-bold text-[#002870] hover:underline">
-                Kelola
+               class="text-[12px] font-bold text-[#002870] hover:underline uppercase tracking-wider">
+                Lihat Semua
             </a>
         </div>
 
-        <div class="flex-1 p-4 space-y-2">
+        <div class="flex-1 p-4 space-y-1">
             @forelse($topVacancies as $index => $vacancy)
                 @php
-                    $abbr = collect(explode(' ', $vacancy->title))
-                        ->take(2)->map(fn($w) => strtoupper($w[0]))->join('');
-                    $icons = ['code', 'palette', 'campaign', 'payments', 'engineering', 'analytics'];
-                    $icon  = $icons[$index % count($icons)];
+                    $iconColors = [
+                        ['bg' => 'bg-blue-100', 'text' => 'text-blue-700', 'icon' => 'terminal'],
+                        ['bg' => 'bg-purple-100', 'text' => 'text-purple-700', 'icon' => 'palette'],
+                        ['bg' => 'bg-amber-100', 'text' => 'text-amber-700', 'icon' => 'campaign'],
+                        ['bg' => 'bg-emerald-100', 'text' => 'text-emerald-700', 'icon' => 'engineering'],
+                    ];
+                    $ic = $iconColors[$index % count($iconColors)];
                 @endphp
-                <div class="p-4 rounded-lg border border-transparent hover:border-[#002870] hover:bg-blue-50/30 transition-all cursor-pointer group">
-                    <div class="flex items-center gap-4">
-                        <div class="h-10 w-10 bg-surface-container-low rounded-lg flex items-center justify-center font-bold text-[#002870] text-sm flex-shrink-0">
-                            {{ $abbr }}
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <p class="font-semibold text-sm text-primary truncate group-hover:text-[#002870]">
-                                {{ $vacancy->title }}
-                            </p>
-                            <p class="text-xs text-gray-500 mt-0.5">
-                                {{ $vacancy->type }} • {{ $vacancy->division }}
-                            </p>
-                        </div>
-                        <div class="text-right flex-shrink-0">
-                            <p class="font-bold text-sm text-primary">{{ $vacancy->applications_count }}</p>
-                            <p class="text-[10px] uppercase text-gray-400 font-bold">Pelamar</p>
-                        </div>
+                <div class="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 transition-all cursor-pointer group">
+                    <div class="w-11 h-11 rounded-xl {{ $ic['bg'] }} flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined {{ $ic['text'] }}" style="font-size:22px; font-variation-settings:'FILL' 1;">{{ $ic['icon'] }}</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-bold text-sm text-[#001544] truncate group-hover:text-[#002870]">
+                            {{ $vacancy->title }}
+                        </p>
+                        <p class="text-[12px] text-gray-400 mt-0.5">
+                            {{ $vacancy->department }}
+                        </p>
+                    </div>
+                    <div class="text-right flex-shrink-0">
+                        <p class="text-[13px] font-extrabold text-[#001544]">
+                            {{ str_pad($vacancy->applications_count, 2, '0', STR_PAD_LEFT) }}
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Applicants</span>
+                        </p>
+                        <p class="text-[10px] text-gray-300 mt-0.5">Updated {{ $vacancy->updated_at->diffForHumans(null, true) }} ago</p>
                     </div>
                 </div>
             @empty
                 <div class="flex flex-col items-center justify-center py-12 text-center">
                     <span class="material-symbols-outlined text-gray-300 mb-3" style="font-size:40px;">work_off</span>
                     <p class="text-sm text-gray-400">Belum ada data lowongan.</p>
-                    <a href="{{ route('hr.vacancies.create') }}"
+                    <button onclick="openVacancyModal()"
                        class="mt-3 text-xs font-bold text-[#002870] hover:underline">
                         + Buat Lowongan Baru
-                    </a>
+                    </button>
                 </div>
             @endforelse
         </div>
     </div>
 
     {{-- RIGHT: Kandidat Terbaru --}}
-    <div class="lg:col-span-2 bg-white border border-outline-variant rounded-xl overflow-hidden flex flex-col">
-        <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <h3 class="font-h3 text-h3 text-primary">Kandidat Terbaru</h3>
-                <span class="bg-[#002870] text-white text-[10px] px-2 py-0.5 rounded-full font-bold tracking-wider">
-                    LIVE
-                </span>
-            </div>
+    <div class="bg-white border border-gray-100 rounded-xl overflow-hidden flex flex-col">
+        <div class="px-6 py-4 border-b border-gray-50 flex justify-between items-center">
+            <h3 class="text-[16px] font-bold text-[#001544]">Kandidat Terbaru</h3>
             <a href="{{ route('hr.applications.index') }}"
-               class="text-xs font-bold text-[#002870] hover:underline">
+               class="text-[12px] font-bold text-[#002870] hover:underline uppercase tracking-wider">
                 Lihat Semua
             </a>
         </div>
 
-        <div class="flex-1 overflow-x-auto">
+        <div class="flex-1">
             <table class="w-full text-left">
-                <thead class="bg-surface-container-low">
-                    <tr>
-                        <th class="px-6 py-3 font-label-caps text-on-surface-variant text-xs">Kandidat</th>
-                        <th class="px-6 py-3 font-label-caps text-on-surface-variant text-xs">Posisi Lamaran</th>
-                        <th class="px-6 py-3 font-label-caps text-on-surface-variant text-xs">Tanggal</th>
-                        <th class="px-6 py-3 font-label-caps text-on-surface-variant text-xs">Status</th>
-                        <th class="px-6 py-3"></th>
+                <thead>
+                    <tr class="border-b border-gray-100">
+                        <th class="px-6 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Candidate Name</th>
+                        <th class="px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Applied For</th>
+                        <th class="px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Applied</th>
+                        <th class="px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Status</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100">
+                <tbody class="divide-y divide-gray-50">
                     @forelse($recentApplications as $app)
                         @php
                             $statusMap = [
-                                'pending'     => ['label' => 'PENDING',   'bg' => 'bg-gray-50',   'text' => 'text-gray-600',   'border' => 'border-gray-200',  'dot' => 'bg-gray-400'],
-                                'review'      => ['label' => 'IN REVIEW', 'bg' => 'bg-blue-50',   'text' => 'text-[#002870]',  'border' => 'border-blue-100',  'dot' => 'bg-[#002870]'],
-                                'interview'   => ['label' => 'INTERVIEW', 'bg' => 'bg-yellow-50', 'text' => 'text-[#7c5800]',  'border' => 'border-yellow-100','dot' => 'bg-[#f8b830]'],
-                                'lolos'       => ['label' => 'SHORTLISTED','bg'=> 'bg-green-50',  'text' => 'text-green-700',  'border' => 'border-green-100', 'dot' => 'bg-green-500'],
-                                'tidak_lolos' => ['label' => 'DITOLAK',   'bg' => 'bg-red-50',    'text' => 'text-red-700',    'border' => 'border-red-100',   'dot' => 'bg-red-500'],
+                                'pending'     => ['label' => 'PENDING',     'bg' => 'bg-gray-100',  'text' => 'text-gray-600'],
+                                'review'      => ['label' => 'IN REVIEW',   'bg' => 'bg-blue-50',   'text' => 'text-[#002870]'],
+                                'lolos'       => ['label' => 'SHORTLISTED', 'bg' => 'bg-green-50',  'text' => 'text-green-700'],
+                                'tidak_lolos' => ['label' => 'REJECTED',    'bg' => 'bg-red-50',    'text' => 'text-red-600'],
                             ];
                             $s = $statusMap[$app->status] ?? $statusMap['pending'];
-                            $initial = strtoupper(substr($app->user->first_name ?? 'U', 0, 1));
-                            $fullName = ($app->user->first_name ?? '') . ' ' . ($app->user->last_name ?? '');
+                            $initial = strtoupper(substr($app->user->first_name ?? 'U', 0, 1)) . strtoupper(substr($app->user->last_name ?? '', 0, 1));
+                            $fullName = trim(($app->user->first_name ?? '') . ' ' . ($app->user->last_name ?? ''));
                         @endphp
-                        <tr class="hover:bg-gray-50 transition-colors">
+                        <tr class="hover:bg-gray-50/50 transition-colors">
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center font-bold text-[#002870] text-sm flex-shrink-0">
+                                    <div class="w-9 h-9 rounded-full bg-[#001544] flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0">
                                         {{ $initial }}
                                     </div>
                                     <div>
-                                        <p class="font-semibold text-sm text-primary">{{ trim($fullName) }}</p>
-                                        <p class="text-[10px] text-gray-400">ID</p>
+                                        <p class="font-bold text-sm text-[#001544]">{{ $fullName }}</p>
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4">
-                                <span class="text-sm text-gray-700">{{ $app->jobVacancy->title ?? '-' }}</span>
+                            <td class="px-4 py-4">
+                                <span class="text-sm text-gray-600">{{ $app->jobVacancy->title ?? '-' }}</span>
                             </td>
-                            <td class="px-6 py-4">
-                                <span class="text-sm text-gray-500">
-                                    {{ $app->applied_at ? $app->applied_at->diffForHumans() : '-' }}
+                            <td class="px-4 py-4">
+                                <span class="text-sm text-gray-400">
+                                    {{ $app->applied_at ? $app->applied_at->diffForHumans(null, true) . ' ago' : '-' }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4">
-                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold border
-                                    {{ $s['bg'] }} {{ $s['text'] }} {{ $s['border'] }}">
-                                    <span class="w-1.5 h-1.5 rounded-full {{ $s['dot'] }}"></span>
+                            <td class="px-4 py-4">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider
+                                    {{ $s['bg'] }} {{ $s['text'] }}">
                                     {{ $s['label'] }}
                                 </span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <a href="{{ route('hr.applications.show', $app->id) }}"
-                                   class="text-gray-400 hover:text-[#002870] transition-colors">
-                                    <span class="material-symbols-outlined" style="font-size:20px;">arrow_forward</span>
-                                </a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-12 text-center">
+                            <td colspan="4" class="px-6 py-12 text-center">
                                 <span class="material-symbols-outlined text-gray-300 block mb-2" style="font-size:36px;">inbox</span>
-                                <p class="text-sm text-gray-400">Belum ada lamaran masuk.</p>
+                                <p class="text-sm text-gray-400">No other recent candidates</p>
                             </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
-
-        <div class="px-6 py-3 border-t border-gray-100 text-center">
-            <a href="{{ route('hr.applications.index') }}"
-               class="text-sm font-bold text-primary hover:text-[#002870] transition-colors">
-                Lihat Semua Kandidat →
-            </a>
-        </div>
     </div>
 
 </div>
 
-{{-- ===== BOTTOM ROW ===== --}}
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+{{-- ===== CTA BANNER ===== --}}
+<div class="bg-[#001544] rounded-2xl p-8 md:p-10 relative overflow-hidden">
+    {{-- Decorative gradient accent --}}
+    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#f8b830] via-[#f59e0b] to-[#f8b830]"></div>
 
-    {{-- CTA Banner --}}
-    <div class="bg-[#002870] rounded-xl p-8 text-white relative overflow-hidden">
-        <div class="relative z-10">
-            <h4 class="font-h2 text-h2 mb-2">Kelola Lowongan Baru</h4>
-            <p class="text-blue-200 font-body-md mb-6 max-w-sm">
-                Buat dan publikasikan lowongan kerja baru untuk menemukan talenta terbaik.
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 relative z-10">
+        <div class="max-w-lg">
+            <h4 class="text-[22px] font-extrabold text-white mb-2">Kelola Lowongan Baru</h4>
+            <p class="text-blue-200/80 text-[14px] leading-relaxed">
+                Streamline your aerospace recruitment process. Create precision-targeted job openings
+                for specialized engineering roles within our institutional framework.
             </p>
-            <button onclick="openVacancyModal()"
-                    class="inline-flex items-center gap-2 font-bold py-3 px-8 rounded-lg transition-all active:scale-95"
-                    style="background:#f8b830; color:#002870;">
-                <span class="material-symbols-outlined" style="font-size:18px;">add</span>
-                Buat Lowongan
-            </button>
         </div>
-        <span class="material-symbols-outlined absolute -right-6 -bottom-6 text-white/5"
-              style="font-size:200px; font-variation-settings:'FILL' 1;">work</span>
+        <button onclick="openVacancyModal()"
+                class="inline-flex items-center gap-2 font-extrabold py-3.5 px-8 rounded-xl transition-all active:scale-95 hover:brightness-110 shadow-lg flex-shrink-0"
+                style="background:#f8b830; color:#001544;">
+            <span class="material-symbols-outlined" style="font-size:20px;">add_circle</span>
+            Buat Lowongan
+        </button>
     </div>
 
-    {{-- Quick Stats --}}
-    <div class="bg-white border border-outline-variant rounded-xl p-8">
-        <h4 class="font-h3 text-h3 text-primary mb-5">Ringkasan Status</h4>
-        <div class="space-y-3">
-            @php
-                $statItems = [
-                    ['label' => 'Pending Review',   'count' => $statusCounts['pending'] ?? 0,     'color' => 'bg-gray-400'],
-                    ['label' => 'Sedang Diproses',  'count' => $statusCounts['review'] ?? 0,      'color' => 'bg-[#002870]'],
-                    ['label' => 'Lolos Screening',  'count' => $statusCounts['lolos'] ?? 0,       'color' => 'bg-green-500'],
-                    ['label' => 'Tidak Lolos',      'count' => $statusCounts['tidak_lolos'] ?? 0, 'color' => 'bg-red-400'],
-                ];
-                $total = max(array_sum($statusCounts), 1);
-            @endphp
-            @foreach($statItems as $item)
-                <div>
-                    <div class="flex justify-between text-sm mb-1">
-                        <span class="text-on-surface-variant font-medium">{{ $item['label'] }}</span>
-                        <span class="font-bold text-primary">{{ $item['count'] }}</span>
-                    </div>
-                    <div class="w-full bg-gray-100 rounded-full h-1.5">
-                        <div class="{{ $item['color'] }} h-1.5 rounded-full transition-all duration-500"
-                             style="width: {{ $total > 0 ? round($item['count']/$total*100) : 0 }}%"></div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    </div>
-
+    {{-- Background decorative icon --}}
+    <span class="material-symbols-outlined absolute -right-8 -bottom-8 text-white/[0.03]"
+          style="font-size:220px; font-variation-settings:'FILL' 1;">work</span>
 </div>
 
 @endsection

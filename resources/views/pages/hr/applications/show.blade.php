@@ -16,7 +16,7 @@
     </a>
 </header>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
     {{-- ═══════════════ LEFT COLUMN ═══════════════ --}}
     <div class="lg:col-span-2 space-y-8">
@@ -236,37 +236,27 @@
             @endif
         @endif
 
-        {{-- ── Cover Letter ── --}}
-        @if($application->cover_letter)
-        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-            <div class="px-6 sm:px-8 py-5 border-b border-gray-100 flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-[#002870]/10 flex items-center justify-center">
-                    <span class="material-symbols-outlined text-[#002870]" style="font-size:18px;">draft</span>
-                </div>
-                <h3 class="font-bold text-gray-900 text-base">Cover Letter</h3>
-            </div>
-            <div class="p-6 sm:p-8">
-                <div class="text-sm text-gray-600 leading-relaxed whitespace-pre-line bg-slate-50 rounded-xl p-5 border border-slate-100">{{ $application->cover_letter }}</div>
-            </div>
-        </div>
-        @endif
+    </div>
 
-        {{-- ── Resume & Dokumen ── --}}
+    {{-- ═══════════════ RIGHT COLUMN (Sticky) ═══════════════ --}}
+    <div class="space-y-6 lg:sticky lg:top-6 self-start">
+
+        {{-- ── Card 1: Resume & Dokumen ── --}}
         @if($application->resume_path || !empty($application->documents))
         <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-            <div class="px-6 sm:px-8 py-5 border-b border-gray-100 flex items-center gap-3">
+            <div class="px-6 py-5 border-b border-gray-100 flex items-center gap-3">
                 <div class="w-8 h-8 rounded-lg bg-[#002870]/10 flex items-center justify-center">
                     <span class="material-symbols-outlined text-[#002870]" style="font-size:18px;">folder_open</span>
                 </div>
                 <h3 class="font-bold text-gray-900 text-base">Resume & Dokumen</h3>
             </div>
-            <div class="p-6 sm:p-8 space-y-5">
+            <div class="p-6 space-y-5">
                 {{-- Resume --}}
                 @if($application->resume_path)
                 <div>
                     <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-3">CV / Resume Utama</small>
                     <a href="{{ route('hr.applications.download', [$application->id, 'resume']) }}"
-                       class="inline-flex items-center gap-3 px-5 py-3 bg-[#002870] text-white font-semibold text-sm rounded-xl hover:bg-[#001a4d] transition-all shadow-md shadow-blue-900/15 active:scale-[.97]">
+                       class="w-full inline-flex items-center justify-center gap-3 px-5 py-3 bg-[#002870] text-white font-semibold text-sm rounded-xl hover:bg-[#001a4d] transition-all shadow-md shadow-blue-900/15 active:scale-[.97]">
                         <span class="material-symbols-outlined" style="font-size:18px;">download</span>
                         Download Resume
                     </a>
@@ -277,11 +267,11 @@
                 @if(!empty($application->documents))
                 <div>
                     <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-3">Dokumen Pendukung</small>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="space-y-2">
                         @foreach($application->documents as $index => $doc)
                         <a href="{{ route('hr.applications.download', [$application->id, 'document', $index]) }}"
                            class="flex items-center gap-3 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 hover:border-slate-300 transition-all group">
-                            <div class="w-9 h-9 rounded-lg bg-blue-100 text-[#002870] flex items-center justify-center shrink-0">
+                            <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#002870] flex items-center justify-center shrink-0">
                                 <span class="material-symbols-outlined" style="font-size:16px;">description</span>
                             </div>
                             <div class="min-w-0 flex-1">
@@ -298,12 +288,7 @@
         </div>
         @endif
 
-    </div>
-
-    {{-- ═══════════════ RIGHT COLUMN ═══════════════ --}}
-    <div class="space-y-8">
-
-        {{-- ── Update Status ── --}}
+        {{-- ── Card 2: Update Status ── --}}
         <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
             <div class="px-6 py-5 border-b border-gray-100 flex items-center gap-3">
                 <div class="w-8 h-8 rounded-lg bg-[#002870]/10 flex items-center justify-center">
@@ -334,7 +319,7 @@
 
                     <div class="mb-6">
                         <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Catatan Review</label>
-                        <textarea name="review_notes" rows="4"
+                        <textarea name="review_notes" rows="3"
                                   class="w-full px-4 py-3 bg-slate-50 border border-gray-200 rounded-xl text-sm outline-none resize-none focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10 transition-all"
                                   placeholder="Tambahkan catatan...">{{ old('review_notes', $application->review_notes) }}</textarea>
                     </div>
@@ -347,7 +332,7 @@
             </div>
         </div>
 
-        {{-- ── Info Review ── --}}
+        {{-- ── Card 3: Info Review ── --}}
         <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
             <div class="px-6 py-5 border-b border-gray-100 flex items-center gap-3">
                 <div class="w-8 h-8 rounded-lg bg-[#002870]/10 flex items-center justify-center">

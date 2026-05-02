@@ -12,20 +12,26 @@ class HRDashboardController extends Controller
 {
     public function index()
     {
-        $hrId = Auth::id();
+        $user = Auth::user();
+        $isAdmin = $user->role === 'admin';
 
-        // Total lowongan aktif milik HR ini
-        $totalActiveVacancies = JobVacancy::where('created_by', $hrId)
+        // Admin melihat SEMUA lowongan, HR hanya miliknya sendiri
+        $vacancyQuery = $isAdmin
+            ? JobVacancy::query()
+            : JobVacancy::where('created_by', $user->id);
+
+        // Total lowongan aktif
+        $totalActiveVacancies = (clone $vacancyQuery)
             ->where('status', 'open')
             ->count();
 
-        // Total semua lowongan milik HR ini
-        $totalVacancies = JobVacancy::where('created_by', $hrId)->count();
+        // Total semua lowongan
+        $totalVacancies = (clone $vacancyQuery)->count();
 
-        // ID semua lowongan milik HR ini (untuk filter lamaran)
-        $vacancyIds = JobVacancy::where('created_by', $hrId)->pluck('id');
+        // ID semua lowongan (untuk filter lamaran)
+        $vacancyIds = (clone $vacancyQuery)->pluck('id');
 
-        // Total pelamar hari ini (di lowongan milik HR ini)
+        // Total pelamar hari ini
         $totalApplicantsToday = Application::whereIn('job_vacancy_id', $vacancyIds)
             ->whereDate('applied_at', today())
             ->count();
@@ -49,7 +55,7 @@ class HRDashboardController extends Controller
             ->get();
 
         // 4 lowongan paling diminati
-        $topVacancies = JobVacancy::where('created_by', $hrId)
+        $topVacancies = (clone $vacancyQuery)
             ->withCount('applications')
             ->orderByDesc('applications_count')
             ->take(4)

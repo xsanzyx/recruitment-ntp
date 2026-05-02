@@ -14,20 +14,20 @@ class AdminDashboardController extends Controller
         $stats = [
             'total_user'     => User::count(),
             'total_hr_admin' => User::whereIn('role', ['hr', 'admin'])->count(),
-            'total_kandidat' => User::where('role', 'user')->count(),
+            'total_kandidat' => User::whereIn('role', ['user', 'kandidat'])->count(),
             'lowongan_aktif' => JobVacancy::where('status', 'open')->count(),
         ];
 
         $distribusi = [
             'admin'    => User::where('role', 'admin')->count(),
             'hr'       => User::where('role', 'hr')->count(),
-            'kandidat' => User::where('role', 'user')->count(),
+            'kandidat' => User::whereIn('role', ['user', 'kandidat'])->count(),
         ];
 
         $user_aktif  = User::where('status', 'active')->count();
         $user_pending = User::where('status', 'pending')->count();
 
-        $user_terbaru = User::where('role', 'user')
+        $user_terbaru = User::whereIn('role', ['user', 'kandidat'])
             ->orderBy('created_at', 'desc')
             ->take(6)
             ->get();

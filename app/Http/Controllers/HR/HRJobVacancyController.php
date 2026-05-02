@@ -10,11 +10,22 @@ use Illuminate\Support\Facades\Auth;
 class HRJobVacancyController extends Controller
 {
     /**
-     * Tampilkan semua lowongan milik HR yang sedang login.
+     * Helper: Base query — Admin sees all, HR sees only their own.
+     */
+    private function baseQuery()
+    {
+        $user = Auth::user();
+        return $user->role === 'admin'
+            ? JobVacancy::query()
+            : JobVacancy::where('created_by', $user->id);
+    }
+
+    /**
+     * Tampilkan semua lowongan.
      */
     public function index(Request $request)
     {
-        $vacancies = JobVacancy::where('created_by', Auth::id())
+        $vacancies = $this->baseQuery()
             ->withCount('applications')
             ->when($request->search, function ($q, $search) {
                 $q->where('title', 'like', "%{$search}%")
@@ -77,7 +88,7 @@ class HRJobVacancyController extends Controller
      */
     public function edit(string $id)
     {
-        $vacancy = JobVacancy::where('created_by', Auth::id())->findOrFail($id);
+        $vacancy = $this->baseQuery()->findOrFail($id);
 
         return view('pages.hr.vacancies.edit', compact('vacancy'));
     }
@@ -87,7 +98,7 @@ class HRJobVacancyController extends Controller
      */
     public function show(string $id)
     {
-        $vacancy = JobVacancy::where('created_by', Auth::id())
+        $vacancy = $this->baseQuery()
             ->withCount('applications')
             ->findOrFail($id);
 
@@ -99,7 +110,7 @@ class HRJobVacancyController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $vacancy = JobVacancy::where('created_by', Auth::id())->findOrFail($id);
+        $vacancy = $this->baseQuery()->findOrFail($id);
 
         $validated = $request->validate([
             'title'        => 'required|string|max:255',
@@ -133,7 +144,7 @@ class HRJobVacancyController extends Controller
      */
     public function destroy(string $id)
     {
-        $vacancy = JobVacancy::where('created_by', Auth::id())->findOrFail($id);
+        $vacancy = $this->baseQuery()->findOrFail($id);
         $vacancy->delete(); // soft delete karena model pakai SoftDeletes
 
         return redirect()
@@ -146,7 +157,7 @@ class HRJobVacancyController extends Controller
      */
     public function toggleStatus(string $id)
     {
-        $vacancy = JobVacancy::where('created_by', Auth::id())->findOrFail($id);
+        $vacancy = $this->baseQuery()->findOrFail($id);
 
         $vacancy->update([
             'status' => $vacancy->isOpen() ? 'closed' : 'open',
