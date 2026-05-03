@@ -93,8 +93,8 @@
 </div>
 
 <!-- Table -->
-<div class="bg-white border border-outline-variant rounded-xl shadow-sm overflow-hidden">
-    <div class="overflow-x-auto">
+<div class="bg-white border border-outline-variant rounded-xl shadow-sm" style="overflow:visible;">
+    <div style="overflow-x:auto; overflow-y:visible; min-height:120px;">
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-200">
@@ -179,32 +179,6 @@
                                     <span class="status-label">{{ $s['label'] }}</span>
                                     <span class="material-symbols-outlined" style="font-size:14px;">expand_more</span>
                                 </button>
-
-                                <!-- Status dropdown -->
-                                <div id="statusDrop-{{ $app->id }}"
-                                     class="hidden absolute left-0 top-full mt-1 z-50 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden"
-                                     style="min-width:160px;">
-                                    @foreach([
-                                        'pending'     => ['Pending',     'text-gray-600',   'bg-gray-400'],
-                                        'review'      => ['In Review',   'text-[#002870]',  'bg-[#002870]'],
-                                        'lolos'       => ['Lolos',       'text-green-700',  'bg-green-500'],
-                                        'tidak_lolos' => ['Tidak Lolos', 'text-red-600',    'bg-red-400'],
-                                    ] as $val => [$lbl, $txt, $dot])
-                                        <form method="POST" action="{{ route('hr.applications.updateStatus', $app->id) }}">
-                                            @csrf @method('PATCH')
-                                            <input type="hidden" name="status" value="{{ $val }}">
-                                            <button type="submit"
-                                                    class="flex items-center gap-2 w-full px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors
-                                                           {{ $app->status === $val ? 'font-bold bg-gray-50' : '' }} {{ $txt }}">
-                                                <span class="w-2 h-2 rounded-full {{ $dot }} flex-shrink-0"></span>
-                                                {{ $lbl }}
-                                                @if($app->status === $val)
-                                                    <span class="material-symbols-outlined ml-auto" style="font-size:14px;">check</span>
-                                                @endif
-                                            </button>
-                                        </form>
-                                    @endforeach
-                                </div>
                             </div>
                         </td>
 
@@ -244,25 +218,95 @@
     <div id="bulkIdsContainer"></div>
 </form>
 
+{{-- Global floating status dropdown (rendered outside table to avoid overflow clipping) --}}
+<div id="globalStatusDrop"
+     class="hidden fixed z-[9999] bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden"
+     style="min-width:170px;">
+</div>
+
 @endsection
 
 @push('scripts')
 <script>
-/* ── Status dropdown ── */
+/* ── Status dropdown (floating, position:fixed) ── */
+let activeDropId = null;
+
 function toggleStatusDropdown(id, btn) {
-    // Close all other dropdowns
-    document.querySelectorAll('[id^="statusDrop-"]').forEach(d => {
-        if (d.id !== 'statusDrop-' + id) d.classList.add('hidden');
+    const drop = document.getElementById('globalStatusDrop');
+
+    // If clicking the same button, close it
+    if (activeDropId === id && !drop.classList.contains('hidden')) {
+        drop.classList.add('hidden');
+        activeDropId = null;
+        return;
+    }
+
+    activeDropId = id;
+
+    // Build dropdown content from data attributes on the row
+    const statusOptions = [
+        { value: 'pending',     label: 'Pending',     textCls: 'text-gray-600',   dotCls: 'bg-gray-400' },
+        { value: 'review',      label: 'In Review',   textCls: 'text-blue-800',   dotCls: 'bg-blue-800' },
+        { value: 'lolos',       label: 'Lolos',       textCls: 'text-green-700',  dotCls: 'bg-green-500' },
+        { value: 'tidak_lolos', label: 'Tidak Lolos', textCls: 'text-red-600',    dotCls: 'bg-red-400' },
+    ];
+
+    // Get current status from the button's label
+    const currentLabel = btn.querySelector('.status-label').textContent.trim();
+
+    let html = '';
+    statusOptions.forEach(opt => {
+        const isCurrent = (opt.label === currentLabel);
+        html += `
+            <form method="POST" action="/hr/applications/${id}/status">
+                <input type="hidden" name="_token" value="${document.querySelector('meta[name=csrf-token]').content}">
+                <input type="hidden" name="_method" value="PATCH">
+                <input type="hidden" name="status" value="${opt.value}">
+                <button type="submit"
+                        class="flex items-center gap-2 w-full px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors
+                               ${isCurrent ? 'font-bold bg-gray-50' : ''} ${opt.textCls}">
+                    <span class="w-2 h-2 rounded-full ${opt.dotCls} flex-shrink-0"></span>
+                    ${opt.label}
+                    ${isCurrent ? '<span class="material-symbols-outlined ml-auto" style="font-size:14px;">check</span>' : ''}
+                </button>
+            </form>`;
     });
-    document.getElementById('statusDrop-' + id).classList.toggle('hidden');
-    // Prevent event from bubbling to the close-all listener
+
+    drop.innerHTML = html;
+
+    // Position the dropdown relative to the button
+    const rect = btn.getBoundingClientRect();
+    const dropHeight = 180; // approximate
+    const spaceBelow = window.innerHeight - rect.bottom;
+
+    drop.style.left = rect.left + 'px';
+
+    if (spaceBelow < dropHeight) {
+        // Not enough space below, show above
+        drop.style.top = (rect.top - dropHeight - 4) + 'px';
+    } else {
+        // Show below
+        drop.style.top = (rect.bottom + 4) + 'px';
+    }
+
+    drop.classList.remove('hidden');
     event.stopPropagation();
 }
 
-// Close dropdowns when clicking outside
-document.addEventListener('click', () => {
-    document.querySelectorAll('[id^="statusDrop-"]').forEach(d => d.classList.add('hidden'));
+// Close dropdown when clicking anywhere
+document.addEventListener('click', (e) => {
+    const drop = document.getElementById('globalStatusDrop');
+    if (!drop.contains(e.target)) {
+        drop.classList.add('hidden');
+        activeDropId = null;
+    }
 });
+
+// Close on scroll (optional, prevents misaligned dropdown)
+window.addEventListener('scroll', () => {
+    document.getElementById('globalStatusDrop').classList.add('hidden');
+    activeDropId = null;
+}, true);
 
 /* ── Checkbox logic ── */
 function toggleAll(master) {

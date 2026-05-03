@@ -69,6 +69,15 @@
             #hrMain { padding-top: 20px; }
             .toggle-btn { top: 20px; left: 20px; }
         }
+        
+        /* Fix double arrows on select elements with custom icons */
+        select.appearance-none,
+        .relative > select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: none !important;
+        }
     </style>
     @stack('styles')
 </head>
@@ -104,6 +113,18 @@
     </ul>
 
     <div class="sidebar-divider"></div>
+
+    @if(Auth::user()->role === 'admin')
+    <ul class="sidebar-menu list-none p-0" style="flex:0;">
+        <li class="mb-[1px]">
+            <a href="{{ route('admin.dashboard') }}">
+                <i class="bi bi-shield-lock"></i> Panel Admin
+            </a>
+        </li>
+    </ul>
+
+    <div class="sidebar-divider"></div>
+    @endif
 
     <ul class="sidebar-menu list-none p-0" style="flex:0;">
         <li class="mb-[1px]">

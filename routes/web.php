@@ -7,6 +7,8 @@ use App\Http\Controllers\HR\HRDashboardController;
 use App\Http\Controllers\HR\HRJobVacancyController;
 use App\Http\Controllers\HR\HRApplicationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\UserManagementController;
 use App\Models\JobVacancy;
 use Illuminate\Support\Facades\Route;
 
@@ -72,4 +74,17 @@ Route::prefix('hr')->name('hr.')->middleware(['auth', 'hr'])->group(function () 
     Route::get('applications/{id}',          [HRApplicationController::class, 'show'])->name('applications.show');
     Route::patch('applications/{id}/status', [HRApplicationController::class, 'updateStatus'])->name('applications.updateStatus');
     Route::patch('applications/bulk-status', [HRApplicationController::class, 'bulkStatus'])->name('applications.bulkStatus');
+    Route::get('applications/{id}/download/{type}/{docIndex?}', [HRApplicationController::class, 'downloadFile'])->name('applications.download');
 });
+
+Route::prefix('admin')
+    ->name('admin.')
+    ->middleware(['auth', 'admin'])   // 'admin' = AdminMiddleware alias di Kernel.php
+    ->group(function () {
+
+        // Dashboard
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+        // Manajemen User
+        Route::resource('users', UserManagementController::class);
+    });
