@@ -6,10 +6,12 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\HR\HRDashboardController;
 use App\Http\Controllers\HR\HRJobVacancyController;
 use App\Http\Controllers\HR\HRApplicationController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Models\JobVacancy;
 use Illuminate\Support\Facades\Route;
+
 
 // =============================================
 //  PUBLIC ROUTES
@@ -52,6 +54,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/lowongan/{id}/lamar',  [ApplicationController::class, 'create'])->name('apply.create');
     Route::post('/lowongan/{id}/lamar', [ApplicationController::class, 'store'])->name('apply.store');
+
+
+    Route::get('/profile',  [ProfileController::class, 'show'])->name('profile');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 // =============================================

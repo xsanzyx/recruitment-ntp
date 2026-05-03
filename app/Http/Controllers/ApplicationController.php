@@ -42,7 +42,6 @@ class ApplicationController extends Controller
             'summary'      => 'nullable|string|max:500',
             'education'    => 'nullable|array',
             'experience'   => 'nullable|array',
-            'cover_letter' => 'nullable|string|max:2000',
             'resume'       => 'required|file|mimes:pdf|max:5120',
             'documents.*'  => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ], [
@@ -84,7 +83,6 @@ class ApplicationController extends Controller
             'summary'        => $request->summary ?: null,
             'education'      => $request->education ?: null,
             'experience'     => $request->experience ?: null,
-            'cover_letter'   => $request->cover_letter ?: null,
             'resume_path'    => $resumePath,
             'documents'      => !empty($documentPaths) ? $documentPaths : null,
             'status'         => 'pending',
