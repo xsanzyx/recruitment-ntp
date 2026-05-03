@@ -80,6 +80,12 @@
                         <input type="text" name="address" id="address" class="apply-input" placeholder="Kota / Kabupaten" value="{{ old('address') }}">
                         @error('address')<small class="text-danger">{{ $message }}</small>@enderror
                     </div>
+                    <div class="col-12">
+                        <label class="apply-label">Ringkasan Singkat (opsional)</label>
+                        <textarea name="summary" class="apply-input" rows="4" maxlength="500"
+                            placeholder="Ceritakan singkat tentang dirimu, motivasi, dan keunggulan yang kamu bawa..">{{ old('summary') }}</textarea>
+                        <small class="text-muted" style="font-size:11px;" id="summary-count">0/500</small>
+                    </div>
                 </div>
             </div>
         </div>
