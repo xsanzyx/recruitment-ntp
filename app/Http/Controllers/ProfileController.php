@@ -23,13 +23,9 @@ class ProfileController extends Controller
             'bio'           => 'nullable|string|max:500',
             'portfolio_url' => 'nullable|url|max:255',
             'linkedin_url'  => 'nullable|url|max:255',
-            'avatar'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ], [
             'first_name.required' => 'Nama depan wajib diisi.',
             'last_name.required'  => 'Nama belakang wajib diisi.',
-            'avatar.image'        => 'Avatar harus berupa gambar.',
-            'avatar.mimes'        => 'Avatar harus berformat JPG atau PNG.',
-            'avatar.max'          => 'Ukuran avatar maksimal 2MB.',
             'portfolio_url.url'   => 'URL portfolio tidak valid.',
             'linkedin_url.url'    => 'URL LinkedIn tidak valid.',
         ]);
@@ -42,12 +38,20 @@ class ProfileController extends Controller
             'linkedin_url'  => $request->linkedin_url,
         ];
 
-        if ($request->hasFile('avatar')) {
-            // Hapus avatar lama
+        // Handle avatar dari base64 crop
+        if ($request->filled('avatar_cropped')) {
             if ($user->avatar) {
                 Storage::disk('public')->delete($user->avatar);
             }
-            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+
+            $base64    = $request->avatar_cropped;
+            $base64    = str_replace('data:image/jpeg;base64,', '', $base64);
+            $base64    = str_replace(' ', '+', $base64);
+            $imageData = base64_decode($base64);
+            $filename  = 'avatars/' . uniqid() . '.jpg';
+
+            Storage::disk('public')->put($filename, $imageData);
+            $data['avatar'] = $filename;
         }
 
         $user->update($data);
