@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Storage; @endphp
 @extends('layouts.admin')
 
 @section('title', 'Manajemen User')
@@ -81,7 +82,12 @@
             <tr>
                 <td>
                     <div class="user-cell">
-                        <div class="avatar {{ $av }}">{{ $user->initial }}</div>
+                        @if($user->avatar)
+                            <img src="{{ Storage::url($user->avatar) }}" alt="{{ $user->first_name }}"
+                                 style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid #e5e7eb;">
+                        @else
+                            <div class="avatar {{ $av }}">{{ $user->initial }}</div>
+                        @endif
                         <div>
                             <div class="u-name">{{ $user->first_name }} {{ $user->last_name }}</div>
                             <div class="u-email">{{ $user->email }}</div>
