@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Storage; @endphp
 @extends('layouts.hr_tailwind')
 
 @section('title', 'Dashboard HR')
@@ -178,9 +179,14 @@
                         <tr class="hover:bg-gray-50/50 transition-colors">
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-full bg-[#001544] flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0">
-                                        {{ $initial }}
-                                    </div>
+                                    @if($app->user->avatar)
+                                        <img src="{{ Storage::url($app->user->avatar) }}" alt="{{ $fullName }}"
+                                             class="w-9 h-9 rounded-full object-cover flex-shrink-0 border border-gray-200">
+                                    @else
+                                        <div class="w-9 h-9 rounded-full bg-[#001544] flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0">
+                                            {{ $initial }}
+                                        </div>
+                                    @endif
                                     <div>
                                         <p class="font-bold text-sm text-[#001544]">{{ $fullName }}</p>
                                     </div>

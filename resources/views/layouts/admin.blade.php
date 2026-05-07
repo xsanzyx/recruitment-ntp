@@ -6,72 +6,84 @@
     <title>@yield('title', 'Admin Panel') — NTP Careers</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {{-- Fonts & Icons --}}
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-
-    {{-- Tailwind (same as HR layout, but disable preflight to protect custom CSS) --}}
-    <script>
+    {{-- 1. Tailwind CSS (SAME config as HR layout) --}}
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
         tailwind.config = {
-            corePlugins: {
-                preflight: false,
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-container": "#002870",
+                        "primary": "#001544",
+                    },
+                    fontFamily: {
+                        "stat-number": ["Inter"], "h3": ["Inter"], "h1": ["Inter"],
+                        "label-caps": ["Inter"], "body-md": ["Inter"],
+                        "body-lg": ["Inter"], "h2": ["Inter"]
+                    },
+                    fontSize: {
+                        "stat-number": ["28px", {"lineHeight":"1","fontWeight":"700"}],
+                        "h3": ["18px", {"lineHeight":"1.4","fontWeight":"600"}],
+                        "h1": ["32px", {"lineHeight":"1.2","letterSpacing":"-0.02em","fontWeight":"700"}],
+                        "label-caps": ["12px", {"lineHeight":"1.2","letterSpacing":"0.05em","fontWeight":"600"}],
+                        "body-md": ["14px", {"lineHeight":"1.5","fontWeight":"400"}],
+                        "body-lg": ["16px", {"lineHeight":"1.6","fontWeight":"400"}],
+                        "h2": ["24px", {"lineHeight":"1.3","letterSpacing":"-0.01em","fontWeight":"600"}]
+                    }
+                }
             }
         }
     </script>
-    <script src="https://cdn.tailwindcss.com"></script>
 
-    {{-- Shared Sidebar CSS (same as HR & Guest) --}}
+    {{-- 2. Icons & Fonts (SAME as HR layout) --}}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    {{-- 3. Base & Layout CSS (for exact sidebar styling — SAME as HR) --}}
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
     <link rel="stylesheet" href="{{ asset('css/layout.css') }}">
 
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-            background: #f3f5f9;
-            color: #0d1b2e;
-            min-height: 100vh;
-        }
+        body { font-family: 'Inter', sans-serif; background: #f6fafe; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f6fafe; }
+        ::-webkit-scrollbar-thumb { background: #dfe3e7; border-radius: 4px; }
 
-        /* Override toggle btn z-index */
+        /* MODAL */
+        .admin-modal { display: none; }
+        .admin-modal.open { display: flex; }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(.96) translateY(8px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .admin-modal-card { animation: modalIn .25s cubic-bezier(.22,1,.36,1) both; }
+
+        /* OVERRIDE TOGGLE BTN Z-INDEX */
         .toggle-btn { z-index: 998; }
 
-        /* Main content padding */
+        /* Main content padding so it doesn't hide behind toggle button */
         #adminMain { padding-top: 60px; }
         @media(min-width: 1024px) {
             #adminMain { padding-top: 20px; }
             .toggle-btn { top: 20px; left: 20px; }
         }
 
-        /* Alerts */
-        .alert {
-            padding: 14px 18px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .alert-success {
-            background: #e6f9f7;
-            color: #0f7a72;
-            border: 1px solid #b3ede8;
-        }
-
-        .alert-error {
-            background: #fdecea;
-            color: #b92b27;
-            border: 1px solid #f9bdbb;
+        /* Fix double arrows on select elements */
+        select.appearance-none,
+        .relative > select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: none !important;
         }
     </style>
     @stack('styles')
 </head>
-<body class="antialiased min-h-screen">
+<body class="text-gray-900 antialiased min-h-screen">
 
-{{-- ═══════════════ SIDEBAR (SAME AS HR/PUBLIC) ═══════════════ --}}
+{{-- ═══════════════ SIDEBAR (EXACTLY SAME AS HR) ═══════════════ --}}
 <div id="sidebar" class="sidebar flex flex-col z-[1000]">
 
     <div class="sidebar-brand flex justify-between items-start">
@@ -123,6 +135,8 @@
         </li>
     </ul>
 
+    <div class="sidebar-divider"></div>
+
     <div class="sidebar-bottom mt-auto">
         <div class="cta-box mb-3 text-center">
             <small class="text-[#94a3b8] block mb-2" style="font-size:11px;">Selamat datang,</small>
@@ -149,22 +163,30 @@
 {{-- ═══════════════ MAIN CONTENT ═══════════════ --}}
 <main id="adminMain" class="min-h-screen flex flex-col transition-all lg:ml-16">
     <div class="p-6 lg:p-8 flex-grow">
-        @if(session('success'))
-        <div class="alert alert-success">
-            <i class="bi bi-check-circle" style="font-size:18px;"></i>
-            {{ session('success') }}
-        </div>
-        @endif
-        @if(session('error'))
-        <div class="alert alert-error">
-            <i class="bi bi-exclamation-circle" style="font-size:18px;"></i>
-            {{ session('error') }}
-        </div>
-        @endif
-
         @yield('content')
     </div>
 </main>
+
+{{-- Success / Error flash (SAME style as HR) --}}
+@if(session('success'))
+<div id="flashMsg"
+     class="fixed bottom-6 right-6 z-[9999] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-semibold text-white"
+     style="background:#002870;animation:modalIn .3s both;">
+    <span class="material-symbols-outlined" style="font-size:18px;">check_circle</span>
+    {{ session('success') }}
+</div>
+<script>setTimeout(()=>{ const el=document.getElementById('flashMsg'); if(el) el.remove(); }, 3500);</script>
+@endif
+
+@if(session('error'))
+<div id="flashMsgErr"
+     class="fixed bottom-6 right-6 z-[9999] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-semibold text-white bg-red-600"
+     style="animation:modalIn .3s both;">
+    <span class="material-symbols-outlined" style="font-size:18px;">error</span>
+    {{ session('error') }}
+</div>
+<script>setTimeout(()=>{ const el=document.getElementById('flashMsgErr'); if(el) el.remove(); }, 3500);</script>
+@endif
 
 <script src="{{ asset('js/app.js') }}"></script>
 @stack('scripts')

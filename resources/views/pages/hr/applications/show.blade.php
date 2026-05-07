@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Storage; @endphp
 @extends('layouts.hr_tailwind')
 
 @section('title', 'Detail Kandidat — ' . $application->user->full_name)
@@ -27,9 +28,14 @@
                 {{-- Top: Avatar + Name + Badge --}}
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 mb-8">
                     <div class="flex items-center gap-5">
-                        <div class="w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-[#002870] to-[#0048c7] text-white text-xl font-bold shadow-md shadow-blue-900/20 shrink-0">
-                            {{ strtoupper(substr($application->user->first_name, 0, 1)) }}{{ strtoupper(substr($application->user->last_name, 0, 1)) }}
-                        </div>
+                        @if($application->user->avatar)
+                            <img src="{{ Storage::url($application->user->avatar) }}" alt="{{ $application->user->full_name }}"
+                                 class="w-16 h-16 rounded-2xl object-cover shadow-md shadow-blue-900/20 shrink-0 border border-gray-200">
+                        @else
+                            <div class="w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-[#002870] to-[#0048c7] text-white text-xl font-bold shadow-md shadow-blue-900/20 shrink-0">
+                                {{ strtoupper(substr($application->user->first_name, 0, 1)) }}{{ strtoupper(substr($application->user->last_name, 0, 1)) }}
+                            </div>
+                        @endif
                         <div>
                             <h2 class="text-xl font-bold text-gray-900 leading-tight">{{ $application->user->full_name }}</h2>
                             <span class="text-gray-400 text-sm mt-0.5 block">{{ $application->user->email }}</span>

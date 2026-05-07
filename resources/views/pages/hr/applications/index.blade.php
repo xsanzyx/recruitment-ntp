@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Storage; @endphp
 @extends('layouts.hr_tailwind')
 
 @section('title', 'Daftar Kandidat')
@@ -134,8 +135,15 @@
                         <!-- Kandidat -->
                         <td class="py-4 px-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center font-bold text-[#002870] text-sm flex-shrink-0">
-                                    {{ strtoupper(substr($app->user->first_name, 0, 1)) }}
+                                <div class="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0">
+                                    @if($app->user->avatar)
+                                        <img src="{{ Storage::url($app->user->avatar) }}" alt="{{ $app->user->full_name }}"
+                                             class="w-full h-full object-cover">
+                                    @else
+                                        <div class="w-full h-full bg-blue-50 flex items-center justify-center font-bold text-[#002870] text-sm">
+                                            {{ strtoupper(substr($app->user->first_name, 0, 1)) }}
+                                        </div>
+                                    @endif
                                 </div>
                                 <div>
                                     <strong class="text-gray-900 block text-sm">{{ $app->user->full_name }}</strong>
