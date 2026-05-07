@@ -8,6 +8,7 @@ use App\Models\JobVacancy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 
 class HRApplicationController extends Controller
 {
@@ -83,37 +84,44 @@ class HRApplicationController extends Controller
      * Status: pending → review → lolos / tidak_lolos
      */
     public function updateStatus(Request $request, string $id)
-    {
-        $vacancyIds = $this->getVacancyIds();
+{
+    $vacancyIds = JobVacancy::where('created_by', Auth::id())->pluck('id');
 
-        $application = Application::whereIn('job_vacancy_id', $vacancyIds)
-            ->findOrFail($id);
+    $application = Application::whereIn('job_vacancy_id', $vacancyIds)
+        ->findOrFail($id);
 
-        $validated = $request->validate([
-            'status'       => 'required|in:pending,review,lolos,tidak_lolos',
-            'review_notes' => 'nullable|string|max:1000',
-        ], [
-            'status.required' => 'Status wajib dipilih.',
-            'status.in'       => 'Status tidak valid.',
-        ]);
+    $validated = $request->validate([
+        'status'       => 'required|in:pending,review,lolos,tidak_lolos',
+        'review_notes' => 'nullable|string|max:1000',
+    ]);
 
-        $application->update([
-            'status'       => $validated['status'],
-            'review_notes' => $validated['review_notes'] ?? $application->review_notes,
-            'reviewed_by'  => Auth::id(),
-        ]);
+    $application->update([
+        'status'       => $validated['status'],
+        'review_notes' => $validated['review_notes'] ?? $application->review_notes,
+        'reviewed_by'  => Auth::id(),
+        'is_read'      => false, // kandidat belum baca update ini
+    ]);
 
-        $statusLabel = match ($validated['status']) {
-            'pending'     => 'Pending',
-            'review'      => 'Sedang Direview',
-            'lolos'       => 'Lolos',
-            'tidak_lolos' => 'Tidak Lolos',
-        };
-
-        return redirect()
-            ->back()
-            ->with('success', "Status kandidat berhasil diubah menjadi \"{$statusLabel}\".");
+    // Kirim email kalau lolos
+    if ($validated['status'] === 'lolos') {
+        Mail::raw(
+            "Selamat {$application->user->first_name}!\n\nLamaran kamu untuk posisi {$application->jobVacancy->title} di PT Nusantara Turbin dan Propulsi telah LOLOS seleksi.\n\nTim HR kami akan segera menghubungimu untuk tahap selanjutnya.\n\nSalam,\nTim HR NTP",
+            function ($mail) use ($application) {
+                $mail->to($application->user->email, $application->user->first_name)
+                     ->subject("[NTP Careers] Selamat! Lamaran Kamu Lolos Seleksi");
+            }
+        );
     }
+
+    $statusLabel = match ($validated['status']) {
+        'pending'     => 'Pending',
+        'review'      => 'Sedang Direview',
+        'lolos'       => 'Lolos',
+        'tidak_lolos' => 'Tidak Lolos',
+    };
+
+    return redirect()->back()->with('success', "Status kandidat berhasil diubah menjadi \"{$statusLabel}\".");
+}
 
     /**
      * Bulk update status untuk banyak kandidat sekaligus.

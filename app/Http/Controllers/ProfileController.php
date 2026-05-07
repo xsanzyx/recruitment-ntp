@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -9,9 +10,21 @@ use Illuminate\Support\Facades\Storage;
 class ProfileController extends Controller
 {
     public function show()
-    {
-        return view('pages.guest.profile', ['user' => Auth::user()]);
-    }
+{
+    $user = Auth::user();
+
+    $applications = Application::with('jobVacancy')
+        ->where('user_id', $user->id)
+        ->latest('applied_at')
+        ->get();
+
+    // Mark semua sebagai sudah dibaca
+    Application::where('user_id', $user->id)
+        ->where('is_read', false)
+        ->update(['is_read' => true]);
+
+    return view('pages.guest.profile', compact('user', 'applications'));
+}
 
     public function update(Request $request)
     {

@@ -11,23 +11,24 @@ class Application extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'job_vacancy_id',
-        'phone',
-        'birthdate',
-        'gender',
-        'address',
-        'summary',
-        'education',
-        'experience',
-        'cover_letter',
-        'resume_path',
-        'documents',
-        'status',
-        'reviewed_by',
-        'review_notes',
-        'applied_at',
-    ];
+    'user_id',
+    'job_vacancy_id',
+    'phone',
+    'birthdate',
+    'gender',
+    'address',
+    'summary',
+    'education',
+    'experience',
+    'cover_letter',
+    'resume_path',
+    'documents',
+    'status',
+    'is_read',
+    'reviewed_by',
+    'review_notes',
+    'applied_at',
+];
 
     protected function casts(): array
     {
