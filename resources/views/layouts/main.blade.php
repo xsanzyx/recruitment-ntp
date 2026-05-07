@@ -119,9 +119,22 @@
             {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
         </strong>
 
+        @php
+            $unreadCount = auth()->check()
+                ? \App\Models\Application::where('user_id', auth()->id())
+                    ->where('is_read', false)
+                    ->count()
+                : 0;
+        @endphp
+
         <a href="{{ route('profile') }}" class="btn w-100 mt-2 btn-sm d-block text-decoration-none"
-           style="background:rgba(0,40,112,0.06);color:var(--primary-color);border:1px solid rgba(0,40,112,0.12);border-radius:8px;font-weight:600;padding:7px;font-size:12px;">
-            <i class="bi bi-person-gear me-1"></i> Edit Profil
+        style="background:rgba(0,40,112,0.06);color:var(--primary-color);border:1px solid rgba(0,40,112,0.12);border-radius:8px;font-weight:600;padding:7px;font-size:12px;position:relative;">
+            <i class="bi bi-person me-1"></i> Profil & Lamaran
+            @if($unreadCount > 0)
+            <span style="position:absolute;top:-6px;right:-4px;background:#ef4444;color:#fff;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                {{ $unreadCount }}
+            </span>
+            @endif
         </a>
 
         @if(in_array(Auth::user()->role, ['hr', 'admin']))

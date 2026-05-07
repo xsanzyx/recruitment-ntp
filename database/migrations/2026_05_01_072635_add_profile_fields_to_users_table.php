@@ -10,9 +10,6 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('avatar')->nullable()->after('last_name');
-            $table->text('bio')->nullable()->after('avatar');
-            $table->string('portfolio_url')->nullable()->after('bio');
-            $table->string('linkedin_url')->nullable()->after('portfolio_url');
         });
     }
 
