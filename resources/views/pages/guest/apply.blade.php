@@ -6,238 +6,143 @@
 <div class="container" style="max-width: 780px;">
 
     <div class="fade-up mb-4">
-        <small class="section-label"><i class="bi bi-send me-2"></i>Form Lamaran</small>
+        <small class="section-label"><i class="bi bi-send me-2"></i>Konfirmasi Lamaran</small>
         <h1 class="hero-title mt-2">Lamar — {{ $vacancy->title }}</h1>
-        <p class="hero-subtitle">{{ $vacancy->division }}. Lengkapi 4 langkah berikut untuk mengirim lamaranmu.</p>
+        <p class="hero-subtitle">{{ $vacancy->division }} · {{ $vacancy->department }}</p>
     </div>
 
-    <div class="fade-up mb-4">
-        <div class="d-flex align-items-center gap-2 flex-wrap" id="step-indicator">
-            @foreach([
-                ['icon'=>'bi-person','label'=>'Data Diri'],
-                ['icon'=>'bi-mortarboard','label'=>'Pendidikan'],
-                ['icon'=>'bi-briefcase','label'=>'Pengalaman'],
-                ['icon'=>'bi-file-earmark','label'=>'Dokumen'],
-            ] as $i => $s)
-            <div class="step-pill {{ $i === 0 ? 'active' : '' }}" data-step="{{ $i }}">
-                <i class="bi {{ $s['icon'] }}"></i> {{ $s['label'] }}
+    {{-- ═══ ELIGIBILITY CHECK ═══ --}}
+    @if(!$eligibility['eligible'])
+    <div class="fade-up mb-4" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:16px;padding:28px;">
+        <div class="d-flex align-items-start gap-3">
+            <i class="bi bi-shield-x" style="font-size:28px;color:#dc2626;flex-shrink:0;"></i>
+            <div>
+                <h5 style="font-weight:700;color:#dc2626;margin-bottom:8px;">Kamu Tidak Memenuhi Syarat</h5>
+                <p style="font-size:14px;color:#7f1d1d;margin-bottom:12px;">Maaf, profilmu tidak sesuai dengan kriteria lowongan ini:</p>
+                <ul style="margin:0;padding-left:20px;color:#991b1b;font-size:14px;">
+                    @foreach($eligibility['reasons'] as $reason)
+                    <li class="mb-1">{{ $reason }}</li>
+                    @endforeach
+                </ul>
+                <a href="{{ route('lowongan') }}" class="btn mt-3 px-4 py-2" style="border-radius:10px;border:1px solid rgba(239,68,68,0.3);color:#dc2626;font-size:13px;font-weight:600;">
+                    <i class="bi bi-arrow-left me-2"></i>Kembali ke Lowongan
+                </a>
             </div>
-            @if($i < 3)
-            <div class="step-line"></div>
+        </div>
+    </div>
+    @else
+
+    {{-- ═══ RINGKASAN PROFIL ═══ --}}
+    <div class="fade-up mb-4" style="background:#fff;border-radius:16px;padding:28px;border:1px solid #e8edf5;box-shadow:0 4px 20px rgba(0,40,112,0.06);">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 style="font-weight:700;color:var(--primary-color);margin:0;">Ringkasan Profilmu</h5>
+            <a href="{{ route('profile') }}" style="font-size:13px;color:var(--primary-color);font-weight:600;text-decoration:none;">
+                <i class="bi bi-pencil me-1"></i>Edit Profil
+            </a>
+        </div>
+
+        <div class="row g-3" style="font-size:14px;">
+            <div class="col-md-6">
+                <div style="color:#64748b;">Nama</div>
+                <div style="font-weight:600;color:#0f172a;">{{ auth()->user()->full_name }}</div>
+            </div>
+            <div class="col-md-6">
+                <div style="color:#64748b;">Email</div>
+                <div style="font-weight:600;color:#0f172a;">{{ auth()->user()->email }}</div>
+            </div>
+            <div class="col-md-6">
+                <div style="color:#64748b;">Telepon</div>
+                <div style="font-weight:600;color:#0f172a;">{{ $profile->phone }}</div>
+            </div>
+            <div class="col-md-6">
+                <div style="color:#64748b;">Jenis Kelamin / Umur</div>
+                <div style="font-weight:600;color:#0f172a;">{{ $profile->gender }} · {{ $profile->getAge() }} tahun</div>
+            </div>
+            <div class="col-md-6">
+                <div style="color:#64748b;">Pendidikan Terakhir</div>
+                <div style="font-weight:600;color:#0f172a;">{{ $profile->getHighestEducationLevel() ?? '-' }}</div>
+            </div>
+            <div class="col-md-6">
+                <div style="color:#64748b;">IPK / Nilai Akhir</div>
+                <div style="font-weight:600;color:#0f172a;">{{ $profile->gpa ?? '-' }}</div>
+            </div>
+
+            {{-- Link Profil --}}
+            @if(auth()->user()->portfolio_url || auth()->user()->linkedin_url)
+            <div class="col-12" style="border-top:1px solid #e8edf5;padding-top:12px;margin-top:4px;">
+                <div style="color:#64748b;margin-bottom:6px;">Link Profil</div>
+                <div class="d-flex flex-wrap gap-3">
+                    @if(auth()->user()->portfolio_url)
+                    <a href="{{ auth()->user()->portfolio_url }}" target="_blank" style="font-size:13px;color:var(--primary-color);font-weight:600;text-decoration:none;">
+                        <i class="bi bi-briefcase me-1"></i>Portfolio
+                    </a>
+                    @endif
+                    @if(auth()->user()->linkedin_url)
+                    <a href="{{ auth()->user()->linkedin_url }}" target="_blank" style="font-size:13px;color:var(--primary-color);font-weight:600;text-decoration:none;">
+                        <i class="bi bi-linkedin me-1"></i>LinkedIn
+                    </a>
+                    @endif
+                </div>
+            </div>
             @endif
-            @endforeach
+
+            {{-- Pengalaman Kerja --}}
+            @if(!empty($profile->experience))
+            <div class="col-12" style="border-top:1px solid #e8edf5;padding-top:12px;margin-top:4px;">
+                <div style="color:#64748b;margin-bottom:8px;">Pengalaman Kerja</div>
+                @foreach($profile->experience as $exp)
+                <div style="margin-bottom:8px;">
+                    <div style="font-weight:600;color:#0f172a;font-size:13px;">{{ $exp['position'] ?? '-' }} — {{ $exp['company'] ?? '-' }}</div>
+                    <div style="font-size:12px;color:#94a3b8;">
+                        {{ $exp['year_start'] ?? '' }} - {{ !empty($exp['current']) ? 'Sekarang' : ($exp['year_end'] ?? '') }}
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+            <div class="col-12" style="border-top:1px solid #e8edf5;padding-top:12px;margin-top:4px;">
+                <div style="color:#64748b;">CV</div>
+                <div style="font-weight:600;color:#0f172a;">
+                    <i class="bi bi-file-earmark-pdf me-1" style="color:var(--primary-color);"></i>
+                    CV telah diupload
+                    <a href="{{ Storage::url($profile->resume_path) }}" target="_blank" style="font-size:12px;color:var(--primary-color);margin-left:6px;">Lihat</a>
+                </div>
+            </div>
         </div>
     </div>
 
-    @if($errors->any())
-    <div class="fade-up" style="background:rgba(186,26,26,0.08);border:1px solid rgba(186,26,26,0.2);border-radius:10px;padding:14px 18px;margin-bottom:20px;">
-        <strong style="color:#ba1a1a;">Ada kesalahan:</strong>
-        <ul style="margin:8px 0 0;color:#ba1a1a;font-size:14px;">
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+    {{-- ═══ SYARAT LOWONGAN ═══ --}}
+    <div class="fade-up mb-4" style="background:#f0fdf4;border-radius:16px;padding:20px 28px;border:1px solid #bbf7d0;">
+        <div class="d-flex align-items-center gap-2 mb-2">
+            <i class="bi bi-check-circle-fill" style="color:#16a34a;font-size:20px;"></i>
+            <strong style="color:#166534;font-size:15px;">Kamu memenuhi semua syarat!</strong>
+        </div>
+        <p style="font-size:13px;color:#15803d;margin:0;">Profilmu sesuai dengan kriteria lowongan ini. Silakan kirim lamaranmu.</p>
     </div>
-    @endif
 
-    <form action="{{ route('apply.store', $vacancy->id) }}" method="POST" enctype="multipart/form-data" id="apply-form">
+    {{-- ═══ FORM LAMARAN ═══ --}}
+    <form action="{{ route('apply.store', $vacancy->id) }}" method="POST">
         @csrf
 
-        {{-- STEP 1: DATA DIRI --}}
-        <div class="step-content fade-up" data-step="0">
-            <div style="background:#fff;border-radius:16px;padding:32px;border:1px solid #e8edf5;box-shadow:0 4px 20px rgba(0,40,112,0.06);">
-                <h5 style="font-weight:700;color:var(--primary-color);margin-bottom:24px;">Data Diri</h5>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="apply-label">Nama Lengkap</label>
-                        <input type="text" class="apply-input" value="{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}" disabled>
-                        <small class="text-muted" style="font-size:11px;">Sesuai akun terdaftar</small>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="apply-label">Email</label>
-                        <input type="email" class="apply-input" value="{{ Auth::user()->email }}" disabled>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="apply-label">No. Telepon / WhatsApp *</label>
-                        <input type="text" name="phone" id="phone" class="apply-input" placeholder="+62 812 3456 7890" value="{{ old('phone') }}">
-                        @error('phone')<small class="text-danger">{{ $message }}</small>@enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="apply-label">Tanggal Lahir</label>
-                        <input type="date" name="birthdate" class="apply-input" value="{{ old('birthdate') }}">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="apply-label">Jenis Kelamin *</label>
-                        <select name="gender" id="gender" class="apply-input">
-                            <option value="">Pilih</option>
-                            <option value="Laki-laki" {{ old('gender') === 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                            <option value="Perempuan" {{ old('gender') === 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-                        </select>
-                        @error('gender')<small class="text-danger">{{ $message }}</small>@enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="apply-label">Domisili / Kota *</label>
-                        <input type="text" name="address" id="address" class="apply-input" placeholder="Kota / Kabupaten" value="{{ old('address') }}">
-                        @error('address')<small class="text-danger">{{ $message }}</small>@enderror
-                    </div>
-                    <div class="col-12">
-                        <label class="apply-label">Ringkasan Singkat (opsional)</label>
-                        <textarea name="summary" class="apply-input" rows="4" maxlength="500"
-                            placeholder="Ceritakan singkat tentang dirimu, motivasi, dan keunggulan yang kamu bawa..">{{ old('summary') }}</textarea>
-                        <small class="text-muted" style="font-size:11px;" id="summary-count">0/500</small>
-                    </div>
-                </div>
-            </div>
+        <div class="fade-up mb-4" style="background:#fff;border-radius:16px;padding:28px;border:1px solid #e8edf5;box-shadow:0 4px 20px rgba(0,40,112,0.06);">
+            <h5 style="font-weight:700;color:var(--primary-color);margin-bottom:16px;">Pesan untuk HR (opsional)</h5>
+            <textarea name="summary" class="apply-input" rows="4" maxlength="500"
+                placeholder="Ceritakan motivasimu melamar posisi ini...">{{ old('summary') }}</textarea>
+            <small class="text-muted" style="font-size:11px;">Maksimal 500 karakter</small>
         </div>
 
-        {{-- STEP 2: PENDIDIKAN --}}
-        <div class="step-content fade-up" data-step="1" style="display:none;">
-            <div style="background:#fff;border-radius:16px;padding:32px;border:1px solid #e8edf5;box-shadow:0 4px 20px rgba(0,40,112,0.06);">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 style="font-weight:700;color:var(--primary-color);margin:0;">Riwayat Pendidikan</h5>
-                    <button type="button" class="btn btn-secondary-custom btn-sm px-3" id="add-edu" style="border-radius:8px;font-size:13px;">
-                        <i class="bi bi-plus me-1"></i>Tambah
-                    </button>
-                </div>
-                <div id="edu-list" class="d-flex flex-column gap-3">
-                    <div class="edu-entry" style="background:#f8faff;border-radius:12px;padding:20px;border:1px solid #e8edf5;">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="apply-label">Jenjang *</label>
-                                <select name="education[0][level]" class="apply-input">
-                                    <option value="">Pilih</option>
-                                    <option value="SMA/SMK">SMA/SMK</option>
-                                    <option value="D3">D3</option>
-                                    <option value="S1">S1</option>
-                                    <option value="S2">S2</option>
-                                    <option value="S3">S3</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="apply-label">Nama Institusi *</label>
-                                <input type="text" name="education[0][institution]" class="apply-input" placeholder="Universitas / Sekolah">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="apply-label">Jurusan / Program Studi</label>
-                                <input type="text" name="education[0][major]" class="apply-input" placeholder="Teknik Informatika">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="apply-label">Tahun Masuk</label>
-                                <input type="number" name="education[0][year_start]" class="apply-input year-input" placeholder="2018" min="1900" max="2030">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="apply-label">Tahun Lulus</label>
-                                <input type="number" name="education[0][year_end]" class="apply-input year-input" placeholder="2022" min="1900" max="2030">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="apply-label">IPK / Nilai</label>
-                                <input type="text" name="education[0][gpa]" class="apply-input" placeholder="3.75">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- STEP 3: PENGALAMAN --}}
-        <div class="step-content fade-up" data-step="2" style="display:none;">
-            <div style="background:#fff;border-radius:16px;padding:32px;border:1px solid #e8edf5;box-shadow:0 4px 20px rgba(0,40,112,0.06);">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 style="font-weight:700;color:var(--primary-color);margin:0;">Pengalaman Kerja</h5>
-                    <button type="button" class="btn btn-secondary-custom btn-sm px-3" id="add-exp" style="border-radius:8px;font-size:13px;">
-                        <i class="bi bi-plus me-1"></i>Tambah
-                    </button>
-                </div>
-                <p style="font-size:13px;color:#64748b;margin-bottom:16px;">Kosongkan jika belum memiliki pengalaman kerja.</p>
-                <div id="exp-list" class="d-flex flex-column gap-3">
-                    <div class="exp-entry" style="background:#f8faff;border-radius:12px;padding:20px;border:1px solid #e8edf5;">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="apply-label">Posisi / Jabatan</label>
-                                <input type="text" name="experience[0][position]" class="apply-input" placeholder="Software Engineer">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="apply-label">Nama Perusahaan</label>
-                                <input type="text" name="experience[0][company]" class="apply-input" placeholder="PT Contoh Indonesia">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="apply-label">Tahun Mulai</label>
-                                <input type="number" name="experience[0][year_start]" class="apply-input year-input" placeholder="2020" min="1900" max="2030">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="apply-label">Tahun Selesai</label>
-                                <input type="number" name="experience[0][year_end]" class="apply-input year-input" placeholder="2023" min="1900" max="2030">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="apply-label">Masih Bekerja?</label>
-                                <select name="experience[0][current]" class="apply-input">
-                                    <option value="0">Tidak</option>
-                                    <option value="1">Ya (masih aktif)</option>
-                                </select>
-                            </div>
-                            <div class="col-12">
-                                <label class="apply-label">Deskripsi Pekerjaan</label>
-                                <textarea name="experience[0][description]" class="apply-input" rows="3"
-                                    placeholder="Jelaskan tanggung jawab dan pencapaian kamu..."></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- STEP 4: DOKUMEN --}}
-        <div class="step-content fade-up" data-step="3" style="display:none;">
-            <div style="background:#fff;border-radius:16px;padding:32px;border:1px solid #e8edf5;box-shadow:0 4px 20px rgba(0,40,112,0.06);">
-                <h5 style="font-weight:700;color:var(--primary-color);margin-bottom:24px;">Upload Dokumen</h5>
-                <div class="row g-4">
-                    <div class="col-12">
-                        <label class="apply-label">CV / Resume * <span style="font-size:11px;color:#64748b;">(PDF, maks 5MB)</span></label>
-                        <div class="upload-area" id="cv-area" style="position:relative;">
-                            <i class="bi bi-file-earmark-pdf" style="font-size:32px;color:var(--primary-color);margin-bottom:8px;display:block;"></i>
-                            <p style="margin:0;font-size:14px;font-weight:600;color:var(--primary-color);">Klik atau drag & drop CV kamu</p>
-                            <p style="margin:4px 0 0;font-size:12px;color:#64748b;">Format PDF, maksimal 5MB</p>
-                            <input type="file" id="cv-input" name="resume" accept=".pdf" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;">
-                        </div>
-                        <div id="cv-name" style="display:none;margin-top:8px;padding:10px 14px;background:#f0fdf4;border-radius:8px;border:1px solid #bbf7d0;font-size:13px;color:#166534;">
-                            <i class="bi bi-check-circle me-2"></i><span></span>
-                        </div>
-                        @error('resume')<small class="text-danger d-block mt-1">{{ $message }}</small>@enderror
-                    </div>
-
-                    <div class="col-12">
-                        <label class="apply-label">Dokumen Pendukung <span style="font-size:11px;color:#64748b;">(sertifikat, portofolio — PDF/JPG, maks 5MB/file)</span></label>
-                        <div class="upload-area" id="docs-area" style="position:relative;">
-                            <i class="bi bi-paperclip" style="font-size:28px;color:#94a3b8;margin-bottom:8px;display:block;"></i>
-                            <p style="margin:0;font-size:14px;font-weight:600;color:#64748b;">Tambah dokumen pendukung</p>
-                            <p style="margin:4px 0 0;font-size:12px;color:#94a3b8;">Bisa pilih beberapa file sekaligus</p>
-                            <input type="file" id="docs-input" accept=".pdf,.jpg,.jpeg,.png" multiple style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;">
-                        </div>
-                        {{-- Hidden inputs untuk dokumen terkumpul --}}
-                        <div id="docs-hidden"></div>
-                        <div id="docs-list" class="d-flex flex-column gap-2 mt-2"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Navigation --}}
-        <div class="d-flex justify-content-between mt-4 fade-up">
-            <button type="button" id="btn-prev" class="btn px-4 py-2"
-                style="border-radius:10px;display:none;align-items:center;">
-                <i class="bi bi-arrow-left me-2"></i>Kembali
+        <div class="fade-up d-flex justify-content-between">
+            <a href="{{ route('lowongan') }}" class="btn px-4 py-2" style="border-radius:10px;border:1px solid #e5e7eb;color:#64748b;">
+                <i class="bi bi-arrow-left me-2"></i>Batal
+            </a>
+            <button type="submit" class="btn btn-secondary-custom px-4 py-2" style="border-radius:10px;">
+                <i class="bi bi-send me-2"></i>Kirim Lamaran
             </button>
-            <div class="ms-auto d-flex gap-2">
-                <button type="button" id="btn-next" class="btn btn-secondary-custom px-4 py-2" style="border-radius:10px;">
-                    Lanjut <i class="bi bi-arrow-right ms-2"></i>
-                </button>
-                <button type="button" id="btn-submit" class="btn btn-secondary-custom px-4 py-2" style="border-radius:10px;display:none;">
-                    <i class="bi bi-send me-2"></i>Kirim Lamaran
-                </button>
-            </div>
         </div>
-
     </form>
+    @endif
+
 </div>
 </section>
 
@@ -247,7 +152,4 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/pages/apply.css') }}">
-@endpush
-@push('scripts')
-    <script src="{{ asset('js/apply.js') }}"></script>
 @endpush

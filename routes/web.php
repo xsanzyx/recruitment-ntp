@@ -58,6 +58,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/profile',  [ProfileController::class, 'show'])->name('profile');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile/resume',   [ProfileController::class, 'deleteResume'])->name('profile.deleteResume');
+    Route::delete('/profile/document', [ProfileController::class, 'deleteDocument'])->name('profile.deleteDocument');
 });
 
 // =============================================
