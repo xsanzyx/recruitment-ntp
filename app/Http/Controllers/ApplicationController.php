@@ -6,7 +6,6 @@ use App\Models\Application;
 use App\Models\JobVacancy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class ApplicationController extends Controller
 {
@@ -16,7 +15,10 @@ class ApplicationController extends Controller
             ->where('status', 'open')
             ->firstOrFail();
 
-        $already = Application::where('user_id', Auth::id())
+        $user = Auth::user();
+
+        // Cek duplikat
+        $already = Application::where('user_id', $user->id)
             ->where('job_vacancy_id', $vacancyId)
             ->exists();
 
@@ -25,7 +27,25 @@ class ApplicationController extends Controller
                 ->with('error', 'Kamu sudah pernah melamar posisi ini.');
         }
 
-        return view('pages.guest.apply', compact('vacancy'));
+        // Ambil atau buat profil
+        $profile = $user->profile;
+
+        // Cek apakah profil lengkap
+        if (!$profile || !$profile->isProfileComplete()) {
+            $missing = $profile ? $profile->getMissingFields() : [
+                'No. Telepon', 'Tanggal Lahir', 'Jenis Kelamin',
+                'Domisili', 'Riwayat Pendidikan', 'IPK / Nilai Akhir', 'CV / Resume'
+            ];
+
+            return redirect()->route('profile')
+                ->with('warning', 'Lengkapi profilmu terlebih dahulu sebelum melamar.')
+                ->with('missing_fields', $missing);
+        }
+
+        // Cek eligibility
+        $eligibility = $vacancy->checkEligibility($profile);
+
+        return view('pages.guest.apply', compact('vacancy', 'profile', 'eligibility'));
     }
 
     public function store(Request $request, $vacancyId)
@@ -34,25 +54,24 @@ class ApplicationController extends Controller
             ->where('status', 'open')
             ->firstOrFail();
 
-        $request->validate([
-            'phone'        => 'required|string|max:20',
-            'birthdate'    => 'nullable|date',
-            'gender'       => 'required|in:Laki-laki,Perempuan',
-            'address'      => 'required|string|max:255',
-            'summary'      => 'nullable|string|max:500',
-            'education'    => 'nullable|array',
-            'experience'   => 'nullable|array',
-            'resume'       => 'required|file|mimes:pdf|max:5120',
-            'documents.*'  => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
-        ], [
-            'phone.required'  => 'Nomor telepon wajib diisi.',
-            'resume.required' => 'CV wajib diupload.',
-            'resume.mimes'    => 'CV harus berformat PDF.',
-            'resume.max'      => 'Ukuran CV maksimal 5MB.',
-        ]);
+        $user = Auth::user();
+        $profile = $user->profile;
 
-        // Cek duplikat sekali lagi (race condition guard)
-        $already = Application::where('user_id', Auth::id())
+        // Validasi profil lengkap
+        if (!$profile || !$profile->isProfileComplete()) {
+            return redirect()->route('profile')
+                ->with('warning', 'Lengkapi profilmu terlebih dahulu.');
+        }
+
+        // Validasi eligibility
+        $eligibility = $vacancy->checkEligibility($profile);
+        if (!$eligibility['eligible']) {
+            return redirect()->route('lowongan')
+                ->with('error', 'Kamu tidak memenuhi syarat untuk lowongan ini.');
+        }
+
+        // Cek duplikat (race condition guard)
+        $already = Application::where('user_id', $user->id)
             ->where('job_vacancy_id', $vacancyId)
             ->exists();
 
@@ -61,30 +80,23 @@ class ApplicationController extends Controller
                 ->with('error', 'Kamu sudah pernah melamar posisi ini.');
         }
 
-        $resumePath    = $request->file('resume')->store('resumes', 'public');
-        $documentPaths = [];
+        $request->validate([
+            'summary' => 'nullable|string|max:500',
+        ]);
 
-        if ($request->hasFile('documents')) {
-            foreach ($request->file('documents') as $doc) {
-                $documentPaths[] = [
-                    'name' => $doc->getClientOriginalName(),
-                    'path' => $doc->store('documents', 'public'),
-                ];
-            }
-        }
-
+        // Buat lamaran — data diambil dari profil
         Application::create([
-            'user_id'        => Auth::id(),
+            'user_id'        => $user->id,
             'job_vacancy_id' => $vacancyId,
-            'phone'          => $request->phone,
-            'birthdate'      => $request->birthdate ?: null,
-            'gender'         => $request->gender ?: null,
-            'address'        => $request->address ?: null,
-            'summary'        => $request->summary ?: null,
-            'education'      => $request->education ?: null,
-            'experience'     => $request->experience ?: null,
-            'resume_path'    => $resumePath,
-            'documents'      => !empty($documentPaths) ? $documentPaths : null,
+            'phone'          => $profile->phone,
+            'birthdate'      => $profile->birth_date,
+            'gender'         => $profile->gender,
+            'address'        => $profile->address,
+            'summary'        => $request->summary ?: $profile->summary,
+            'education'      => $profile->education,
+            'experience'     => $profile->experience,
+            'resume_path'    => $profile->resume_path,
+            'documents'      => $profile->documents,
             'status'         => 'pending',
             'applied_at'     => now(),
         ]);

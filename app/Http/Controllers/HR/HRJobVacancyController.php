@@ -53,13 +53,17 @@ class HRJobVacancyController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title'        => 'required|string|max:255',
-            'department'   => 'required|string|max:255',
-            'description'  => 'required|string',
-            'requirements' => 'required|string',
-            'division'     => 'required|string|max:255',
-            'type'         => 'required|in:full-time,part-time,contract',
-            'deadline'     => 'required|date|after:today',
+            'title'              => 'required|string|max:255',
+            'department'         => 'required|string|max:255',
+            'description'        => 'required|string',
+            'requirements'       => 'required|string',
+            'division'           => 'required|string|max:255',
+            'type'               => 'required|in:full-time,part-time,contract',
+            'deadline'           => 'required|date|after:today',
+            'min_age'            => 'nullable|integer|min:15|max:65',
+            'max_age'            => 'nullable|integer|min:15|max:65',
+            'gender_requirement' => 'nullable|in:Laki-laki,Perempuan,Semua',
+            'min_education'      => 'nullable|in:SMA/SMK,D3,S1,S2,S3',
         ], [
             'title.required'        => 'Judul lowongan wajib diisi.',
             'department.required'   => 'Departemen wajib diisi.',
@@ -113,13 +117,17 @@ class HRJobVacancyController extends Controller
         $vacancy = $this->baseQuery()->findOrFail($id);
 
         $validated = $request->validate([
-            'title'        => 'required|string|max:255',
-            'department'   => 'required|string|max:255',
-            'description'  => 'required|string',
-            'requirements' => 'required|string',
-            'division'     => 'required|string|max:255',
-            'type'         => 'required|in:full-time,part-time,contract',
-            'deadline'     => 'required|date|after:today',
+            'title'              => 'required|string|max:255',
+            'department'         => 'required|string|max:255',
+            'description'        => 'required|string',
+            'requirements'       => 'required|string',
+            'division'           => 'required|string|max:255',
+            'type'               => 'required|in:full-time,part-time,contract',
+            'deadline'           => 'required|date|after:today',
+            'min_age'            => 'nullable|integer|min:15|max:65',
+            'max_age'            => 'nullable|integer|min:15|max:65',
+            'gender_requirement' => 'nullable|in:Laki-laki,Perempuan,Semua',
+            'min_education'      => 'nullable|in:SMA/SMK,D3,S1,S2,S3',
         ], [
             'title.required'        => 'Judul lowongan wajib diisi.',
             'department.required'   => 'Departemen wajib diisi.',

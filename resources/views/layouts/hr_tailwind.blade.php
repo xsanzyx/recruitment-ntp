@@ -269,6 +269,57 @@
                                      focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10 transition-all"></textarea>
                 </div>
 
+                {{-- Kriteria Eligibility --}}
+                <div class="border border-dashed border-gray-300 rounded-lg p-5 space-y-4 bg-gray-50/50">
+                    <label class="text-[11px] font-bold uppercase tracking-wider text-[#002870] flex items-center gap-2">
+                        <span class="material-symbols-outlined" style="font-size:16px;">filter_alt</span>
+                        Kriteria Pelamar
+                    </label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[11px] font-semibold text-gray-500">Umur Minimal</label>
+                            <input type="number" name="min_age" placeholder="cth: 18" min="15" max="65"
+                                   class="h-10 px-3 bg-white border border-gray-200 rounded-lg text-sm outline-none
+                                          focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[11px] font-semibold text-gray-500">Umur Maksimal</label>
+                            <input type="number" name="max_age" placeholder="cth: 35" min="15" max="65"
+                                   class="h-10 px-3 bg-white border border-gray-200 rounded-lg text-sm outline-none
+                                          focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[11px] font-semibold text-gray-500">Jenis Kelamin</label>
+                            <div class="relative">
+                                <select name="gender_requirement"
+                                        class="w-full h-10 px-3 bg-white border border-gray-200 rounded-lg text-sm outline-none
+                                               appearance-none focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10">
+                                    <option value="Semua">Semua</option>
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                                <span class="material-symbols-outlined absolute right-2 top-2 text-gray-400 pointer-events-none" style="font-size:16px;">expand_more</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[11px] font-semibold text-gray-500">Pendidikan Minimal</label>
+                            <div class="relative">
+                                <select name="min_education"
+                                        class="w-full h-10 px-3 bg-white border border-gray-200 rounded-lg text-sm outline-none
+                                               appearance-none focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10">
+                                    <option value="">Tidak ada syarat</option>
+                                    <option value="SMA/SMK">SMA/SMK</option>
+                                    <option value="D3">D3</option>
+                                    <option value="S1">S1</option>
+                                    <option value="S2">S2</option>
+                                    <option value="S3">S3</option>
+                                </select>
+                                <span class="material-symbols-outlined absolute right-2 top-2 text-gray-400 pointer-events-none" style="font-size:16px;">expand_more</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             {{-- Modal Footer --}}
