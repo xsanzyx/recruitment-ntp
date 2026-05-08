@@ -139,6 +139,21 @@
 
     <div class="sidebar-bottom mt-auto">
         <div class="cta-box mb-3 text-center">
+            
+            {{-- Avatar --}}
+            <a href="{{ route('profile') }}" style="text-decoration:none;">
+                <div style="width:56px;height:56px;border-radius:50%;overflow:hidden;border:2px solid rgba(0,40,112,0.15);margin:0 auto 10px;cursor:pointer;">
+                    @if(Auth::user()->avatar)
+                        <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="Avatar"
+                             style="width:100%;height:100%;object-fit:cover;">
+                    @else
+                        <div style="width:100%;height:100%;background:rgba(0,40,112,0.06);display:flex;align-items:center;justify-content:center;">
+                            <i class="bi bi-person-fill" style="font-size:26px;color:var(--primary-color);"></i>
+                        </div>
+                    @endif
+                </div>
+            </a>
+
             <small class="text-[#94a3b8] block mb-2" style="font-size:11px;">Selamat datang,</small>
             <strong style="color:var(--primary-color);font-size:14px;">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</strong>
             <div style="font-size:11px; color:#94a3b8; margin-top:2px;">Administrator</div>
