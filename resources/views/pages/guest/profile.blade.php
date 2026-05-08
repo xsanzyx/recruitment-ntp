@@ -40,7 +40,7 @@
     </div>
     @endif
 
-    <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+    <form id="profile-form" action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         {{-- ═══ AVATAR & LINK PROFIL ═══ --}}
@@ -144,7 +144,11 @@
         {{-- ═══ TOMBOL SIMPAN ═══ --}}
         <div class="fade-up d-flex justify-content-end gap-3">
             <a href="{{ route('home') }}" class="btn px-4 py-2" style="border-radius:10px;border:1px solid #e5e7eb;color:#64748b;">Batal</a>
-            <button type="submit" class="btn btn-secondary-custom px-4 py-2" style="border-radius:10px;">
+            @php $hasErrors = $errors->any(); @endphp
+            <button id="btn-save-profile" type="submit" 
+                    class="btn {{ $hasErrors ? 'btn-secondary-custom' : '' }} px-4 py-2" 
+                    style="border-radius:10px; transition:all 0.3s; {{ $hasErrors ? '' : 'border:1px solid #e5e7eb; color:#64748b; background:transparent;' }}" 
+                    {{ $hasErrors ? '' : 'disabled' }}>
                 <i class="bi bi-check-lg me-2"></i>Simpan Perubahan
             </button>
         </div>
