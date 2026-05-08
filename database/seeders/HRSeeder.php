@@ -26,6 +26,7 @@ class HRSeeder extends Seeder
                 'last_name'         => 'Dewi',
                 'password'          => Hash::make('password'),
                 'role'              => 'hr',
+                'status'            => 'active',
                 'email_verified_at' => now(),
             ]
         );
