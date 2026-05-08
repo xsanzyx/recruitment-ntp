@@ -197,6 +197,26 @@
         {{-- Modal Form --}}
         <form method="POST" action="{{ route('hr.vacancies.store') }}" id="vacancyModalForm">
             @csrf
+            
+            @if ($errors->any())
+                <div class="px-8 pt-5">
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg shadow-sm">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 mt-0.5">
+                                <span class="material-symbols-outlined text-red-500" style="font-size:20px;">error</span>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-bold text-red-800">Gagal menyimpan:</h3>
+                                <ul class="mt-1 text-xs text-red-700 list-disc list-inside">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
             <div class="p-8 space-y-5 max-h-[70vh] overflow-y-auto">
 
                 {{-- Row 1: Judul + Departemen --}}
@@ -368,6 +388,13 @@
         document.getElementById('vacancyModal').classList.add('open');
         document.body.style.overflow = 'hidden';
     }
+    
+    @if ($errors->any())
+    // Auto-open modal if there are validation errors
+    document.addEventListener('DOMContentLoaded', function() {
+        openVacancyModal();
+    });
+    @endif
     function closeVacancyModal() {
         document.getElementById('vacancyModal').classList.remove('open');
         document.body.style.overflow = '';
