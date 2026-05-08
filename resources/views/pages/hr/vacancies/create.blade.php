@@ -5,19 +5,38 @@
 @section('content')
 
 {{-- ═══════════════ HEADER ═══════════════ --}}
-<header class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-    <div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-[#002870] tracking-tight">Tambah Lowongan</h1>
-        <p class="text-gray-500 text-sm mt-1">Buat lowongan kerja baru</p>
-    </div>
-    <a href="{{ route('hr.vacancies.index') }}"
-       class="flex items-center gap-1.5 px-4 py-2 text-[#002870] font-semibold text-sm border border-[#002870]/20 rounded-lg hover:bg-[#002870]/5 transition-all">
-        <span class="material-symbols-outlined" style="font-size:16px;">arrow_back</span> Kembali
-    </a>
-</header>
+<div class="max-w-4xl mx-auto">
+    <header class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-[#002870] tracking-tight">Tambah Lowongan</h1>
+            <p class="text-gray-500 text-sm mt-1">Buat lowongan kerja baru</p>
+        </div>
+        <a href="{{ route('hr.vacancies.index') }}"
+           class="flex items-center gap-1.5 px-4 py-2 text-[#002870] font-semibold text-sm border border-[#002870]/20 rounded-lg hover:bg-[#002870]/5 transition-all">
+            <span class="material-symbols-outlined" style="font-size:16px;">arrow_back</span> Kembali
+        </a>
+    </header>
 
-<form method="POST" action="{{ route('hr.vacancies.store') }}" class="space-y-8 max-w-4xl">
-    @csrf
+    @if ($errors->any())
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-8 rounded-r-lg shadow-sm">
+            <div class="flex items-start">
+                <div class="flex-shrink-0 mt-0.5">
+                    <span class="material-symbols-outlined text-red-500" style="font-size:20px;">error</span>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-bold text-red-800">Gagal menyimpan lowongan. Silakan periksa kembali:</h3>
+                    <ul class="mt-2 text-sm text-red-700 list-disc list-inside space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <form method="POST" action="{{ route('hr.vacancies.store') }}" class="space-y-8">
+        @csrf
 
     {{-- ═══ CARD 1: INFORMASI LOWONGAN ═══ --}}
     <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
@@ -77,7 +96,7 @@
                 <!-- Deadline -->
                 <div>
                     <label for="deadline" class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Deadline <span class="text-red-500">*</span></label>
-                    <input type="date" name="deadline" id="deadline" class="w-full h-11 px-4 bg-slate-50 border {{ $errors->has('deadline') ? 'border-red-400' : 'border-gray-200' }} rounded-xl text-sm font-medium outline-none focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10 transition-all" value="{{ old('deadline') }}" min="{{ date('Y-m-d', strtotime('+1 day')) }}">
+                    <input type="date" name="deadline" id="deadline" max="9999-12-31" class="w-full h-11 px-4 bg-slate-50 border {{ $errors->has('deadline') ? 'border-red-400' : 'border-gray-200' }} rounded-xl text-sm font-medium outline-none focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10 transition-all" value="{{ old('deadline') }}" min="{{ date('Y-m-d', strtotime('+1 day')) }}">
                     @error('deadline')
                         <p class="text-red-500 text-xs mt-1.5">{{ $message }}</p>
                     @enderror
@@ -199,4 +218,5 @@
     </div>
 
 </form>
+</div>
 @endsection
