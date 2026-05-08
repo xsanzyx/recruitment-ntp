@@ -106,7 +106,7 @@
                 <div style="font-weight:600;color:#0f172a;">
                     <i class="bi bi-file-earmark-pdf me-1" style="color:var(--primary-color);"></i>
                     CV telah diupload
-                    <a href="{{ Storage::url($profile->resume_path) }}" target="_blank" style="font-size:12px;color:var(--primary-color);margin-left:6px;">Lihat</a>
+                    <a href="{{ Storage::url($profile->resume_path) }}" target="_blank" rel="noopener" style="font-size:12px;color:var(--primary-color);margin-left:6px;">Lihat</a>
                 </div>
             </div>
         </div>
