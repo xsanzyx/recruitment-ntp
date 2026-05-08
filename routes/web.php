@@ -52,14 +52,15 @@ Route::middleware('guest')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::get('/lowongan/{id}/lamar',  [ApplicationController::class, 'create'])->name('apply.create');
-    Route::post('/lowongan/{id}/lamar', [ApplicationController::class, 'store'])->name('apply.store');
+    Route::middleware(['kandidat'])->group(function () {
+        Route::get('/lowongan/{id}/lamar',  [ApplicationController::class, 'create'])->name('apply.create');
+        Route::post('/lowongan/{id}/lamar', [ApplicationController::class, 'store'])->name('apply.store');
 
-
-    Route::get('/profile',  [ProfileController::class, 'show'])->name('profile');
-    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile/resume',   [ProfileController::class, 'deleteResume'])->name('profile.deleteResume');
-    Route::delete('/profile/document', [ProfileController::class, 'deleteDocument'])->name('profile.deleteDocument');
+        Route::get('/profile',  [ProfileController::class, 'show'])->name('profile');
+        Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile/resume',   [ProfileController::class, 'deleteResume'])->name('profile.deleteResume');
+        Route::delete('/profile/document', [ProfileController::class, 'deleteDocument'])->name('profile.deleteDocument');
+    });
 });
 
 // =============================================
