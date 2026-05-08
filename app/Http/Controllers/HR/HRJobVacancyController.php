@@ -60,10 +60,10 @@ class HRJobVacancyController extends Controller
             'division'           => 'required|string|max:255',
             'type'               => 'required|in:full-time,part-time,contract',
             'deadline'           => 'required|date|after:today',
-            'min_age'            => 'nullable|integer|min:15|max:65',
-            'max_age'            => 'nullable|integer|min:15|max:65',
-            'gender_requirement' => 'nullable|in:Laki-laki,Perempuan,Semua',
-            'min_education'      => 'nullable|in:SMA/SMK,D3,S1,S2,S3',
+            'min_age'            => 'required|integer|min:15|max:65',
+            'max_age'            => 'required|integer|min:15|max:65',
+            'gender_requirement' => 'required|in:Laki-laki,Perempuan,Semua',
+            'min_education'      => 'required|in:SMA/SMK,D3,S1,S2,S3',
         ], [
             'title.required'        => 'Judul lowongan wajib diisi.',
             'department.required'   => 'Departemen wajib diisi.',
@@ -74,6 +74,10 @@ class HRJobVacancyController extends Controller
             'type.in'               => 'Tipe pekerjaan tidak valid.',
             'deadline.required'     => 'Deadline wajib diisi.',
             'deadline.after'        => 'Deadline harus setelah hari ini.',
+            'min_age.required'      => 'Usia minimal wajib diisi.',
+            'max_age.required'      => 'Usia maksimal wajib diisi.',
+            'gender_requirement.required' => 'Persyaratan jenis kelamin wajib dipilih.',
+            'min_education.required'=> 'Pendidikan minimal wajib dipilih.',
         ]);
 
         // Set default status open dan catat HR pembuat
@@ -124,10 +128,10 @@ class HRJobVacancyController extends Controller
             'division'           => 'required|string|max:255',
             'type'               => 'required|in:full-time,part-time,contract',
             'deadline'           => 'required|date|after:today',
-            'min_age'            => 'nullable|integer|min:15|max:65',
-            'max_age'            => 'nullable|integer|min:15|max:65',
-            'gender_requirement' => 'nullable|in:Laki-laki,Perempuan,Semua',
-            'min_education'      => 'nullable|in:SMA/SMK,D3,S1,S2,S3',
+            'min_age'            => 'required|integer|min:15|max:65',
+            'max_age'            => 'required|integer|min:15|max:65',
+            'gender_requirement' => 'required|in:Laki-laki,Perempuan,Semua',
+            'min_education'      => 'required|in:SMA/SMK,D3,S1,S2,S3',
         ], [
             'title.required'        => 'Judul lowongan wajib diisi.',
             'department.required'   => 'Departemen wajib diisi.',
@@ -138,6 +142,10 @@ class HRJobVacancyController extends Controller
             'type.in'               => 'Tipe pekerjaan tidak valid.',
             'deadline.required'     => 'Deadline wajib diisi.',
             'deadline.after'        => 'Deadline harus setelah hari ini.',
+            'min_age.required'      => 'Usia minimal wajib diisi.',
+            'max_age.required'      => 'Usia maksimal wajib diisi.',
+            'gender_requirement.required' => 'Persyaratan jenis kelamin wajib dipilih.',
+            'min_education.required'=> 'Pendidikan minimal wajib dipilih.',
         ]);
 
         $vacancy->update($validated);

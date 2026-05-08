@@ -92,11 +92,11 @@
 
             <!-- Kriteria Kelayakan (Eligibility) -->
             <div class="mt-8 pt-6 border-t border-gray-100">
-                <h3 class="text-lg font-bold text-[#002870] mb-4">Kriteria Kelayakan (Opsional)</h3>
+                <h3 class="text-lg font-bold text-[#002870] mb-4">Kriteria Kelayakan <span class="text-red-500">*</span></h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Usia Minimal -->
                     <div>
-                        <label for="min_age" class="block text-sm font-bold text-gray-700 mb-1">Usia Minimal</label>
+                        <label for="min_age" class="block text-sm font-bold text-gray-700 mb-1">Usia Minimal <span class="text-red-500">*</span></label>
                         <input type="number" name="min_age" id="min_age" min="15" max="65" class="w-full px-4 py-2 border {{ $errors->has('min_age') ? 'border-red-500' : 'border-gray-300' }} rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002870] focus:border-transparent" value="{{ old('min_age', $vacancy->min_age) }}" placeholder="cth: 18">
                         @error('min_age')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -105,7 +105,7 @@
 
                     <!-- Usia Maksimal -->
                     <div>
-                        <label for="max_age" class="block text-sm font-bold text-gray-700 mb-1">Usia Maksimal</label>
+                        <label for="max_age" class="block text-sm font-bold text-gray-700 mb-1">Usia Maksimal <span class="text-red-500">*</span></label>
                         <input type="number" name="max_age" id="max_age" min="15" max="65" class="w-full px-4 py-2 border {{ $errors->has('max_age') ? 'border-red-500' : 'border-gray-300' }} rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002870] focus:border-transparent" value="{{ old('max_age', $vacancy->max_age) }}" placeholder="cth: 35">
                         @error('max_age')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -114,7 +114,7 @@
 
                     <!-- Minimal Pendidikan -->
                     <div>
-                        <label for="min_education" class="block text-sm font-bold text-gray-700 mb-1">Pendidikan Minimal</label>
+                        <label for="min_education" class="block text-sm font-bold text-gray-700 mb-1">Pendidikan Minimal <span class="text-red-500">*</span></label>
                         <select name="min_education" id="min_education" class="w-full px-4 py-2 border {{ $errors->has('min_education') ? 'border-red-500' : 'border-gray-300' }} rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002870] focus:border-transparent bg-white">
                             <option value="">Semua Pendidikan</option>
                             <option value="SMA/SMK" {{ old('min_education', $vacancy->min_education) == 'SMA/SMK' ? 'selected' : '' }}>SMA/SMK</option>
@@ -130,7 +130,7 @@
 
                     <!-- Persyaratan Gender -->
                     <div>
-                        <label for="gender_requirement" class="block text-sm font-bold text-gray-700 mb-1">Persyaratan Jenis Kelamin</label>
+                        <label for="gender_requirement" class="block text-sm font-bold text-gray-700 mb-1">Persyaratan Jenis Kelamin <span class="text-red-500">*</span></label>
                         <select name="gender_requirement" id="gender_requirement" class="w-full px-4 py-2 border {{ $errors->has('gender_requirement') ? 'border-red-500' : 'border-gray-300' }} rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002870] focus:border-transparent bg-white">
                             <option value="Semua" {{ old('gender_requirement', $vacancy->gender_requirement) == 'Semua' ? 'selected' : '' }}>Semua Jenis Kelamin</option>
                             <option value="Laki-laki" {{ old('gender_requirement', $vacancy->gender_requirement) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
