@@ -1,8 +1,9 @@
 @php
-    use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage;
 @endphp
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,7 @@
 
     @stack('styles')
 </head>
+
 <body>
 
     {{-- ================= PAGE LOADER ================= --}}
@@ -23,12 +25,12 @@
         <div id="loader-turbine">
             <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                 <g class="turbine-blade">
-                    <ellipse cx="32" cy="14" rx="6" ry="13" fill="rgba(248,184,48,0.8)"/>
-                    <ellipse cx="32" cy="14" rx="6" ry="13" fill="rgba(248,184,48,0.8)" transform="rotate(120 32 32)"/>
-                    <ellipse cx="32" cy="14" rx="6" ry="13" fill="rgba(248,184,48,0.8)" transform="rotate(240 32 32)"/>
+                    <ellipse cx="32" cy="14" rx="6" ry="13" fill="rgba(248,184,48,0.8)" />
+                    <ellipse cx="32" cy="14" rx="6" ry="13" fill="rgba(248,184,48,0.8)" transform="rotate(120 32 32)" />
+                    <ellipse cx="32" cy="14" rx="6" ry="13" fill="rgba(248,184,48,0.8)" transform="rotate(240 32 32)" />
                 </g>
-                <circle cx="32" cy="32" r="6" fill="rgba(255,255,255,0.95)"/>
-                <circle cx="32" cy="32" r="3" fill="#002870"/>
+                <circle cx="32" cy="32" r="6" fill="rgba(255,255,255,0.95)" />
+                <circle cx="32" cy="32" r="3" fill="#002870" />
             </svg>
         </div>
         <div id="loader-name">PT Nusantara Turbin dan Propulsi</div>
@@ -82,80 +84,87 @@
 
         <div class="sidebar-bottom mt-auto">
             @guest
-                <div class="cta-box mb-3">
-                    <small class="text-muted d-block mb-2">Belum punya akun?</small>
-                    <a href="{{ route('register') }}" class="btn btn-secondary-custom w-100 btn-sm d-block text-center text-decoration-none" style="padding:8px 16px;border-radius:8px;font-size:13px;">
-                        Daftar Gratis
-                    </a>
-                </div>
-                <a href="{{ route('login') }}" class="guest-box">
-                    <i class="bi bi-person-circle"></i>
-                    <div>
-                        <strong>Guest</strong><br>
-                        <small>Klik untuk masuk</small>
-                    </div>
+            <div class="cta-box mb-3">
+                <small class="text-muted d-block mb-2">Belum punya akun?</small>
+                <a href="{{ route('register') }}" class="btn btn-secondary-custom w-100 btn-sm d-block text-center text-decoration-none" style="padding:8px 16px;border-radius:8px;font-size:13px;">
+                    Daftar Gratis
                 </a>
+            </div>
+            <a href="{{ route('login') }}" class="guest-box">
+                <i class="bi bi-person-circle"></i>
+                <div>
+                    <strong>Guest</strong><br>
+                    <small>Klik untuk masuk</small>
+                </div>
+            </a>
             @endguest
 
-           @auth
-    <div class="cta-box mb-3 text-center">
-        
-        {{-- Avatar --}}
-        <a href="{{ route('profile') }}" style="text-decoration:none;">
-            <div style="width:56px;height:56px;border-radius:50%;overflow:hidden;border:2px solid rgba(0,40,112,0.15);margin:0 auto 10px;cursor:pointer;">
-                @if(Auth::user()->avatar)
-                    <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="Avatar"
-                         style="width:100%;height:100%;object-fit:cover;">
-                @else
-                    <div style="width:100%;height:100%;background:rgba(0,40,112,0.06);display:flex;align-items:center;justify-content:center;">
-                        <i class="bi bi-person-fill" style="font-size:26px;color:var(--primary-color);"></i>
+            @auth
+            <div class="cta-box mb-3 text-center">
+
+                {{-- Avatar --}}
+                <a href="{{ route('profile') }}" style="text-decoration:none;">
+                    <div style="width:56px;height:56px;border-radius:50%;overflow:hidden;border:2px solid rgba(0,40,112,0.15);margin:0 auto 10px;cursor:pointer;">
+                        @if(Auth::user()->avatar)
+                        <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="Avatar"
+                            style="width:100%;height:100%;object-fit:cover;">
+                        @else
+                        <div style="width:100%;height:100%;background:rgba(0,40,112,0.06);display:flex;align-items:center;justify-content:center;">
+                            <i class="bi bi-person-fill" style="font-size:26px;color:var(--primary-color);"></i>
+                        </div>
+                        @endif
                     </div>
+                </a>
+
+                <small class="text-muted d-block mb-1">Selamat datang,</small>
+                <strong style="font-size:14px;color:var(--primary-color);">
+                    {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                </strong>
+
+                @php
+                $unreadCount = auth()->check()
+                ? \App\Models\Application::where('user_id', auth()->id())
+                ->where('is_read', false)
+                ->count()
+                : 0;
+                @endphp
+
+                @if(!in_array(Auth::user()->role, ['hr', 'admin']))
+                <a href="{{ route('profile') }}" class="btn w-100 mt-2 btn-sm d-block text-decoration-none"
+                    style="background:rgba(0,40,112,0.06);color:var(--primary-color);border:1px solid rgba(0,40,112,0.12);border-radius:8px;font-weight:600;padding:7px;font-size:12px;position:relative;">
+                    <i class="bi bi-person me-1"></i> Profil & Lamaran
+                    @if($unreadCount > 0)
+                    <span style="position:absolute;top:-6px;right:-4px;background:#ef4444;color:#fff;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                        {{ $unreadCount }}
+                    </span>
+                    @endif
+                </a>
+                @endif
+
+                @if(Auth::user()->role === 'admin')
+                <a href="{{ route('admin.dashboard') }}" class="btn w-100 mt-2 btn-sm d-block text-decoration-none"
+                    style="background:rgba(248,184,48,0.15);color:#f8b830;border:1px solid rgba(248,184,48,0.2);border-radius:8px;font-weight:600;padding:8px;">
+                    <i class="bi bi-shield-lock me-1"></i> Ke Admin Panel
+                </a>
+                @elseif(Auth::user()->role === 'hr')
+                <a href="{{ route('hr.dashboard') }}" class="btn w-100 mt-2 btn-sm d-block text-decoration-none"
+                    style="background:rgba(248,184,48,0.15);color:#f8b830;border:1px solid rgba(248,184,48,0.2);border-radius:8px;font-weight:600;padding:8px;">
+                    <i class="bi bi-speedometer2 me-1"></i> Ke HR Panel
+                </a>
                 @endif
             </div>
-        </a>
 
-        <small class="text-muted d-block mb-1">Selamat datang,</small>
-        <strong style="font-size:14px;color:var(--primary-color);">
-            {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
-        </strong>
-
-        @php
-            $unreadCount = auth()->check()
-                ? \App\Models\Application::where('user_id', auth()->id())
-                    ->where('is_read', false)
-                    ->count()
-                : 0;
-        @endphp
-
-        <a href="{{ route('profile') }}" class="btn w-100 mt-2 btn-sm d-block text-decoration-none"
-        style="background:rgba(0,40,112,0.06);color:var(--primary-color);border:1px solid rgba(0,40,112,0.12);border-radius:8px;font-weight:600;padding:7px;font-size:12px;position:relative;">
-            <i class="bi bi-person me-1"></i> Profil & Lamaran
-            @if($unreadCount > 0)
-            <span style="position:absolute;top:-6px;right:-4px;background:#ef4444;color:#fff;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;">
-                {{ $unreadCount }}
-            </span>
-            @endif
-        </a>
-
-        @if(in_array(Auth::user()->role, ['hr', 'admin']))
-            <a href="{{ route('hr.dashboard') }}" class="btn w-100 mt-2 btn-sm d-block text-decoration-none"
-               style="background:rgba(248,184,48,0.15);color:#f8b830;border:1px solid rgba(248,184,48,0.2);border-radius:8px;font-weight:600;padding:8px;">
-                <i class="bi bi-speedometer2 me-1"></i> Ke HR Panel
-            </a>
-        @endif
-    </div>
-
-    <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button type="submit" class="guest-box logout-box w-100">
-            <i class="bi bi-box-arrow-right"></i>
-            <div class="text-start">
-                <strong>Logout</strong><br>
-                <small>Keluar dari akun</small>
-            </div>
-        </button>
-    </form>
-@endauth
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="guest-box logout-box w-100">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <div class="text-start">
+                        <strong>Logout</strong><br>
+                        <small>Keluar dari akun</small>
+                    </div>
+                </button>
+            </form>
+            @endauth
         </div>
 
     </div>
@@ -173,4 +182,5 @@
 
     @stack('scripts')
 </body>
+
 </html>
