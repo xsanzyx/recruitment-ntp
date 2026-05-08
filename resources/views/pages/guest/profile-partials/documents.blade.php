@@ -11,7 +11,7 @@
             <div style="flex:1;">
                 <i class="bi bi-file-earmark-pdf me-2" style="color:#166534;"></i>
                 <span style="font-size:13px;color:#166534;font-weight:600;">CV telah diupload</span>
-                <a href="{{ Storage::url($profile->resume_path) }}" target="_blank" style="font-size:12px;color:#15803d;margin-left:8px;">Lihat</a>
+<a href="{{ Storage::url($profile->resume_path) }}" target="_blank" style="font-size:12px;color:#15803d;margin-left:8px;">Lihat</a>
             </div>
             <button type="button" onclick="deleteResume()" style="background:none;border:none;color:#ef4444;font-size:14px;cursor:pointer;"><i class="bi bi-trash"></i></button>
         </div>
@@ -40,7 +40,7 @@
                 <div>
                     <i class="bi bi-paperclip me-2" style="color:var(--primary-color);"></i>
                     <span style="font-size:13px;color:#334155;">{{ $doc['name'] }}</span>
-                    <a href="{{ Storage::url($doc['path']) }}" target="_blank" style="font-size:12px;color:var(--primary-color);margin-left:8px;">Lihat</a>
+                <a href="{{ Storage::url($doc['path']) }}" target="_blank" style="font-size:12px;color:var(--primary-color);margin-left:8px;">Lihat</a>
                 </div>
                 <button type="button" onclick="deleteDocument({{ $idx }})" style="background:none;border:none;color:#ef4444;font-size:14px;cursor:pointer;"><i class="bi bi-trash"></i></button>
             </div>
