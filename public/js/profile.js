@@ -193,18 +193,62 @@ if (cvInput && cvName) {
     });
 }
 
-// ── Docs Upload Preview ──
+// ── Docs Upload Preview (Accumulative) ──
 const docsInput = document.getElementById('docs-input');
 const docsList  = document.getElementById('docs-list');
+let accumulatedDocs = new DataTransfer();
+
 if (docsInput && docsList) {
-    docsInput.addEventListener('change', function() {
+    docsInput.addEventListener('change', function(e) {
+        // Prevent infinite loop from our own dispatch
+        if (!e.isTrusted && e.detail === 'renderOnly') return;
+        
+        // Add new files to accumulated
+        if (e.isTrusted) {
+            Array.from(this.files).forEach(f => {
+                accumulatedDocs.items.add(f);
+            });
+            // Update the input files
+            docsInput.files = accumulatedDocs.files;
+        }
+
         docsList.innerHTML = '';
-        Array.from(this.files).forEach(f => {
+        Array.from(docsInput.files).forEach((f, index) => {
             docsList.innerHTML += `
-            <div style="padding:8px 14px;background:#f0fdf4;border-radius:8px;border:1px solid #bbf7d0;font-size:13px;color:#166534;">
-                <i class="bi bi-check-circle me-2"></i>${f.name}
+            <div class="d-flex align-items-center justify-content-between" style="padding:8px 14px;background:#f0fdf4;border-radius:8px;border:1px solid #bbf7d0;font-size:13px;color:#166534;margin-bottom:8px;">
+                <div style="word-break: break-all; padding-right:10px;"><i class="bi bi-check-circle me-2"></i>${f.name}</div>
+                <button type="button" class="btn-remove-doc" data-index="${index}" style="background:none;border:none;color:#ef4444;cursor:pointer;padding:0;">
+                    <i class="bi bi-x-lg"></i>
+                </button>
             </div>`;
         });
+    });
+
+    // Remove file logic
+    docsList.addEventListener('click', function(e) {
+        const btn = e.target.closest('.btn-remove-doc');
+        if (btn) {
+            const indexToRemove = parseInt(btn.getAttribute('data-index'));
+            let newDocs = new DataTransfer();
+            
+            Array.from(docsInput.files).forEach((f, index) => {
+                if (index !== indexToRemove) {
+                    newDocs.items.add(f);
+                }
+            });
+            
+            accumulatedDocs = newDocs;
+            docsInput.files = accumulatedDocs.files;
+            
+            // Re-render
+            docsInput.dispatchEvent(new CustomEvent('change', { detail: 'renderOnly' }));
+            
+            // Trigger main form tracking
+            const profileForm = document.getElementById('profile-form');
+            if (profileForm) {
+                profileForm.dispatchEvent(new Event('change'));
+            }
+        }
     });
 }
 
