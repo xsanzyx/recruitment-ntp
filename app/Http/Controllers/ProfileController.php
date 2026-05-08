@@ -77,7 +77,10 @@ class ProfileController extends Controller
                 Storage::disk('public')->delete($user->avatar);
             }
             $base64    = $request->avatar_cropped;
-            $base64    = str_replace('data:image/jpeg;base64,', '', $base64);
+            if (strpos($base64, ',') !== false) {
+                @list($type, $base64) = explode(';', $base64);
+                @list(, $base64)      = explode(',', $base64);
+            }
             $base64    = str_replace(' ', '+', $base64);
             $imageData = base64_decode($base64);
             $filename  = 'avatars/' . uniqid() . '.jpg';
