@@ -22,11 +22,11 @@
             <option value="closed" {{ request('status') == 'closed' ? 'selected' : '' }}>Closed</option>
         </select>
     </form>
-    <button onclick="openVacancyModal()"
+    <a href="{{ route('hr.vacancies.create') }}"
             class="flex items-center gap-2 bg-[#002870] hover:bg-[#001544] text-white px-4 py-2
                    rounded-lg transition-colors font-bold text-sm w-full md:w-auto justify-center">
         <span class="material-symbols-outlined text-sm">add</span> Tambah Lowongan
-    </button>
+    </a>
 </div>
 
 <!-- Table -->
