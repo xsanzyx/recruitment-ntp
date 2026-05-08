@@ -55,8 +55,39 @@
                     </div>
                 </div>
 
+                {{-- ── Bio & Links (Inside Profile Card) ── --}}
+                @if($application->user->portfolio_url || $application->user->linkedin_url || $application->user->bio)
+                <div class="mb-8">
+                    @if($application->user->bio)
+                    <div class="mb-5">
+                        <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Tentang Kandidat</small>
+                        <p class="text-sm text-gray-700 leading-relaxed">{{ $application->user->bio }}</p>
+                    </div>
+                    @endif
+
+                    @if($application->user->portfolio_url || $application->user->linkedin_url)
+                    <div class="flex flex-wrap gap-4">
+                        @if($application->user->portfolio_url)
+                        <a href="{{ $application->user->portfolio_url }}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-[#002870] transition-colors group">
+                            <span class="material-symbols-outlined text-[18px] group-hover:scale-110 transition-transform">language</span>
+                            Portfolio
+                        </a>
+                        @endif
+                        @if($application->user->linkedin_url)
+                        <a href="{{ $application->user->linkedin_url }}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-[#0077b5] transition-colors group">
+                            <svg class="w-[18px] h-[18px] group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                            </svg>
+                            LinkedIn
+                        </a>
+                        @endif
+                    </div>
+                    @endif
+                </div>
+                @endif
+
                 {{-- Job Info Grid --}}
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-6 border-t border-gray-100">
                     <div class="flex items-center gap-3.5 p-4 bg-slate-50 rounded-xl border border-slate-100">
                         <div class="w-10 h-10 rounded-xl bg-blue-100 text-[#002870] flex items-center justify-center shrink-0">
                             <span class="material-symbols-outlined" style="font-size:20px;">work</span>
@@ -85,37 +116,6 @@
                         </div>
                     </div>
                 </div>
-
-                {{-- ── Bio & Links (Inside Profile Card) ── --}}
-                @if($application->user->portfolio_url || $application->user->linkedin_url || $application->user->bio)
-                <div class="mt-8 pt-6 border-t border-gray-100">
-                    @if($application->user->bio)
-                    <div class="mb-5">
-                        <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Tentang Kandidat</small>
-                        <p class="text-sm text-gray-700 leading-relaxed">{{ $application->user->bio }}</p>
-                    </div>
-                    @endif
-
-                    @if($application->user->portfolio_url || $application->user->linkedin_url)
-                    <div class="flex flex-wrap gap-4">
-                        @if($application->user->portfolio_url)
-                        <a href="{{ $application->user->portfolio_url }}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-[#002870] transition-colors group">
-                            <span class="material-symbols-outlined text-[18px] group-hover:scale-110 transition-transform">language</span>
-                            Portfolio
-                        </a>
-                        @endif
-                        @if($application->user->linkedin_url)
-                        <a href="{{ $application->user->linkedin_url }}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-[#0077b5] transition-colors group">
-                            <svg class="w-[18px] h-[18px] group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
-                            </svg>
-                            LinkedIn
-                        </a>
-                        @endif
-                    </div>
-                    @endif
-                </div>
-                @endif
             </div>
         </div>
 
