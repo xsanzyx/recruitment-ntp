@@ -90,6 +90,59 @@
 
             </div>
 
+            <!-- Kriteria Kelayakan (Eligibility) -->
+            <div class="mt-8 pt-6 border-t border-gray-100">
+                <h3 class="text-lg font-bold text-[#002870] mb-4">Kriteria Kelayakan (Opsional)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Usia Minimal -->
+                    <div>
+                        <label for="min_age" class="block text-sm font-bold text-gray-700 mb-1">Usia Minimal</label>
+                        <input type="number" name="min_age" id="min_age" min="15" max="65" class="w-full px-4 py-2 border {{ $errors->has('min_age') ? 'border-red-500' : 'border-gray-300' }} rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002870] focus:border-transparent" value="{{ old('min_age', $vacancy->min_age) }}" placeholder="cth: 18">
+                        @error('min_age')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Usia Maksimal -->
+                    <div>
+                        <label for="max_age" class="block text-sm font-bold text-gray-700 mb-1">Usia Maksimal</label>
+                        <input type="number" name="max_age" id="max_age" min="15" max="65" class="w-full px-4 py-2 border {{ $errors->has('max_age') ? 'border-red-500' : 'border-gray-300' }} rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002870] focus:border-transparent" value="{{ old('max_age', $vacancy->max_age) }}" placeholder="cth: 35">
+                        @error('max_age')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Minimal Pendidikan -->
+                    <div>
+                        <label for="min_education" class="block text-sm font-bold text-gray-700 mb-1">Pendidikan Minimal</label>
+                        <select name="min_education" id="min_education" class="w-full px-4 py-2 border {{ $errors->has('min_education') ? 'border-red-500' : 'border-gray-300' }} rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002870] focus:border-transparent bg-white">
+                            <option value="">Semua Pendidikan</option>
+                            <option value="SMA/SMK" {{ old('min_education', $vacancy->min_education) == 'SMA/SMK' ? 'selected' : '' }}>SMA/SMK</option>
+                            <option value="D3" {{ old('min_education', $vacancy->min_education) == 'D3' ? 'selected' : '' }}>D3</option>
+                            <option value="S1" {{ old('min_education', $vacancy->min_education) == 'S1' ? 'selected' : '' }}>S1</option>
+                            <option value="S2" {{ old('min_education', $vacancy->min_education) == 'S2' ? 'selected' : '' }}>S2</option>
+                            <option value="S3" {{ old('min_education', $vacancy->min_education) == 'S3' ? 'selected' : '' }}>S3</option>
+                        </select>
+                        @error('min_education')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Persyaratan Gender -->
+                    <div>
+                        <label for="gender_requirement" class="block text-sm font-bold text-gray-700 mb-1">Persyaratan Jenis Kelamin</label>
+                        <select name="gender_requirement" id="gender_requirement" class="w-full px-4 py-2 border {{ $errors->has('gender_requirement') ? 'border-red-500' : 'border-gray-300' }} rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002870] focus:border-transparent bg-white">
+                            <option value="Semua" {{ old('gender_requirement', $vacancy->gender_requirement) == 'Semua' ? 'selected' : '' }}>Semua Jenis Kelamin</option>
+                            <option value="Laki-laki" {{ old('gender_requirement', $vacancy->gender_requirement) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                            <option value="Perempuan" {{ old('gender_requirement', $vacancy->gender_requirement) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                        </select>
+                        @error('gender_requirement')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+
             <!-- Submit -->
             <div class="flex justify-end gap-3 mt-8 pt-6 border-t border-gray-100">
                 <a href="{{ route('hr.vacancies.index') }}" class="px-6 py-2 border border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-50 transition-colors">Batal</a>
