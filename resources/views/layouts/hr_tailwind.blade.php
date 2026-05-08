@@ -197,9 +197,9 @@
         {{-- Modal Form --}}
         <form method="POST" action="{{ route('hr.vacancies.store') }}" id="vacancyModalForm">
             @csrf
+            <div class="p-8 space-y-5 max-h-[70vh] overflow-y-auto">
             
-            @if ($errors->any())
-                <div class="px-8 pt-5">
+                @if ($errors->any())
                     <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg shadow-sm">
                         <div class="flex items-start">
                             <div class="flex-shrink-0 mt-0.5">
@@ -215,22 +215,20 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            @endif
-            <div class="p-8 space-y-5 max-h-[70vh] overflow-y-auto">
+                @endif
 
                 {{-- Row 1: Judul + Departemen --}}
                 <div class="grid grid-cols-2 gap-5">
                     <div class="flex flex-col gap-1.5">
                         <label class="text-[11px] font-bold uppercase tracking-wider text-[#002870]">Judul Lowongan *</label>
-                        <input type="text" name="title" required placeholder="cth: Frontend Developer"
+                        <input type="text" name="title" required value="{{ old('title') }}" placeholder="cth: Frontend Developer"
                                class="h-11 px-4 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none
                                       focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10 transition-all">
                         <p class="modal-error text-red-500 text-xs hidden" data-field="title"></p>
                     </div>
                     <div class="flex flex-col gap-1.5">
                         <label class="text-[11px] font-bold uppercase tracking-wider text-[#002870]">Departemen *</label>
-                        <input type="text" name="department" required placeholder="cth: Engineering"
+                        <input type="text" name="department" required value="{{ old('department') }}" placeholder="cth: Engineering"
                                class="h-11 px-4 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none
                                       focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10 transition-all">
                         <p class="modal-error text-red-500 text-xs hidden" data-field="department"></p>
@@ -241,7 +239,7 @@
                 <div class="grid grid-cols-2 gap-5">
                     <div class="flex flex-col gap-1.5">
                         <label class="text-[11px] font-bold uppercase tracking-wider text-[#002870]">Divisi *</label>
-                        <input type="text" name="division" required placeholder="cth: Information Technology"
+                        <input type="text" name="division" required value="{{ old('division') }}" placeholder="cth: Information Technology"
                                class="h-11 px-4 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none
                                       focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10 transition-all">
                     </div>
@@ -252,9 +250,9 @@
                                     class="w-full h-11 px-4 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none
                                            appearance-none focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10 transition-all">
                                 <option value="">Pilih tipe...</option>
-                                <option value="full-time">Full-time</option>
-                                <option value="part-time">Part-time</option>
-                                <option value="contract">Contract</option>
+                                <option value="full-time" {{ old('type') == 'full-time' ? 'selected' : '' }}>Full-time</option>
+                                <option value="part-time" {{ old('type') == 'part-time' ? 'selected' : '' }}>Part-time</option>
+                                <option value="contract" {{ old('type') == 'contract' ? 'selected' : '' }}>Contract</option>
                             </select>
                             <span class="material-symbols-outlined absolute right-3 top-2.5 text-gray-400 pointer-events-none"
                                   style="font-size:18px;">expand_more</span>
@@ -266,7 +264,7 @@
                 <div class="flex flex-col gap-1.5">
                     <label class="text-[11px] font-bold uppercase tracking-wider text-[#002870]">Deadline *</label>
                     <input type="date" name="deadline" required max="9999-12-31"
-                           min="{{ date('Y-m-d', strtotime('+1 day')) }}"
+                           min="{{ date('Y-m-d', strtotime('+1 day')) }}" value="{{ old('deadline') }}"
                            class="h-11 px-4 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none
                                   focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10 transition-all">
                 </div>
@@ -277,7 +275,7 @@
                     <textarea name="description" required rows="3"
                               placeholder="Jelaskan tanggung jawab dan lingkup pekerjaan..."
                               class="px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none resize-none
-                                     focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10 transition-all"></textarea>
+                                     focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10 transition-all">{{ old('description') }}</textarea>
                 </div>
 
                 {{-- Persyaratan --}}
@@ -286,7 +284,7 @@
                     <textarea name="requirements" required rows="3"
                               placeholder="Tuliskan kualifikasi dan persyaratan kandidat..."
                               class="px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none resize-none
-                                     focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10 transition-all"></textarea>
+                                     focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10 transition-all">{{ old('requirements') }}</textarea>
                 </div>
 
                 {{-- Kriteria Eligibility --}}
@@ -298,13 +296,13 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div class="flex flex-col gap-1.5">
                             <label class="text-[11px] font-semibold text-gray-500">Umur Minimal</label>
-                            <input type="number" name="min_age" placeholder="cth: 18" min="15" max="65"
+                            <input type="number" name="min_age" value="{{ old('min_age') }}" placeholder="cth: 18" min="15" max="65"
                                    class="h-10 px-3 bg-white border border-gray-200 rounded-lg text-sm outline-none
                                           focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10">
                         </div>
                         <div class="flex flex-col gap-1.5">
                             <label class="text-[11px] font-semibold text-gray-500">Umur Maksimal</label>
-                            <input type="number" name="max_age" placeholder="cth: 35" min="15" max="65"
+                            <input type="number" name="max_age" value="{{ old('max_age') }}" placeholder="cth: 35" min="15" max="65"
                                    class="h-10 px-3 bg-white border border-gray-200 rounded-lg text-sm outline-none
                                           focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10">
                         </div>
@@ -314,9 +312,9 @@
                                 <select name="gender_requirement"
                                         class="w-full h-10 px-3 bg-white border border-gray-200 rounded-lg text-sm outline-none
                                                appearance-none focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10">
-                                    <option value="Semua">Semua</option>
-                                    <option value="Laki-laki">Laki-laki</option>
-                                    <option value="Perempuan">Perempuan</option>
+                                    <option value="Semua" {{ old('gender_requirement') == 'Semua' ? 'selected' : '' }}>Semua</option>
+                                    <option value="Laki-laki" {{ old('gender_requirement') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                    <option value="Perempuan" {{ old('gender_requirement') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                                 </select>
                                 <span class="material-symbols-outlined absolute right-2 top-2 text-gray-400 pointer-events-none" style="font-size:16px;">expand_more</span>
                             </div>
@@ -328,11 +326,11 @@
                                         class="w-full h-10 px-3 bg-white border border-gray-200 rounded-lg text-sm outline-none
                                                appearance-none focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10">
                                     <option value="">Tidak ada syarat</option>
-                                    <option value="SMA/SMK">SMA/SMK</option>
-                                    <option value="D3">D3</option>
-                                    <option value="S1">S1</option>
-                                    <option value="S2">S2</option>
-                                    <option value="S3">S3</option>
+                                    <option value="SMA/SMK" {{ old('min_education') == 'SMA/SMK' ? 'selected' : '' }}>SMA/SMK</option>
+                                    <option value="D3" {{ old('min_education') == 'D3' ? 'selected' : '' }}>D3</option>
+                                    <option value="S1" {{ old('min_education') == 'S1' ? 'selected' : '' }}>S1</option>
+                                    <option value="S2" {{ old('min_education') == 'S2' ? 'selected' : '' }}>S2</option>
+                                    <option value="S3" {{ old('min_education') == 'S3' ? 'selected' : '' }}>S3</option>
                                 </select>
                                 <span class="material-symbols-outlined absolute right-2 top-2 text-gray-400 pointer-events-none" style="font-size:16px;">expand_more</span>
                             </div>
