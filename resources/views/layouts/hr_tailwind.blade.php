@@ -245,7 +245,7 @@
                 {{-- Deadline --}}
                 <div class="flex flex-col gap-1.5">
                     <label class="text-[11px] font-bold uppercase tracking-wider text-[#002870]">Deadline *</label>
-                    <input type="date" name="deadline" required
+                    <input type="date" name="deadline" required max="9999-12-31"
                            min="{{ date('Y-m-d', strtotime('+1 day')) }}"
                            class="h-11 px-4 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none
                                   focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10 transition-all">
