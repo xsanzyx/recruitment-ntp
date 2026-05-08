@@ -207,3 +207,12 @@ if (docsInput && docsList) {
         });
     });
 }
+
+// ── Limit Year Inputs to 4 Digits ──
+document.addEventListener('input', function(e) {
+    if (e.target && e.target.classList.contains('year-input')) {
+        if (e.target.value.length > 4) {
+            e.target.value = e.target.value.slice(0, 4);
+        }
+    }
+});
