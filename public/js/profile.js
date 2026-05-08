@@ -216,3 +216,34 @@ document.addEventListener('input', function(e) {
         }
     }
 });
+
+// ── Track Form Changes ──
+document.addEventListener('DOMContentLoaded', function() {
+    const profileForm = document.getElementById('profile-form');
+    const saveBtn = document.getElementById('btn-save-profile');
+    
+    if (profileForm && saveBtn) {
+        // Only track if the button is currently disabled
+        if (saveBtn.disabled) {
+            profileForm.addEventListener('input', activateSaveBtn);
+            profileForm.addEventListener('change', activateSaveBtn);
+        }
+
+        function activateSaveBtn() {
+            saveBtn.disabled = false;
+            saveBtn.className = 'btn btn-secondary-custom px-4 py-2';
+            saveBtn.style.background = '';
+            saveBtn.style.borderColor = '';
+            saveBtn.style.color = '';
+            
+            // Remove listeners once activated
+            profileForm.removeEventListener('input', activateSaveBtn);
+            profileForm.removeEventListener('change', activateSaveBtn);
+        }
+        
+        // Also activate if crop confirm or add edu/exp is clicked
+        if (cropConfirm) cropConfirm.addEventListener('click', activateSaveBtn);
+        if (addEduBtn) addEduBtn.addEventListener('click', activateSaveBtn);
+        if (addExpBtn) addExpBtn.addEventListener('click', activateSaveBtn);
+    }
+});
