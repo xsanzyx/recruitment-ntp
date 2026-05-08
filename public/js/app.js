@@ -46,7 +46,7 @@ function toggleSidebar() {
 
 
 // =============================================
-//  DOM READY — satu blok saja
+//  DOM READY
 // =============================================
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -90,12 +90,14 @@ document.addEventListener('DOMContentLoaded', () => {
         fadeEls.forEach(el => el.classList.add('show'));
     }
 
-    // Page transition — satu blok saja
+    // Page transition
     const transition = document.getElementById('page-transition');
     document.querySelectorAll('a[href]').forEach(link => {
         const href = link.getAttribute('href');
-            if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
-            if (link.closest('form')) return;
+        if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
+        if (link.closest('form')) return;
+        if (link.getAttribute('target') === '_blank') return;
+
         link.addEventListener('click', function (e) {
             e.preventDefault();
             const target = this.href;
