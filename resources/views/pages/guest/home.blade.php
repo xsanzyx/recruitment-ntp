@@ -51,17 +51,23 @@
                         </div>
                         <div>
                             <strong style="font-size:16px;color:var(--primary-color);">{{ $vacancy->title }}</strong><br>
-                            <small style="color:#64748b;">Division: {{ $vacancy->division }}</small>
+                            <small style="color:#64748b;">{{ $vacancy->division }} · {{ $vacancy->department }} · {{ ucfirst($vacancy->type) }}</small>
                         </div>
                     </div>
                     <small class="toggle-text" style="color:var(--primary-color);cursor:pointer;">
-                        <i class="bi {{ $loop->first ? 'bi-chevron-up' : 'bi-chevron-down' }}"></i>
+                        Lihat detail <i class="bi {{ $loop->first ? 'bi-chevron-up' : 'bi-chevron-down' }}"></i>
                     </small>
                 </div>
                 <div class="job-detail {{ $loop->first ? 'show' : '' }}">
                     <div class="job-detail-inner">
                         <div class="row g-4 mb-4">
                             <div class="col-md-7">
+                                @if($vacancy->description)
+                                <div class="mb-4">
+                                    <h6 style="font-weight:600;color:var(--primary-color);margin-bottom:12px;">Deskripsi Pekerjaan:</h6>
+                                    <p style="color:#64748b;font-size:14px;line-height:1.7;">{{ $vacancy->description }}</p>
+                                </div>
+                                @endif
                                 <h6 style="font-weight:600;color:var(--primary-color);margin-bottom:12px;">Kualifikasi:</h6>
                                 <ul style="color:#64748b;font-size:14px;padding-left:20px;">
                                     @foreach(array_filter(array_map('trim', explode("\n", $vacancy->requirements))) as $req)
@@ -74,6 +80,10 @@
                             <div class="col-md-5">
                                 <div class="job-info-box">
                                     <div class="job-info-row">
+                                        <span class="job-info-label">Departemen</span>
+                                        <span class="job-info-value">{{ $vacancy->department }}</span>
+                                    </div>
+                                    <div class="job-info-row" style="border-top:1px solid #e5e7eb;margin-top:8px;padding-top:8px;">
                                         <span class="job-info-label">Divisi</span>
                                         <span class="job-info-value">{{ $vacancy->division }}</span>
                                     </div>
@@ -89,13 +99,25 @@
                             </div>
                         </div>
 
-                        {{-- FIX: pakai <a> dengan route, bukan <button> --}}
                         @auth
-                            <a href="{{ route('apply.create', $vacancy->id) }}"
-                               class="btn btn-secondary-custom px-4 py-2"
-                               style="border-radius:10px;font-size:14px;">
-                                Lamar Sekarang
-                            </a>
+                            @php
+                                $alreadyApplied = auth()->user()->applications()
+                                        ->where('job_vacancy_id', $vacancy->id)
+                                        ->exists();
+                            @endphp
+
+                            @if($alreadyApplied)
+                                <button class="btn px-4 py-2" disabled
+                                    style="border-radius:10px;font-size:14px;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;cursor:not-allowed;">
+                                    <i class="bi bi-check-circle me-2"></i>Sudah Melamar
+                                </button>
+                            @else
+                                <a href="{{ route('apply.create', $vacancy->id) }}"
+                                   class="btn btn-secondary-custom px-4 py-2"
+                                   style="border-radius:10px;font-size:14px;">
+                                    Lamar Sekarang
+                                </a>
+                            @endif
                         @else
                             <a href="{{ route('login') }}"
                                class="btn btn-secondary-custom px-4 py-2"
@@ -103,7 +125,6 @@
                                 Login untuk Melamar
                             </a>
                         @endauth
-
                     </div>
                 </div>
             </div>
