@@ -52,6 +52,23 @@
 .job-detail.show {
     max-height: 500px; opacity: 1;
 }
+
+/* tambah ini */
+@media (max-width: 767px) {
+    .job-detail.show {
+        max-height: 1200px;
+    }
+
+    .job-header {
+        padding: 16px;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .job-detail-inner {
+        padding: 16px;
+    }
+}
 .job-detail-inner {
     padding: 0 24px 24px;
     border-top: 1px solid rgba(0,0,0,0.06);
@@ -220,7 +237,7 @@
     border-radius: 14px; padding: 6px 6px 6px 16px;
     background: var(--surface-container-low);
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    transition: 0.2s; max-width: 480px;
+    transition: 0.2s; max-width: 100%; /* ← ganti 480px jadi 100% */
 }
 .search-bar:focus-within {
     border-color: var(--primary-color);

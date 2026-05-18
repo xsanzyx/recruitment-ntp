@@ -27,8 +27,8 @@
         {{-- Search & Filter --}}
         <div class="fade-up mb-4">
             <div class="d-flex flex-wrap gap-3 align-items-center">
-                <div class="search-bar flex-grow-1" style="max-width: 460px;">
-                    <i class="bi bi-search"></i>
+            <div class="search-bar flex-grow-1">
+                        <i class="bi bi-search"></i>
                     <input type="text" id="search-input" placeholder="Cari posisi, skill, departemen, atau divisi">
                 </div>
                 <select class="form-select" id="filter-dept" style="max-width: 220px; border-radius: 10px; border: 1px solid #e5e7eb; padding: 10px 14px; font-size: 14px;">
