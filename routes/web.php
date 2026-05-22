@@ -17,14 +17,22 @@ use Illuminate\Support\Facades\Route;
 //  PUBLIC ROUTES
 // =============================================
 Route::get('/', function () {
-    $vacancies = JobVacancy::where('status', 'open')->latest()->take(3)->get();
+    $vacancies = JobVacancy::where('status', 'open')
+        ->whereDate('deadline', '>=', now()->startOfDay())
+        ->latest()
+        ->take(3)
+        ->get();
     return view('pages.guest.home', compact('vacancies'));
 })->name('home');
 
 Route::get('/lowongan', function () {
-    $vacancies   = \App\Models\JobVacancy::where('status', 'open')->latest()->get();
-    $departments = \App\Models\JobVacancy::where('status', 'open')->distinct()->pluck('department');
-    $divisions   = \App\Models\JobVacancy::where('status', 'open')->distinct()->pluck('division');
+    $baseQuery = \App\Models\JobVacancy::where('status', 'open')
+        ->whereDate('deadline', '>=', now()->startOfDay());
+        
+    $vacancies   = (clone $baseQuery)->latest()->get();
+    $departments = (clone $baseQuery)->distinct()->pluck('department');
+    $divisions   = (clone $baseQuery)->distinct()->pluck('division');
+    
     return view('pages.guest.lowongan', compact('vacancies', 'departments', 'divisions'));
 })->name('lowongan');
 Route::get('/proses-rekrutmen', fn() => view('pages.guest.proses-rekrutmen'))->name('proses-rekrutmen');

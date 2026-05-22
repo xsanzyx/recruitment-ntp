@@ -13,6 +13,7 @@ class ApplicationController extends Controller
     {
         $vacancy = JobVacancy::where('id', $vacancyId)
             ->where('status', 'open')
+            ->whereDate('deadline', '>=', now()->startOfDay())
             ->firstOrFail();
 
         $user = Auth::user();
@@ -52,6 +53,7 @@ class ApplicationController extends Controller
     {
         $vacancy = JobVacancy::where('id', $vacancyId)
             ->where('status', 'open')
+            ->whereDate('deadline', '>=', now()->startOfDay())
             ->firstOrFail();
 
         $user = Auth::user();
