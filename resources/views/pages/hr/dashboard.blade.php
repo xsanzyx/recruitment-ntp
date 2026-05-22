@@ -8,8 +8,8 @@
 {{-- ===== HEADER ===== --}}
 <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
     <div>
-        <h1 class="text-[28px] font-extrabold text-[#001544] tracking-tight leading-tight">Recruitment Dashboard</h1>
-        <p class="text-gray-500 text-[15px] mt-1">Manage aerospace engineering talent and active job openings.</p>
+        <h1 class="text-[28px] font-extrabold text-[#001544] tracking-tight leading-tight">Dashboard Rekrutmen</h1>
+        <p class="text-gray-500 text-[15px] mt-1">Kelola kandidat dan pantau lowongan pekerjaan yang sedang aktif.</p>
     </div>
     <div class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-[#001544] shadow-sm">
         <span class="material-symbols-outlined" style="font-size:18px;">calendar_today</span>
@@ -31,7 +31,7 @@
         <h3 class="text-[32px] font-extrabold text-[#001544] leading-none mb-2">{{ $totalActiveVacancies }}</h3>
         <div class="flex items-center gap-1.5">
             <span class="material-symbols-outlined text-green-500" style="font-size:16px;">trending_up</span>
-            <span class="text-[12px] text-gray-400 font-medium">Stable current flow</span>
+            <span class="text-[12px] text-gray-400 font-medium">Batas waktu aktif</span>
         </div>
     </div>
 
@@ -45,7 +45,7 @@
         </div>
         <h3 class="text-[32px] font-extrabold text-[#001544] leading-none mb-2">{{ $totalApplicants }}</h3>
         <div class="flex items-center gap-1.5">
-            <span class="text-[12px] text-gray-400 font-medium">— Monthly intake</span>
+            <span class="text-[12px] text-gray-400 font-medium">— Semua pelamar masuk</span>
         </div>
     </div>
 
@@ -61,10 +61,10 @@
         <div class="flex items-center gap-1.5">
             @if(($statusCounts['pending'] ?? 0) == 0)
                 <span class="material-symbols-outlined text-green-500" style="font-size:16px;">check_circle</span>
-                <span class="text-[12px] text-gray-400 font-medium">All clear</span>
+                <span class="text-[12px] text-gray-400 font-medium">Semua sudah diproses</span>
             @else
                 <span class="material-symbols-outlined text-orange-500" style="font-size:16px;">schedule</span>
-                <span class="text-[12px] text-gray-400 font-medium">Needs attention</span>
+                <span class="text-[12px] text-gray-400 font-medium">Perlu ditinjau</span>
             @endif
         </div>
     </div>
@@ -80,7 +80,7 @@
         <h3 class="text-[32px] font-extrabold text-[#001544] leading-none mb-2">{{ $statusCounts['lolos'] ?? 0 }}</h3>
         <div class="flex items-center gap-1.5">
             <span class="material-symbols-outlined text-green-500" style="font-size:16px;">verified</span>
-            <span class="text-[12px] text-gray-400 font-medium">Ready for interview</span>
+            <span class="text-[12px] text-gray-400 font-medium">Siap wawancara</span>
         </div>
     </div>
 
@@ -125,9 +125,9 @@
                     <div class="text-right flex-shrink-0">
                         <p class="text-[13px] font-extrabold text-[#001544]">
                             {{ str_pad($vacancy->applications_count, 2, '0', STR_PAD_LEFT) }}
-                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Applicants</span>
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Pelamar</span>
                         </p>
-                        <p class="text-[10px] text-gray-300 mt-0.5">Updated {{ $vacancy->updated_at->diffForHumans(null, true) }} ago</p>
+                        <p class="text-[10px] text-gray-300 mt-0.5">Diperbarui {{ $vacancy->updated_at->diffForHumans(null, true) }} lalu</p>
                     </div>
                 </div>
             @empty
@@ -157,9 +157,9 @@
             <table class="w-full text-left">
                 <thead>
                     <tr class="border-b border-gray-100">
-                        <th class="px-6 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Candidate Name</th>
-                        <th class="px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Applied For</th>
-                        <th class="px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Applied</th>
+                        <th class="px-6 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Nama Kandidat</th>
+                        <th class="px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Posisi Dilamar</th>
+                        <th class="px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Tanggal Lamar</th>
                         <th class="px-4 py-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Status</th>
                     </tr>
                 </thead>
@@ -167,10 +167,10 @@
                     @forelse($recentApplications as $app)
                         @php
                             $statusMap = [
-                                'pending'     => ['label' => 'PENDING',     'bg' => 'bg-gray-100',  'text' => 'text-gray-600'],
-                                'review'      => ['label' => 'IN REVIEW',   'bg' => 'bg-blue-50',   'text' => 'text-[#002870]'],
-                                'lolos'       => ['label' => 'SHORTLISTED', 'bg' => 'bg-green-50',  'text' => 'text-green-700'],
-                                'tidak_lolos' => ['label' => 'REJECTED',    'bg' => 'bg-red-50',    'text' => 'text-red-600'],
+                                'pending'     => ['label' => 'PENDING',  'bg' => 'bg-gray-100',  'text' => 'text-gray-600'],
+                                'review'      => ['label' => 'DITINJAU', 'bg' => 'bg-blue-50',   'text' => 'text-[#002870]'],
+                                'lolos'       => ['label' => 'LOLOS',    'bg' => 'bg-green-50',  'text' => 'text-green-700'],
+                                'tidak_lolos' => ['label' => 'DITOLAK',  'bg' => 'bg-red-50',    'text' => 'text-red-600'],
                             ];
                             $s = $statusMap[$app->status] ?? $statusMap['pending'];
                             $initial = strtoupper(substr($app->user->first_name ?? 'U', 0, 1)) . strtoupper(substr($app->user->last_name ?? '', 0, 1));
@@ -197,7 +197,7 @@
                             </td>
                             <td class="px-4 py-4">
                                 <span class="text-sm text-gray-400">
-                                    {{ $app->applied_at ? $app->applied_at->diffForHumans(null, true) . ' ago' : '-' }}
+                                    {{ $app->applied_at ? $app->applied_at->diffForHumans(null, true) . ' lalu' : '-' }}
                                 </span>
                             </td>
                             <td class="px-4 py-4">
@@ -211,7 +211,7 @@
                         <tr>
                             <td colspan="4" class="px-6 py-12 text-center">
                                 <span class="material-symbols-outlined text-gray-300 block mb-2" style="font-size:36px;">inbox</span>
-                                <p class="text-sm text-gray-400">No other recent candidates</p>
+                                <p class="text-sm text-gray-400">Belum ada kandidat terbaru</p>
                             </td>
                         </tr>
                     @endforelse
@@ -231,8 +231,7 @@
         <div class="max-w-lg">
             <h4 class="text-[22px] font-extrabold text-white mb-2">Kelola Lowongan Baru</h4>
             <p class="text-blue-200/80 text-[14px] leading-relaxed">
-                Streamline your aerospace recruitment process. Create precision-targeted job openings
-                for specialized engineering roles within our institutional framework.
+                Kelola proses rekrutmen Anda dengan efisien. Buat lowongan baru untuk menemukan kandidat-kandidat terbaik sesuai dengan kebutuhan tim.
             </p>
         </div>
         <button onclick="openVacancyModal()"

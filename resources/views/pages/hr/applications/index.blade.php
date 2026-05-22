@@ -17,7 +17,7 @@
                     class="h-9 pl-3 pr-8 text-sm font-semibold border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002870] bg-white appearance-none">
                 <option value="">Ubah Status...</option>
                 <option value="pending">Pending</option>
-                <option value="review">In Review</option>
+                <option value="review">Ditinjau</option>
                 <option value="lolos">Lolos</option>
                 <option value="tidak_lolos">Tidak Lolos</option>
             </select>
@@ -54,7 +54,7 @@
             <select name="status" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#002870] bg-white">
                 <option value="">Semua</option>
                 <option value="pending"     {{ request('status') == 'pending'     ? 'selected' : '' }}>Pending</option>
-                <option value="review"      {{ request('status') == 'review'      ? 'selected' : '' }}>In Review</option>
+                <option value="review"      {{ request('status') == 'review'      ? 'selected' : '' }}>Ditinjau</option>
                 <option value="lolos"       {{ request('status') == 'lolos'       ? 'selected' : '' }}>Lolos</option>
                 <option value="tidak_lolos" {{ request('status') == 'tidak_lolos' ? 'selected' : '' }}>Tidak Lolos</option>
             </select>
@@ -117,7 +117,7 @@
                     @php
                         $statusMap = [
                             'pending'     => ['label' => 'Pending',      'cls' => 'bg-gray-100 text-gray-600',   'dot' => 'bg-gray-400',   'ring' => 'ring-gray-300'],
-                            'review'      => ['label' => 'In Review',    'cls' => 'bg-blue-50 text-[#002870]',   'dot' => 'bg-[#002870]', 'ring' => 'ring-blue-200'],
+                            'review'      => ['label' => 'Ditinjau',     'cls' => 'bg-blue-50 text-[#002870]',   'dot' => 'bg-[#002870]', 'ring' => 'ring-blue-200'],
                             'lolos'       => ['label' => 'Lolos',        'cls' => 'bg-green-50 text-green-700',  'dot' => 'bg-green-500',  'ring' => 'ring-green-200'],
                             'tidak_lolos' => ['label' => 'Tidak Lolos',  'cls' => 'bg-red-50 text-red-700',     'dot' => 'bg-red-400',    'ring' => 'ring-red-200'],
                         ];
