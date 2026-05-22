@@ -6,9 +6,16 @@
     transition: 0.25s;
 }
 
+.btn-primary-custom:focus,
+.btn-primary-custom:focus-visible,
+.btn-primary-custom:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 .btn-primary-custom:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 40, 112, 0.3);
+    box-shadow: 0 8px 20px rgba(0, 40, 112, 0.3) !important;
 }
 
 .btn-secondary-custom {
@@ -19,10 +26,17 @@
     transition: 0.25s;
 }
 
+.btn-secondary-custom:focus,
+.btn-secondary-custom:focus-visible,
+.btn-secondary-custom:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 .btn-secondary-custom:hover {
     transform: translateY(-2px);
     background: #eab308;
-    box-shadow: 0 8px 20px rgba(248, 184, 48, 0.3);
+    box-shadow: 0 8px 20px rgba(248, 184, 48, 0.3) !important;
 }
 
 /* ================= JOB CARD ================= */
