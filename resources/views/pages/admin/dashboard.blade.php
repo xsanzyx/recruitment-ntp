@@ -13,7 +13,12 @@
         <p class="text-gray-500 text-[15px] mt-1">Kelola user, role, dan pantau aktivitas seluruh sistem rekrutmen.</p>
     </div>
     <div class="flex items-center gap-3 flex-shrink-0">
-
+        <a href="{{ route('admin.users.index') }}"
+           class="inline-flex items-center gap-2 font-extrabold py-3 px-6 rounded-xl transition-all active:scale-95 hover:brightness-110 shadow-lg text-sm"
+           style="background:#f8b830; color:#001544;">
+            <i class="bi bi-person-plus" style="font-size:16px;"></i>
+            Kelola User
+        </a>
         <div class="inline-flex items-center gap-2 px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-[#001544] shadow-sm">
             <span class="material-symbols-outlined" style="font-size:18px;">calendar_today</span>
             {{ now()->translatedFormat('d M Y') }}
@@ -171,10 +176,6 @@
                     <p class="text-[11px] text-gray-400">Pendaftar terakhir di sistem</p>
                 </div>
             </div>
-            <a href="{{ route('admin.users.index') }}"
-               class="text-[12px] font-bold text-[#002870] hover:underline uppercase tracking-wider">
-                Kelola →
-            </a>
         </div>
 
         <div class="overflow-x-auto flex-1">
