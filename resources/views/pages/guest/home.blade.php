@@ -156,7 +156,7 @@
         <div class="col-md-7">
             <div class="process-item fade-up">
                 <span>01</span>
-                <div><strong>Kirim Lamaran</strong><p>Pilih posisi yang sesuai dan kirim CV serta portofolio.</p></div>
+                <div><strong>Kirim Lamaran</strong><p>Lengkapi data diri anda lalu pilih posisi yang sesuai dan kirim CV serta portofolio.</p></div>
             </div>
             <div class="process-item fade-up">
                 <span>02</span>
