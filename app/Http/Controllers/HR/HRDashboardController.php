@@ -12,6 +12,11 @@ class HRDashboardController extends Controller
 {
     public function index()
     {
+        // Auto-close expired vacancies
+        JobVacancy::where('status', 'open')
+            ->whereDate('deadline', '<', now()->startOfDay())
+            ->update(['status' => 'closed']);
+
         $user = Auth::user();
         $isAdmin = $user->role === 'admin';
 

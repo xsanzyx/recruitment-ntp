@@ -25,6 +25,11 @@ class HRJobVacancyController extends Controller
      */
     public function index(Request $request)
     {
+        // Auto-close expired vacancies
+        JobVacancy::where('status', 'open')
+            ->whereDate('deadline', '<', now()->startOfDay())
+            ->update(['status' => 'closed']);
+
         $vacancies = $this->baseQuery()
             ->withCount('applications')
             ->when($request->search, function ($q, $search) {
