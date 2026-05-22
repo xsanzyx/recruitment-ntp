@@ -24,7 +24,7 @@
             <span class="material-symbols-outlined absolute right-2 top-1.5 text-gray-400 pointer-events-none" style="font-size:16px;">expand_more</span>
         </div>
         <button onclick="applyBulkStatus()"
-                class="h-9 px-4 bg-[#002870] hover:bg-[#001544] text-white text-sm font-bold rounded-lg transition-colors flex items-center gap-1">
+                class="h-9 px-4 bg-[#f8b830] hover:bg-[#eab308] text-[#002870] text-sm font-bold rounded-lg transition-colors flex items-center gap-1">
             <span class="material-symbols-outlined" style="font-size:16px;">check_circle</span>
             Terapkan
         </button>
@@ -82,7 +82,7 @@
         <!-- Buttons -->
         <div class="md:col-span-3 flex gap-2">
             <button type="submit"
-                    class="flex-1 flex items-center justify-center gap-1 bg-[#002870] hover:bg-[#001544] text-white px-3 py-2 rounded-lg transition-colors font-bold text-sm">
+                    class="flex-1 flex items-center justify-center gap-1 bg-[#f8b830] hover:bg-[#eab308] text-[#002870] px-3 py-2 rounded-lg transition-colors font-bold text-sm">
                 <span class="material-symbols-outlined text-sm">filter_alt</span> Filter
             </button>
             <a href="{{ route('hr.applications.index') }}"

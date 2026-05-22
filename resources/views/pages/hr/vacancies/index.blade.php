@@ -23,7 +23,7 @@
         </select>
     </form>
     <a href="{{ route('hr.vacancies.create') }}"
-            class="flex items-center gap-2 bg-[#002870] hover:bg-[#001544] text-white px-4 py-2
+            class="flex items-center gap-2 bg-[#f8b830] hover:bg-[#eab308] text-[#002870] px-4 py-2
                    rounded-lg transition-colors font-bold text-sm w-full md:w-auto justify-center">
         <span class="material-symbols-outlined text-sm">add</span> Tambah Lowongan
     </a>

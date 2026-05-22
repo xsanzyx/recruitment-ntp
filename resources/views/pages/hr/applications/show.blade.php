@@ -293,7 +293,7 @@
                 <div>
                     <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-3">CV / Resume Utama</small>
                     <a href="{{ route('hr.applications.download', [$application->id, 'resume']) }}"
-                       class="w-full inline-flex items-center justify-center gap-3 px-5 py-3 bg-[#002870] text-white font-semibold text-sm rounded-xl hover:bg-[#001a4d] transition-all shadow-md shadow-blue-900/15 active:scale-[.97]">
+                       class="w-full inline-flex items-center justify-center gap-3 px-5 py-3 bg-[#f8b830] text-[#002870] font-semibold text-sm rounded-xl hover:bg-[#eab308] transition-all shadow-md shadow-[#f8b830]/20 active:scale-[.97]">
                         <span class="material-symbols-outlined" style="font-size:18px;">download</span>
                         Download Resume
                     </a>
@@ -362,7 +362,7 @@
                     </div>
 
                     <button type="submit"
-                            class="w-full flex items-center justify-center gap-2 h-11 bg-[#002870] text-white font-bold text-sm rounded-xl hover:bg-[#001a4d] transition-all shadow-md shadow-blue-900/15 active:scale-[.97]">
+                            class="w-full flex items-center justify-center gap-2 h-11 bg-[#f8b830] text-[#002870] font-bold text-sm rounded-xl hover:bg-[#eab308] transition-all shadow-md shadow-[#f8b830]/20 active:scale-[.97]">
                         <span class="material-symbols-outlined" style="font-size:16px;">check_circle</span> Simpan Status
                     </button>
                 </form>

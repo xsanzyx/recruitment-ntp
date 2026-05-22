@@ -212,7 +212,7 @@
             Batal
         </a>
         <button type="submit"
-                class="flex items-center justify-center gap-2 h-11 px-8 bg-[#002870] text-white font-bold text-sm rounded-xl hover:bg-[#001a4d] transition-all shadow-md shadow-blue-900/15 active:scale-[.97]">
+                class="flex items-center justify-center gap-2 h-11 px-8 bg-[#f8b830] text-[#002870] font-bold text-sm rounded-xl hover:bg-[#eab308] transition-all shadow-md shadow-[#f8b830]/20 active:scale-[.97]">
             <span class="material-symbols-outlined" style="font-size:16px;">check_circle</span> Simpan Lowongan
         </button>
     </div>
