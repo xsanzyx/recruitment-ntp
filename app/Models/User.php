@@ -16,6 +16,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'department',
         'status',
         'last_active_at',
         'otp_code',
@@ -56,6 +57,11 @@ class User extends Authenticatable
         return in_array($this->role, ['user', 'kandidat']);
     }
 
+    public function isManager(): bool
+    {
+        return $this->role === 'manager';
+    }
+
     public function isActive(): bool
     {
         return $this->status === 'active';
@@ -81,10 +87,11 @@ class User extends Authenticatable
     public function getRoleLabelAttribute(): string
     {
         return match ($this->role) {
-            'admin' => 'Admin',
-            'hr'    => 'HR',
-            'user'  => 'Kandidat',
-            default => ucfirst($this->role),
+            'admin'   => 'Admin',
+            'hr'      => 'HR',
+            'manager' => 'Manager',
+            'user'    => 'Kandidat',
+            default   => ucfirst($this->role),
         };
     }
 

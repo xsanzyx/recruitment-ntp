@@ -444,6 +444,7 @@ tbody tr:last-child td { border-bottom: none; }
 
 .badge-admin    { background: #ede7f6; color: #5c3d99; }
 .badge-hr       { background: var(--primary-pale); color: var(--primary); }
+.badge-manager  { background: #f3e8ff; color: #7c3aed; }
 .badge-kandidat { background: #e6f7f5; color: #0f7a72; }
 
 .badge-aktif    { background: #e6f7f5; color: #0a6058; border: 1px solid #b3ede8; }

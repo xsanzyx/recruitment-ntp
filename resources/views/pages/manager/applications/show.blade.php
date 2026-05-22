@@ -1,0 +1,379 @@
+@php use Illuminate\Support\Facades\Storage; @endphp
+@extends('layouts.manager')
+
+@section('title', 'Detail Kandidat — ' . $application->user->full_name)
+
+@section('content')
+
+{{-- ═══════════════ HEADER ═══════════════ --}}
+<header class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-[#002870] tracking-tight">Detail Kandidat</h1>
+        <p class="text-gray-500 text-sm mt-1">Informasi lengkap pelamar untuk posisi <strong class="text-gray-700">{{ $application->jobVacancy->title }}</strong></p>
+    </div>
+    <a href="{{ route('manager.applications.index') }}"
+       class="flex items-center gap-1.5 px-4 py-2 text-[#002870] font-semibold text-sm border border-[#002870]/20 rounded-lg hover:bg-[#002870]/5 transition-all">
+        <span class="material-symbols-outlined" style="font-size:16px;">arrow_back</span> Kembali
+    </a>
+</header>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+
+    {{-- ═══════════════ LEFT COLUMN ═══════════════ --}}
+    <div class="lg:col-span-2 space-y-8">
+
+        {{-- ── Profile Card ── --}}
+        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+            <div class="p-6 sm:p-8">
+                {{-- Top: Avatar + Name + Badge --}}
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 mb-8">
+                    <div class="flex items-center gap-5">
+                        @if($application->user->avatar)
+                            <img src="{{ Storage::url($application->user->avatar) }}" alt="{{ $application->user->full_name }}"
+                                 class="w-16 h-16 rounded-2xl object-cover shadow-md shadow-blue-900/20 shrink-0 border border-gray-200">
+                        @else
+                            <div class="w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-[#002870] to-[#0048c7] text-white text-xl font-bold shadow-md shadow-blue-900/20 shrink-0">
+                                {{ strtoupper(substr($application->user->first_name, 0, 1)) }}{{ strtoupper(substr($application->user->last_name, 0, 1)) }}
+                            </div>
+                        @endif
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900 leading-tight">{{ $application->user->full_name }}</h2>
+                            <span class="text-gray-400 text-sm mt-0.5 block">{{ $application->user->email }}</span>
+                        </div>
+                    </div>
+                    <div>
+                        @php
+                            $badgeStyles = match($application->status_badge) {
+                                'warning' => 'bg-amber-50 text-amber-700 border-amber-200 ring-amber-100',
+                                'info'    => 'bg-sky-50 text-sky-700 border-sky-200 ring-sky-100',
+                                'success' => 'bg-emerald-50 text-emerald-700 border-emerald-200 ring-emerald-100',
+                                'danger'  => 'bg-rose-50 text-rose-700 border-rose-200 ring-rose-100',
+                                default   => 'bg-gray-50 text-gray-600 border-gray-200 ring-gray-100',
+                            };
+                        @endphp
+                        <span class="px-3.5 py-1.5 {{ $badgeStyles }} border ring-2 text-xs font-bold uppercase rounded-full tracking-wide">{{ $application->status_label }}</span>
+                    </div>
+                </div>
+
+                {{-- ── Bio & Links (Inside Profile Card) ── --}}
+                @if($application->user->portfolio_url || $application->user->linkedin_url || $application->user->bio)
+                <div class="mb-8">
+                    @if($application->user->bio)
+                    <div class="mb-5">
+                        <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Tentang Kandidat</small>
+                        <p class="text-sm text-gray-700 leading-relaxed">{{ $application->user->bio }}</p>
+                    </div>
+                    @endif
+
+                    @if($application->user->portfolio_url || $application->user->linkedin_url)
+                    <div class="flex flex-wrap gap-4">
+                        @if($application->user->portfolio_url)
+                        <a href="{{ $application->user->portfolio_url }}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-[#002870] transition-colors group">
+                            <span class="material-symbols-outlined text-[18px] group-hover:scale-110 transition-transform">language</span>
+                            Portfolio
+                        </a>
+                        @endif
+                        @if($application->user->linkedin_url)
+                        <a href="{{ $application->user->linkedin_url }}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-[#0077b5] transition-colors group">
+                            <svg class="w-[18px] h-[18px] group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                            </svg>
+                            LinkedIn
+                        </a>
+                        @endif
+                    </div>
+                    @endif
+                </div>
+                @endif
+
+                {{-- Job Info Grid --}}
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-6 border-t border-gray-100">
+                    <div class="flex items-center gap-3.5 p-4 bg-slate-50 rounded-xl border border-slate-100">
+                        <div class="w-10 h-10 rounded-xl bg-blue-100 text-[#002870] flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined" style="font-size:20px;">work</span>
+                        </div>
+                        <div class="min-w-0">
+                            <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Posisi</small>
+                            <strong class="text-sm text-gray-800 block truncate">{{ $application->jobVacancy->title }}</strong>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3.5 p-4 bg-slate-50 rounded-xl border border-slate-100">
+                        <div class="w-10 h-10 rounded-xl bg-blue-100 text-[#002870] flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined" style="font-size:20px;">domain</span>
+                        </div>
+                        <div class="min-w-0">
+                            <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Departemen</small>
+                            <strong class="text-sm text-gray-800 block truncate">{{ $application->jobVacancy->department }}</strong>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3.5 p-4 bg-slate-50 rounded-xl border border-slate-100">
+                        <div class="w-10 h-10 rounded-xl bg-blue-100 text-[#002870] flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined" style="font-size:20px;">calendar_month</span>
+                        </div>
+                        <div class="min-w-0">
+                            <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Tanggal Melamar</small>
+                            <strong class="text-sm text-gray-800 block">{{ $application->applied_at->format('d M Y, H:i') }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- ── Informasi Pribadi ── --}}
+        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+            <div class="px-6 sm:px-8 py-5 border-b border-gray-100 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-[#002870]/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[#002870]" style="font-size:18px;">person</span>
+                </div>
+                <h3 class="font-bold text-gray-900 text-base">Informasi Pribadi</h3>
+            </div>
+            <div class="p-6 sm:p-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+                    {{-- No. Telepon --}}
+                    <div class="space-y-1">
+                        <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">No. Telepon</small>
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-gray-400" style="font-size:16px;">call</span>
+                            <strong class="text-sm text-gray-800">{{ $application->phone ?? '—' }}</strong>
+                        </div>
+                    </div>
+
+                    {{-- Jenis Kelamin --}}
+                    <div class="space-y-1">
+                        <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Jenis Kelamin</small>
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-gray-400" style="font-size:16px;">wc</span>
+                            <strong class="text-sm text-gray-800">{{ $application->gender ?? '—' }}</strong>
+                        </div>
+                    </div>
+
+                    {{-- Tanggal Lahir --}}
+                    <div class="space-y-1">
+                        <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Tanggal Lahir</small>
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-gray-400" style="font-size:16px;">cake</span>
+                            <strong class="text-sm text-gray-800">{{ $application->birthdate ? $application->birthdate->format('d M Y') : '—' }}</strong>
+                        </div>
+                    </div>
+
+                    {{-- Pendidikan --}}
+                    <div class="space-y-1">
+                        <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Pendidikan Terakhir</small>
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-gray-400" style="font-size:16px;">school</span>
+                            @php
+                                $educationStr = '—';
+                                if ($application->education && is_array($application->education)) {
+                                    $validEds = array_filter($application->education, function($ed) {
+                                        return !empty($ed['level']) || !empty($ed['institution']);
+                                    });
+                                    if (count($validEds) > 0) {
+                                        $lastEd = end($validEds);
+                                        $parts = array_filter([
+                                            $lastEd['level'] ?? null,
+                                            $lastEd['major'] ?? null,
+                                        ]);
+                                        $institution = $lastEd['institution'] ?? null;
+                                        $educationStr = implode(' ', $parts);
+                                        if ($institution) $educationStr .= ' — ' . $institution;
+                                    }
+                                }
+                            @endphp
+                            <strong class="text-sm text-gray-800">{{ $educationStr ?: '—' }}</strong>
+                        </div>
+                    </div>
+
+                    {{-- Alamat --}}
+                    <div class="sm:col-span-2 space-y-1">
+                        <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Alamat</small>
+                        <div class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-gray-400 mt-0.5" style="font-size:16px;">location_on</span>
+                            <strong class="text-sm text-gray-800">{{ $application->address ?? '—' }}</strong>
+                        </div>
+                    </div>
+
+                    {{-- Pesan untuk HR --}}
+                    @if($application->summary)
+                    <div class="sm:col-span-2 space-y-1.5">
+                        <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Pesan untuk HR</small>
+                        <p class="text-sm text-gray-600 leading-relaxed whitespace-pre-line bg-slate-50 rounded-xl p-4 border border-slate-100">{{ $application->summary }}</p>
+                    </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        {{-- ── Riwayat Pendidikan (Detail) ── --}}
+        @if($application->education && is_array($application->education))
+            @php $validEducation = array_filter($application->education, fn($e) => !empty($e['level']) || !empty($e['institution'])); @endphp
+            @if(count($validEducation) > 0)
+            <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                <div class="px-6 sm:px-8 py-5 border-b border-gray-100 flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-[#002870]/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[#002870]" style="font-size:18px;">school</span>
+                    </div>
+                    <h3 class="font-bold text-gray-900 text-base">Riwayat Pendidikan</h3>
+                </div>
+                <div class="p-6 sm:p-8 space-y-4">
+                    @foreach($validEducation as $edu)
+                    <div class="flex gap-4 p-4 bg-slate-50 rounded-xl border border-slate-100">
+                        <div class="w-10 h-10 rounded-xl bg-blue-100 text-[#002870] flex items-center justify-center shrink-0 mt-0.5">
+                            <span class="material-symbols-outlined" style="font-size:18px;">school</span>
+                        </div>
+                        <div class="space-y-0.5 min-w-0">
+                            <strong class="text-sm text-gray-900 block">{{ $edu['level'] ?? '' }} {{ $edu['major'] ?? '' }}</strong>
+                            <span class="text-xs text-gray-500 block">{{ $edu['institution'] ?? '—' }}</span>
+                            <span class="text-xs text-gray-400 block">
+                                {{ $edu['year_start'] ?? '' }}{{ !empty($edu['year_end']) ? ' — ' . $edu['year_end'] : '' }}
+                                @if(!empty($edu['gpa']))
+                                    &nbsp;·&nbsp;IPK {{ $edu['gpa'] }}
+                                @endif
+                            </span>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+        @endif
+
+        {{-- ── Pengalaman Kerja ── --}}
+        @if($application->experience && is_array($application->experience))
+            @php $validExp = array_filter($application->experience, fn($e) => !empty($e['position']) || !empty($e['company'])); @endphp
+            @if(count($validExp) > 0)
+            <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                <div class="px-6 sm:px-8 py-5 border-b border-gray-100 flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-[#002870]/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[#002870]" style="font-size:18px;">business_center</span>
+                    </div>
+                    <h3 class="font-bold text-gray-900 text-base">Pengalaman Kerja</h3>
+                </div>
+                <div class="p-6 sm:p-8 space-y-4">
+                    @foreach($validExp as $exp)
+                    <div class="flex gap-4 p-4 bg-slate-50 rounded-xl border border-slate-100">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 mt-0.5">
+                            <span class="material-symbols-outlined" style="font-size:18px;">work_history</span>
+                        </div>
+                        <div class="space-y-0.5 min-w-0">
+                            <strong class="text-sm text-gray-900 block">{{ $exp['position'] ?? '—' }}</strong>
+                            <span class="text-xs text-gray-500 block">{{ $exp['company'] ?? '—' }}
+                                @if(!empty($exp['current']) && $exp['current']) <span class="inline-block px-1.5 py-0.5 text-[10px] font-bold bg-green-100 text-green-700 rounded ml-1">Saat ini</span> @endif
+                            </span>
+                            <span class="text-xs text-gray-400 block">
+                                {{ $exp['year_start'] ?? '' }}{{ !empty($exp['year_end']) ? ' — ' . $exp['year_end'] : ' — Sekarang' }}
+                            </span>
+                            @if(!empty($exp['description']))
+                                <p class="text-xs text-gray-500 mt-1.5 leading-relaxed">{{ $exp['description'] }}</p>
+                            @endif
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+        @endif
+
+    </div>
+
+    {{-- ═══════════════ RIGHT COLUMN (Sticky) ═══════════════ --}}
+    <div class="space-y-6 lg:sticky lg:top-6 self-start">
+
+        {{-- ── Card 1: Resume & Dokumen ── --}}
+        @if($application->resume_path || !empty($application->documents))
+        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-100 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-[#002870]/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[#002870]" style="font-size:18px;">folder_open</span>
+                </div>
+                <h3 class="font-bold text-gray-900 text-base">Resume & Dokumen</h3>
+            </div>
+            <div class="p-6 space-y-5">
+                {{-- Resume --}}
+                @if($application->resume_path)
+                <div>
+                    <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-3">CV / Resume Utama</small>
+                    <a href="{{ route('manager.applications.download', [$application->id, 'resume']) }}"
+                       class="w-full inline-flex items-center justify-center gap-3 px-5 py-3 bg-[#f8b830] text-[#002870] font-semibold text-sm rounded-xl hover:bg-[#eab308] transition-all shadow-md shadow-[#f8b830]/20 active:scale-[.97]">
+                        <span class="material-symbols-outlined" style="font-size:18px;">download</span>
+                        Download Resume
+                    </a>
+                </div>
+                @endif
+
+                {{-- Extra Documents --}}
+                @if(!empty($application->documents))
+                <div>
+                    <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-3">Dokumen Pendukung</small>
+                    <div class="space-y-2">
+                        @foreach($application->documents as $index => $doc)
+                        <a href="{{ route('manager.applications.download', [$application->id, 'document', $index]) }}"
+                           class="flex items-center gap-3 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 hover:border-slate-300 transition-all group">
+                            <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#002870] flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined" style="font-size:16px;">description</span>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <span class="text-sm font-semibold text-gray-700 block truncate">{{ $doc['name'] }}</span>
+                                <span class="text-[10px] text-gray-400 uppercase tracking-wider">Klik untuk download</span>
+                            </div>
+                            <span class="material-symbols-outlined text-gray-300 group-hover:text-[#002870] transition-colors" style="font-size:18px;">download</span>
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+            </div>
+        </div>
+        @endif
+
+        {{-- ── Card 2: Info Review ── --}}
+        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-100 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-[#002870]/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[#002870]" style="font-size:18px;">info</span>
+                </div>
+                <h3 class="font-bold text-gray-900 text-base">Info Review</h3>
+            </div>
+            <div class="p-6 space-y-5">
+                {{-- Status --}}
+                <div class="space-y-1.5">
+                    <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Status Saat Ini</small>
+                    <span class="px-3 py-1.5 {{ $badgeStyles }} border ring-2 text-xs font-bold uppercase rounded-full tracking-wide inline-block">{{ $application->status_label }}</span>
+                </div>
+
+                {{-- Reviewer --}}
+                @if($application->reviewer)
+                <div class="space-y-1.5">
+                    <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Direview oleh</small>
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 rounded-lg bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-500">
+                            {{ strtoupper(substr($application->reviewer->first_name, 0, 1)) }}
+                        </div>
+                        <strong class="text-sm text-gray-800">{{ $application->reviewer->full_name }}</strong>
+                    </div>
+                </div>
+                @endif
+
+                {{-- Catatan --}}
+                @if($application->review_notes)
+                <div class="space-y-1.5">
+                    <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Catatan</small>
+                    <div class="p-3.5 bg-amber-50 text-amber-800 text-sm rounded-xl border border-amber-100 whitespace-pre-line leading-relaxed">{{ $application->review_notes }}</div>
+                </div>
+                @endif
+
+                {{-- Terakhir diperbarui --}}
+                <div class="space-y-1.5">
+                    <small class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Terakhir diperbarui</small>
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-gray-400" style="font-size:16px;">schedule</span>
+                        <strong class="text-sm text-gray-800">{{ $application->updated_at->format('d M Y, H:i') }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+@endsection
+

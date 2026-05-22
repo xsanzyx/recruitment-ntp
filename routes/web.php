@@ -9,6 +9,8 @@ use App\Http\Controllers\HR\HRApplicationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\Manager\ManagerDashboardController;
+use App\Http\Controllers\Manager\ManagerApplicationController;
 use App\Models\JobVacancy;
 use Illuminate\Support\Facades\Route;
 
@@ -98,4 +100,18 @@ Route::prefix('admin')
 
         // Manajemen User
         Route::resource('users', UserManagementController::class);
+    });
+
+// =============================================
+//  MANAGER ROUTES (view-only)
+// =============================================
+Route::prefix('manager')
+    ->name('manager.')
+    ->middleware(['auth', 'manager'])
+    ->group(function () {
+        Route::get('/dashboard', [ManagerDashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('/applications', [ManagerApplicationController::class, 'index'])->name('applications.index');
+        Route::get('/applications/{id}', [ManagerApplicationController::class, 'show'])->name('applications.show');
+        Route::get('/applications/{id}/download/{type}/{docIndex?}', [ManagerApplicationController::class, 'downloadFile'])->name('applications.download');
     });

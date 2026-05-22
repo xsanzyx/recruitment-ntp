@@ -45,11 +45,12 @@ class UserManagementController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name'  => 'nullable|string|max:255',
-            'email'      => 'required|email|unique:users,email',
-            'password'   => 'required|string|min:8|confirmed',
-            'role'       => 'required|in:admin,hr,kandidat',
+            'first_name'  => 'required|string|max:255',
+            'last_name'   => 'nullable|string|max:255',
+            'email'       => 'required|email|unique:users,email',
+            'password'    => 'required|string|min:8|confirmed',
+            'role'        => 'required|in:admin,hr,kandidat,manager',
+            'department'  => 'required_if:role,manager|nullable|string|max:255',
         ], [
             'first_name.required'  => 'Nama depan wajib diisi.',
             'email.required'       => 'Email wajib diisi.',
@@ -57,6 +58,7 @@ class UserManagementController extends Controller
             'password.required'    => 'Password wajib diisi.',
             'password.min'         => 'Password minimal 8 karakter.',
             'password.confirmed'   => 'Konfirmasi password tidak sesuai.',
+            'department.required_if' => 'Departemen wajib diisi untuk role Manager.',
         ]);
 
         // User yang dibuat Admin langsung aktif (tidak perlu OTP)
@@ -66,6 +68,7 @@ class UserManagementController extends Controller
             'email'             => $request->email,
             'password'          => Hash::make($request->password),
             'role'              => $request->role,
+            'department'        => $request->role === 'manager' ? $request->department : null,
             'status'            => 'active',
             'email_verified_at' => now(),
         ]);
@@ -82,11 +85,12 @@ class UserManagementController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name'  => 'nullable|string|max:255',
-            'email'      => ['required', 'email', Rule::unique('users')->ignore($user->id)],
-            'role'       => 'required|in:admin,hr,kandidat',
-            'status'     => 'required|in:active,pending,nonactive',
+            'first_name'  => 'required|string|max:255',
+            'last_name'   => 'nullable|string|max:255',
+            'email'       => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'role'        => 'required|in:admin,hr,kandidat,manager',
+            'status'      => 'required|in:active,pending,nonactive',
+            'department'  => 'required_if:role,manager|nullable|string|max:255',
         ]);
 
         $data = [
@@ -94,6 +98,7 @@ class UserManagementController extends Controller
             'last_name'  => $request->last_name ?? '',
             'email'      => $request->email,
             'role'       => $request->role,
+            'department' => $request->role === 'manager' ? $request->department : null,
             'status'     => $request->status,
         ];
 

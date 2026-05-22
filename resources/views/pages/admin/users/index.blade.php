@@ -38,6 +38,7 @@
             <option value="semua" {{ request('role','semua') === 'semua' ? 'selected' : '' }}>Semua role</option>
             <option value="admin" {{ request('role') === 'admin'  ? 'selected' : '' }}>Admin</option>
             <option value="hr" {{ request('role') === 'hr'     ? 'selected' : '' }}>HR</option>
+            <option value="manager" {{ request('role') === 'manager' ? 'selected' : '' }}>Manager</option>
             <option value="user" {{ request('role') === 'user'   ? 'selected' : '' }}>Kandidat</option>
         </select>
         <select name="status" class="filter-select">
@@ -74,9 +75,10 @@
                 default     => 'badge-pending'
             };
             $roleClass = match($user->role) {
-                'admin' => 'badge-admin',
-                'hr'    => 'badge-hr',
-                default => 'badge-kandidat'
+                'admin'   => 'badge-admin',
+                'hr'      => 'badge-hr',
+                'manager' => 'badge-manager',
+                default   => 'badge-kandidat'
             };
             @endphp
             <tr>
@@ -100,7 +102,7 @@
                 <td>
                     <div class="action-btns" style="justify-content:flex-end;">
                         {{-- Edit Button --}}
-                        <button onclick="openEditModal({{ $user->id }}, '{{ addslashes($user->first_name) }}', '{{ addslashes($user->last_name) }}', '{{ $user->email }}', '{{ $user->role }}', '{{ $user->status }}')" class="btn-icon btn-edit" title="Edit">
+                        <button onclick="openEditModal({{ $user->id }}, '{{ addslashes($user->first_name) }}', '{{ addslashes($user->last_name) }}', '{{ $user->email }}', '{{ $user->role }}', '{{ $user->status }}', '{{ addslashes($user->department ?? '') }}')" class="btn-icon btn-edit" title="Edit">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
@@ -205,7 +207,23 @@
                             Kandidat
                         </label>
                     </div>
+                    <div class="role-option">
+                        <input type="radio" name="role" value="manager" id="createRoleManager" {{ old('role') == 'manager' ? 'checked' : '' }} onchange="toggleCreateDept()">
+                        <label for="createRoleManager">
+                            <div class="role-icon ri-manager" style="background:rgba(168,85,247,0.1); color:#7c3aed;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                            </div>
+                            Manager
+                        </label>
+                    </div>
                 </div>
+            </div>
+
+            {{-- DEPARTMENT (only for Manager) --}}
+            <div class="form-group" id="createDeptGroup" style="display:{{ old('role') == 'manager' ? 'block' : 'none' }};">
+                <label>Departemen <span>*</span></label>
+                <input type="text" name="department" id="createDepartment" placeholder="cth: MIS, Engineering" value="{{ old('department') }}">
+                <small style="color: #64748b; font-size: 11px; margin-top: 4px; display: block;">Harus sama persis dengan nama departemen di lowongan.</small>
             </div>
 
             {{-- NAME --}}
@@ -305,7 +323,23 @@
                             Kandidat
                         </label>
                     </div>
+                    <div class="role-option">
+                        <input type="radio" name="role" value="manager" id="editRoleManager" onchange="toggleEditDept()">
+                        <label for="editRoleManager">
+                            <div class="role-icon ri-manager" style="background:rgba(168,85,247,0.1); color:#7c3aed;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                            </div>
+                            Manager
+                        </label>
+                    </div>
                 </div>
+            </div>
+
+            {{-- DEPARTMENT (only for Manager) --}}
+            <div class="form-group" id="editDeptGroup" style="display:none;">
+                <label>Departemen <span>*</span></label>
+                <input type="text" name="department" id="editDepartment" placeholder="cth: MIS, Engineering">
+                <small style="color: #64748b; font-size: 11px; margin-top: 4px; display: block;">Harus sama persis dengan nama departemen di lowongan.</small>
             </div>
 
             {{-- NAME --}}
@@ -422,7 +456,7 @@
     @endif
 
     // ── EDIT MODAL ──
-    function openEditModal(id, firstName, lastName, email, role, status) {
+    function openEditModal(id, firstName, lastName, email, role, status, department) {
         const modal = document.getElementById('modalEditUser');
         modal.classList.add('active');
 
@@ -433,6 +467,7 @@
         document.getElementById('editFirstName').value = firstName;
         document.getElementById('editLastName').value = lastName;
         document.getElementById('editEmail').value = email;
+        document.getElementById('editDepartment').value = department || '';
         
         const statusEl = document.getElementById('editStatus');
         statusEl.value = status;
@@ -441,6 +476,9 @@
         document.querySelectorAll('#modalEditUser [name=role]').forEach(r => {
             r.checked = r.value === role;
         });
+
+        // Show/hide department field
+        toggleEditDept();
     }
 
     function closeEditModal() {
@@ -474,5 +512,19 @@
             });
         }
     });
+
+    // ── TOGGLE DEPARTMENT FIELD ──
+    function toggleCreateDept() {
+        const checked = document.querySelector('#modalCreateUser [name=role]:checked');
+        document.getElementById('createDeptGroup').style.display = (checked && checked.value === 'manager') ? 'block' : 'none';
+    }
+    function toggleEditDept() {
+        const checked = document.querySelector('#modalEditUser [name=role]:checked');
+        document.getElementById('editDeptGroup').style.display = (checked && checked.value === 'manager') ? 'block' : 'none';
+    }
+
+    // Attach listeners for all role radios
+    document.querySelectorAll('#modalCreateUser [name=role]').forEach(r => r.addEventListener('change', toggleCreateDept));
+    document.querySelectorAll('#modalEditUser [name=role]').forEach(r => r.addEventListener('change', toggleEditDept));
 </script>
 @endpush
