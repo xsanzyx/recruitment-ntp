@@ -331,6 +331,7 @@
                 <label>Status <span>*</span></label>
                 <select name="status" id="editStatus">
                     <option value="active">Aktif</option>
+                    <option value="pending">Pending</option>
                     <option value="nonactive">Nonaktif</option>
                 </select>
                 <small style="color: #64748b; font-size: 11px; margin-top: 4px; display: block;">
@@ -434,12 +435,7 @@
         document.getElementById('editEmail').value = email;
         
         const statusEl = document.getElementById('editStatus');
-        // Jika status saat ini pending, otomatis arahkan ke pilihan 'active' di modal
-        if (status === 'pending') {
-            statusEl.value = 'active';
-        } else {
-            statusEl.value = status;
-        }
+        statusEl.value = status;
 
         // Set role radio
         document.querySelectorAll('#modalEditUser [name=role]').forEach(r => {

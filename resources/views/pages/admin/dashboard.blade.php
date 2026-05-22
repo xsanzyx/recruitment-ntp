@@ -13,12 +13,7 @@
         <p class="text-gray-500 text-[15px] mt-1">Kelola user, role, dan pantau aktivitas seluruh sistem rekrutmen.</p>
     </div>
     <div class="flex items-center gap-3 flex-shrink-0">
-        <a href="{{ route('admin.users.index') }}"
-           class="inline-flex items-center gap-2 font-extrabold py-3 px-6 rounded-xl transition-all active:scale-95 hover:brightness-110 shadow-lg text-sm"
-           style="background:#f8b830; color:#001544;">
-            <i class="bi bi-person-plus" style="font-size:16px;"></i>
-            Kelola User
-        </a>
+
         <div class="inline-flex items-center gap-2 px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-[#001544] shadow-sm">
             <span class="material-symbols-outlined" style="font-size:18px;">calendar_today</span>
             {{ now()->translatedFormat('d M Y') }}
@@ -138,20 +133,27 @@
             @endforeach
 
             {{-- Mini stat cards --}}
-            <div class="grid grid-cols-2 gap-3 pt-3 border-t border-gray-50">
+            <div class="grid grid-cols-3 gap-3 pt-3 border-t border-gray-50">
                 <div class="bg-emerald-50/60 rounded-xl p-4">
-                    <div class="flex items-center gap-1.5 mb-1.5">
-                        <span class="material-symbols-outlined text-emerald-500" style="font-size:14px; font-variation-settings:'FILL' 1;">check_circle</span>
-                        <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">User Aktif</span>
+                    <div class="flex flex-col items-center gap-1.5 mb-1.5">
+                        <span class="material-symbols-outlined text-emerald-500" style="font-size:18px; font-variation-settings:'FILL' 1;">check_circle</span>
+                        <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wider text-center">Aktif</span>
                     </div>
-                    <span class="text-[24px] font-extrabold text-[#001544]">{{ $user_aktif }}</span>
+                    <span class="text-[20px] font-extrabold text-[#001544] block text-center">{{ $user_aktif }}</span>
                 </div>
                 <div class="bg-amber-50/60 rounded-xl p-4">
-                    <div class="flex items-center gap-1.5 mb-1.5">
-                        <span class="material-symbols-outlined text-amber-500" style="font-size:14px; font-variation-settings:'FILL' 1;">schedule</span>
-                        <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Pending</span>
+                    <div class="flex flex-col items-center gap-1.5 mb-1.5">
+                        <span class="material-symbols-outlined text-amber-500" style="font-size:18px; font-variation-settings:'FILL' 1;">schedule</span>
+                        <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wider text-center">Pending</span>
                     </div>
-                    <span class="text-[24px] font-extrabold text-[#001544]">{{ $user_pending }}</span>
+                    <span class="text-[20px] font-extrabold text-[#001544] block text-center">{{ $user_pending }}</span>
+                </div>
+                <div class="bg-red-50/60 rounded-xl p-4">
+                    <div class="flex flex-col items-center gap-1.5 mb-1.5">
+                        <span class="material-symbols-outlined text-red-500" style="font-size:18px; font-variation-settings:'FILL' 1;">block</span>
+                        <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wider text-center">Nonaktif</span>
+                    </div>
+                    <span class="text-[20px] font-extrabold text-[#001544] block text-center">{{ $user_nonaktif }}</span>
                 </div>
             </div>
         </div>
@@ -206,7 +208,7 @@
                         $statusBadge = [
                             'active'   => ['bg' => 'bg-emerald-50', 'text' => 'text-emerald-700', 'label' => 'Aktif'],
                             'pending'  => ['bg' => 'bg-amber-50',   'text' => 'text-amber-700',   'label' => 'Pending'],
-                            'inactive' => ['bg' => 'bg-red-50',     'text' => 'text-red-600',     'label' => 'Nonaktif'],
+                            'nonactive'=> ['bg' => 'bg-red-50',     'text' => 'text-red-600',     'label' => 'Nonaktif'],
                         ];
                     @endphp
 

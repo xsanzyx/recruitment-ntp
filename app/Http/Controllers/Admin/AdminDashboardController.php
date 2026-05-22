@@ -26,6 +26,7 @@ class AdminDashboardController extends Controller
 
         $user_aktif  = User::where('status', 'active')->count();
         $user_pending = User::where('status', 'pending')->count();
+        $user_nonaktif = User::where('status', 'nonactive')->count();
 
         $user_terbaru = User::whereIn('role', ['user', 'kandidat'])
             ->orderBy('created_at', 'desc')
@@ -37,6 +38,7 @@ class AdminDashboardController extends Controller
             'distribusi',
             'user_aktif',
             'user_pending',
+            'user_nonaktif',
             'user_terbaru'
         ));
     }
