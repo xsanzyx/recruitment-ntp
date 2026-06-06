@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\ApplicationStatusMail;
 
 class HRApplicationController extends Controller
 {
@@ -102,15 +103,15 @@ class HRApplicationController extends Controller
         'is_read'      => false, // kandidat belum baca update ini
     ]);
 
-    // Kirim email kalau lolos
-    if ($validated['status'] === 'lolos') {
-        Mail::raw(
-            "Selamat {$application->user->first_name}!\n\nLamaran kamu untuk posisi {$application->jobVacancy->title} di PT Nusantara Turbin dan Propulsi telah LOLOS seleksi.\n\nTim HR kami akan segera menghubungimu untuk tahap selanjutnya.\n\nSalam,\nTim HR NTP",
-            function ($mail) use ($application) {
-                $mail->to($application->user->email, $application->user->first_name)
-                     ->subject("[NTP Careers] Selamat! Lamaran Kamu Lolos Seleksi");
-            }
-        );
+    // Kirim email notifikasi jika status diubah ke lolos atau tidak_lolos
+    if (in_array($validated['status'], ['lolos', 'tidak_lolos'])) {
+        try {
+            Mail::to($application->user->email, $application->user->first_name)
+                ->send(new ApplicationStatusMail($application, $validated['status']));
+        } catch (\Exception $e) {
+            // Abaikan error email agar sistem tidak crash jika email invalid/smtp error
+            report($e);
+        }
     }
 
     $statusLabel = match ($validated['status']) {
