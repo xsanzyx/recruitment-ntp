@@ -350,13 +350,13 @@
                 </div>
                 @else
                 {{-- STATUS BELUM FINAL — FORM AKTIF --}}
-                <form method="POST" action="{{ route('hr.applications.updateStatus', $application->id) }}">
+                <form id="statusForm" method="POST" action="{{ route('hr.applications.updateStatus', $application->id) }}" onsubmit="return confirmStatusUpdate(event)">
                     @csrf @method('PATCH')
 
                     <div class="mb-5">
                         <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Status Baru</label>
                         <div class="relative">
-                            <select name="status"
+                            <select name="status" id="statusSelect"
                                     class="w-full h-11 px-4 bg-slate-50 border {{ $errors->has('status') ? 'border-red-400' : 'border-gray-200' }} rounded-xl text-sm font-medium outline-none appearance-none focus:border-[#002870] focus:ring-2 focus:ring-[#002870]/10 transition-all">
                                 <option value="pending" {{ $application->status == 'pending' ? 'selected' : '' }}>⏳ Pending</option>
                                 <option value="review" {{ $application->status == 'review' ? 'selected' : '' }}>🔍 Sedang Direview</option>
@@ -438,3 +438,28 @@
 
 </div>
 @endsection
+
+@push('scripts')
+<script>
+function confirmStatusUpdate(event) {
+    const statusSelect = document.getElementById('statusSelect');
+    const selectedStatus = statusSelect.value;
+    
+    if (selectedStatus === 'lolos' || selectedStatus === 'tidak_lolos') {
+        const statusText = selectedStatus === 'lolos' ? 'LOLOS' : 'TIDAK LOLOS';
+        const confirmation = confirm(
+            `Apakah Anda yakin ingin mengubah status kandidat ini menjadi "${statusText}"?\n\n` +
+            `⚠️ PENTING:\n` +
+            `- Keputusan ini bersifat FINAL dan tidak dapat diubah lagi.\n` +
+            `- Email notifikasi resmi akan segera dikirimkan ke alamat email kandidat.`
+        );
+        
+        if (!confirmation) {
+            event.preventDefault();
+            return false;
+        }
+    }
+    return true;
+}
+</script>
+@endpush
