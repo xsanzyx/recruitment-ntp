@@ -11,7 +11,7 @@
             <div style="flex:1;">
                 <i class="bi bi-file-earmark-pdf me-2" style="color:#166534;"></i>
                 <span style="font-size:13px;color:#166534;font-weight:600;">CV telah diupload</span>
-<a href="{{ Storage::url($profile->resume_path) }}" target="_blank" style="font-size:12px;color:#15803d;margin-left:8px;">Lihat</a>
+                <a href="{{ Storage::url($profile->resume_path) }}" target="_blank" style="font-size:12px;color:#15803d;margin-left:8px;">Lihat</a>
             </div>
             <button type="button" onclick="deleteResume()" style="background:none;border:none;color:#ef4444;font-size:14px;cursor:pointer;"><i class="bi bi-trash"></i></button>
         </div>
@@ -25,7 +25,8 @@
             <input type="file" id="cv-input" name="resume" accept=".pdf" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;">
         </div>
         <div id="cv-name" style="display:none;margin-top:8px;padding:10px 14px;background:#f0fdf4;border-radius:8px;border:1px solid #bbf7d0;font-size:13px;color:#166534;">
-            <i class="bi bi-check-circle me-2"></i><span></span>
+            <i class="bi bi-check-circle me-2"></i>
+            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;display:inline-block;vertical-align:middle;"></span>
         </div>
     </div>
 
@@ -36,13 +37,13 @@
         @if(!empty($profile->documents))
         <div class="d-flex flex-column gap-2 mb-3">
             @foreach($profile->documents as $idx => $doc)
-            <div style="padding:10px 14px;background:#f8faff;border-radius:8px;border:1px solid #e8edf5;display:flex;align-items:center;justify-content:space-between;">
-                <div>
-                    <i class="bi bi-paperclip me-2" style="color:var(--primary-color);"></i>
-                    <span style="font-size:13px;color:#334155;">{{ $doc['name'] }}</span>
-                <a href="{{ Storage::url($doc['path']) }}" target="_blank" style="font-size:12px;color:var(--primary-color);margin-left:8px;">Lihat</a>
+            <div style="padding:10px 14px;background:#f8faff;border-radius:8px;border:1px solid #e8edf5;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+                <div style="display:flex;align-items:center;min-width:0;flex:1;">
+                    <i class="bi bi-paperclip me-2 flex-shrink-0" style="color:var(--primary-color);"></i>
+                    <span style="font-size:13px;color:#334155;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ $doc['name'] }}</span>
+                    <a href="{{ Storage::url($doc['path']) }}" target="_blank" style="font-size:12px;color:var(--primary-color);margin-left:8px;flex-shrink:0;">Lihat</a>
                 </div>
-                <button type="button" onclick="deleteDocument({{ $idx }})" style="background:none;border:none;color:#ef4444;font-size:14px;cursor:pointer;"><i class="bi bi-trash"></i></button>
+                <button type="button" onclick="deleteDocument({{ $idx }})" style="background:none;border:none;color:#ef4444;font-size:14px;cursor:pointer;flex-shrink:0;"><i class="bi bi-trash"></i></button>
             </div>
             @endforeach
         </div>
@@ -67,19 +68,20 @@
 </template>
 
 <script>
-function deleteResume() {
-    if (!confirm('Yakin hapus CV?')) return;
-    const tpl = document.getElementById('delete-resume-form');
-    const form = tpl.content.cloneNode(true).querySelector('form');
-    document.body.appendChild(form);
-    form.submit();
-}
-function deleteDocument(idx) {
-    if (!confirm('Hapus dokumen ini?')) return;
-    const tpl = document.getElementById('delete-document-form');
-    const form = tpl.content.cloneNode(true).querySelector('form');
-    form.querySelector('input[name="index"]').value = idx;
-    document.body.appendChild(form);
-    form.submit();
-}
+    function deleteResume() {
+        if (!confirm('Yakin hapus CV?')) return;
+        const tpl = document.getElementById('delete-resume-form');
+        const form = tpl.content.cloneNode(true).querySelector('form');
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function deleteDocument(idx) {
+        if (!confirm('Hapus dokumen ini?')) return;
+        const tpl = document.getElementById('delete-document-form');
+        const form = tpl.content.cloneNode(true).querySelector('form');
+        form.querySelector('input[name="index"]').value = idx;
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
