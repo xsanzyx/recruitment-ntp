@@ -4,78 +4,90 @@
 
 // ── Avatar Crop ──
 let cropper = null;
-const avatarInput = document.getElementById('avatar-input');
-const cropModal   = document.getElementById('crop-modal');
-const cropImage   = document.getElementById('crop-image');
-const cropCancel  = document.getElementById('crop-cancel');
-const cropConfirm = document.getElementById('crop-confirm');
+const avatarInput = document.getElementById("avatar-input");
+const cropModal = document.getElementById("crop-modal");
+const cropImage = document.getElementById("crop-image");
+const cropCancel = document.getElementById("crop-cancel");
+const cropConfirm = document.getElementById("crop-confirm");
 
 if (avatarInput) {
-    avatarInput.addEventListener('change', function() {
+    avatarInput.addEventListener("change", function () {
         const file = this.files[0];
         if (!file) return;
         if (file.size > 2 * 1024 * 1024) {
-            alert('Ukuran foto maksimal 2MB.');
-            this.value = '';
+            alert("Ukuran foto maksimal 2MB.");
+            this.value = "";
             return;
         }
         const reader = new FileReader();
         reader.onload = (e) => {
             cropImage.src = e.target.result;
-            cropModal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            cropModal.style.display = "block";
+            cropModal.scrollTop = 0;
+            document.body.style.overflow = "hidden";
+            document.documentElement.style.overflow = "hidden"; // ← tambah ini
+
+            // Scroll window ke top dulu sebelum cropper init
+            window.scrollTo({ top: 0 });
+
             if (cropper) cropper.destroy();
-            cropper = new Cropper(cropImage, {
-                aspectRatio: 1,
-                viewMode: 1,
-                autoCropArea: 1,
-                movable: true,
-                zoomable: true,
-                rotatable: false,
-            });
+
+            // Delay sedikit agar modal render sempurna dulu
+            setTimeout(() => {
+                cropper = new Cropper(cropImage, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    autoCropArea: 1,
+                    movable: true,
+                    zoomable: true,
+                    rotatable: false,
+                });
+            }, 100);
         };
         reader.readAsDataURL(file);
     });
 }
 
 if (cropCancel) {
-    cropCancel.addEventListener('click', () => {
-        cropModal.style.display = 'none';
-        document.body.style.overflow = '';
+    cropCancel.addEventListener("click", () => {
+        cropModal.style.display = "none";
+        document.body.style.overflow = "";
+        document.documentElement.style.overflow = "";
         if (cropper) cropper.destroy();
-        avatarInput.value = '';
+        avatarInput.value = "";
     });
 }
 
 if (cropConfirm) {
-    cropConfirm.addEventListener('click', () => {
+    cropConfirm.addEventListener("click", () => {
         if (!cropper) return;
         const canvas = cropper.getCroppedCanvas({ width: 300, height: 300 });
-        const base64 = canvas.toDataURL('image/jpeg', 0.85);
-        document.getElementById('avatar-cropped').value = base64;
-        document.getElementById('avatar-preview').innerHTML =
+        const base64 = canvas.toDataURL("image/jpeg", 0.85);
+        document.getElementById("avatar-cropped").value = base64;
+        document.getElementById("avatar-preview").innerHTML =
             `<img src="${base64}" style="width:100%;height:100%;object-fit:cover;">`;
-        cropModal.style.display = 'none';
-        document.body.style.overflow = '';
+        cropModal.style.display = "none";
+        document.body.style.overflow = "";
+        document.documentElement.style.overflow = "";
         cropper.destroy();
     });
 }
 
 // ── Bio Counter ──
-const bioEl    = document.querySelector('[name="bio"]');
-const bioCount = document.getElementById('bio-count');
+const bioEl = document.querySelector('[name="bio"]');
+const bioCount = document.getElementById("bio-count");
 if (bioEl && bioCount) {
-    bioEl.addEventListener('input', () => {
-        bioCount.textContent = bioEl.value.length + '/500';
+    bioEl.addEventListener("input", () => {
+        bioCount.textContent = bioEl.value.length + "/500";
     });
 }
 
 // ── Add Education Entry ──
-const addEduBtn = document.getElementById('add-edu');
+const addEduBtn = document.getElementById("add-edu");
 if (addEduBtn) {
-    addEduBtn.addEventListener('click', () => {
-        const list = document.getElementById('edu-list');
-        const idx = list.querySelectorAll('.edu-entry').length;
+    addEduBtn.addEventListener("click", () => {
+        const list = document.getElementById("edu-list");
+        const idx = list.querySelectorAll(".edu-entry").length;
         const html = `
         <div class="edu-entry" style="background:#f8faff;border-radius:12px;padding:20px;border:1px solid #e8edf5;position:relative;">
             <button type="button" class="btn-remove-entry" onclick="this.closest('.edu-entry').remove()" style="position:absolute;top:10px;right:10px;background:none;border:none;color:#ef4444;font-size:18px;cursor:pointer;">
@@ -115,16 +127,16 @@ if (addEduBtn) {
                 </div>
             </div>
         </div>`;
-        list.insertAdjacentHTML('beforeend', html);
+        list.insertAdjacentHTML("beforeend", html);
     });
 }
 
 // ── Add Experience Entry ──
-const addExpBtn = document.getElementById('add-exp');
+const addExpBtn = document.getElementById("add-exp");
 if (addExpBtn) {
-    addExpBtn.addEventListener('click', () => {
-        const list = document.getElementById('exp-list');
-        const idx = list.querySelectorAll('.exp-entry').length;
+    addExpBtn.addEventListener("click", () => {
+        const list = document.getElementById("exp-list");
+        const idx = list.querySelectorAll(".exp-entry").length;
         const html = `
         <div class="exp-entry" style="background:#f8faff;border-radius:12px;padding:20px;border:1px solid #e8edf5;position:relative;">
             <button type="button" class="btn-remove-entry" onclick="this.closest('.exp-entry').remove()" style="position:absolute;top:10px;right:10px;background:none;border:none;color:#ef4444;font-size:18px;cursor:pointer;">
@@ -160,59 +172,59 @@ if (addExpBtn) {
                 </div>
             </div>
         </div>`;
-        list.insertAdjacentHTML('beforeend', html);
+        list.insertAdjacentHTML("beforeend", html);
     });
 }
 
 // ── Toggle "Masih Bekerja" → disable Tahun Selesai ──
 function toggleYearEnd(selectEl) {
-    const entry = selectEl.closest('.exp-entry');
-    const yearEnd = entry.querySelector('.exp-year-end');
-    if (selectEl.value === '1') {
+    const entry = selectEl.closest(".exp-entry");
+    const yearEnd = entry.querySelector(".exp-year-end");
+    if (selectEl.value === "1") {
         yearEnd.disabled = true;
-        yearEnd.value = '';
-        yearEnd.style.opacity = '0.5';
+        yearEnd.value = "";
+        yearEnd.style.opacity = "0.5";
     } else {
         yearEnd.disabled = false;
-        yearEnd.style.opacity = '1';
+        yearEnd.style.opacity = "1";
     }
 }
 
 // ── CV Upload Preview ──
-const cvInput = document.getElementById('cv-input');
-const cvName  = document.getElementById('cv-name');
+const cvInput = document.getElementById("cv-input");
+const cvName = document.getElementById("cv-name");
 if (cvInput && cvName) {
-    cvInput.addEventListener('change', function() {
+    cvInput.addEventListener("change", function () {
         const file = this.files[0];
         if (file) {
-            cvName.style.display = 'block';
-            cvName.querySelector('span').textContent = file.name;
+            cvName.style.display = "block";
+            cvName.querySelector("span").textContent = file.name;
         } else {
-            cvName.style.display = 'none';
+            cvName.style.display = "none";
         }
     });
 }
 
 // ── Docs Upload Preview (Accumulative) ──
-const docsInput = document.getElementById('docs-input');
-const docsList  = document.getElementById('docs-list');
+const docsInput = document.getElementById("docs-input");
+const docsList = document.getElementById("docs-list");
 let accumulatedDocs = new DataTransfer();
 
 if (docsInput && docsList) {
-    docsInput.addEventListener('change', function(e) {
+    docsInput.addEventListener("change", function (e) {
         // Prevent infinite loop from our own dispatch
-        if (!e.isTrusted && e.detail === 'renderOnly') return;
-        
+        if (!e.isTrusted && e.detail === "renderOnly") return;
+
         // Add new files to accumulated
         if (e.isTrusted) {
-            Array.from(this.files).forEach(f => {
+            Array.from(this.files).forEach((f) => {
                 accumulatedDocs.items.add(f);
             });
             // Update the input files
             docsInput.files = accumulatedDocs.files;
         }
 
-        docsList.innerHTML = '';
+        docsList.innerHTML = "";
         Array.from(docsInput.files).forEach((f, index) => {
             docsList.innerHTML += `
             <div class="d-flex align-items-center justify-content-between" style="padding:8px 14px;background:#f0fdf4;border-radius:8px;border:1px solid #bbf7d0;font-size:13px;color:#166534;margin-bottom:8px;">
@@ -225,36 +237,38 @@ if (docsInput && docsList) {
     });
 
     // Remove file logic
-    docsList.addEventListener('click', function(e) {
-        const btn = e.target.closest('.btn-remove-doc');
+    docsList.addEventListener("click", function (e) {
+        const btn = e.target.closest(".btn-remove-doc");
         if (btn) {
-            const indexToRemove = parseInt(btn.getAttribute('data-index'));
+            const indexToRemove = parseInt(btn.getAttribute("data-index"));
             let newDocs = new DataTransfer();
-            
+
             Array.from(docsInput.files).forEach((f, index) => {
                 if (index !== indexToRemove) {
                     newDocs.items.add(f);
                 }
             });
-            
+
             accumulatedDocs = newDocs;
             docsInput.files = accumulatedDocs.files;
-            
+
             // Re-render
-            docsInput.dispatchEvent(new CustomEvent('change', { detail: 'renderOnly' }));
-            
+            docsInput.dispatchEvent(
+                new CustomEvent("change", { detail: "renderOnly" }),
+            );
+
             // Trigger main form tracking
-            const profileForm = document.getElementById('profile-form');
+            const profileForm = document.getElementById("profile-form");
             if (profileForm) {
-                profileForm.dispatchEvent(new Event('change'));
+                profileForm.dispatchEvent(new Event("change"));
             }
         }
     });
 }
 
 // ── Limit Year Inputs to 4 Digits ──
-document.addEventListener('input', function(e) {
-    if (e.target && e.target.classList.contains('year-input')) {
+document.addEventListener("input", function (e) {
+    if (e.target && e.target.classList.contains("year-input")) {
         if (e.target.value.length > 4) {
             e.target.value = e.target.value.slice(0, 4);
         }
@@ -262,32 +276,32 @@ document.addEventListener('input', function(e) {
 });
 
 // ── Track Form Changes ──
-document.addEventListener('DOMContentLoaded', function() {
-    const profileForm = document.getElementById('profile-form');
-    const saveBtn = document.getElementById('btn-save-profile');
-    
+document.addEventListener("DOMContentLoaded", function () {
+    const profileForm = document.getElementById("profile-form");
+    const saveBtn = document.getElementById("btn-save-profile");
+
     if (profileForm && saveBtn) {
         // Only track if the button is currently disabled
         if (saveBtn.disabled) {
-            profileForm.addEventListener('input', activateSaveBtn);
-            profileForm.addEventListener('change', activateSaveBtn);
+            profileForm.addEventListener("input", activateSaveBtn);
+            profileForm.addEventListener("change", activateSaveBtn);
         }
 
         function activateSaveBtn() {
             saveBtn.disabled = false;
-            saveBtn.className = 'btn btn-secondary-custom px-4 py-2';
-            saveBtn.style.background = '';
-            saveBtn.style.borderColor = '';
-            saveBtn.style.color = '';
-            
+            saveBtn.className = "btn btn-secondary-custom px-4 py-2";
+            saveBtn.style.background = "";
+            saveBtn.style.borderColor = "";
+            saveBtn.style.color = "";
+
             // Remove listeners once activated
-            profileForm.removeEventListener('input', activateSaveBtn);
-            profileForm.removeEventListener('change', activateSaveBtn);
+            profileForm.removeEventListener("input", activateSaveBtn);
+            profileForm.removeEventListener("change", activateSaveBtn);
         }
-        
+
         // Also activate if crop confirm or add edu/exp is clicked
-        if (cropConfirm) cropConfirm.addEventListener('click', activateSaveBtn);
-        if (addEduBtn) addEduBtn.addEventListener('click', activateSaveBtn);
-        if (addExpBtn) addExpBtn.addEventListener('click', activateSaveBtn);
+        if (cropConfirm) cropConfirm.addEventListener("click", activateSaveBtn);
+        if (addEduBtn) addEduBtn.addEventListener("click", activateSaveBtn);
+        if (addExpBtn) addExpBtn.addEventListener("click", activateSaveBtn);
     }
 });
