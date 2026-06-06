@@ -18,6 +18,12 @@ class ApplicationController extends Controller
 
         $user = Auth::user();
 
+        // Hanya role kandidat (user) yang boleh melamar
+        if (in_array($user->role, ['admin', 'hr', 'manager'])) {
+            return redirect()->route('lowongan')
+                ->with('error', 'Hanya kandidat yang dapat melamar pekerjaan.');
+        }
+
         // Cek duplikat
         $already = Application::where('user_id', $user->id)
             ->where('job_vacancy_id', $vacancyId)
@@ -57,6 +63,13 @@ class ApplicationController extends Controller
             ->firstOrFail();
 
         $user = Auth::user();
+
+        // Hanya role kandidat (user) yang boleh melamar
+        if (in_array($user->role, ['admin', 'hr', 'manager'])) {
+            return redirect()->route('lowongan')
+                ->with('error', 'Hanya kandidat yang dapat melamar pekerjaan.');
+        }
+
         $profile = $user->profile;
 
         // Validasi profil lengkap

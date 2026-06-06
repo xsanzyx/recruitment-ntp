@@ -129,7 +129,7 @@ use Illuminate\Support\Facades\Storage;
                 : 0;
                 @endphp
 
-                @if(!in_array(Auth::user()->role, ['hr', 'admin']))
+                @if(!in_array(Auth::user()->role, ['hr', 'admin', 'manager']))
                 <a href="{{ route('profile') }}" class="btn w-100 mt-2 btn-sm d-block text-decoration-none"
                     style="background:rgba(0,40,112,0.06);color:var(--primary-color);border:1px solid rgba(0,40,112,0.12);border-radius:8px;font-weight:600;padding:7px;font-size:12px;position:relative;">
                     <i class="bi bi-person me-1"></i> Profil & Lamaran
@@ -150,6 +150,11 @@ use Illuminate\Support\Facades\Storage;
                 <a href="{{ route('hr.dashboard') }}" class="btn w-100 mt-2 btn-sm d-block text-decoration-none"
                     style="background:rgba(248,184,48,0.15);color:#f8b830;border:1px solid rgba(248,184,48,0.2);border-radius:8px;font-weight:600;padding:8px;">
                     <i class="bi bi-speedometer2 me-1"></i> Ke HR Panel
+                </a>
+                @elseif(Auth::user()->role === 'manager')
+                <a href="{{ route('manager.dashboard') }}" class="btn w-100 mt-2 btn-sm d-block text-decoration-none"
+                    style="background:rgba(168,85,247,0.15);color:#7c3aed;border:1px solid rgba(168,85,247,0.2);border-radius:8px;font-weight:600;padding:8px;">
+                    <i class="bi bi-eye me-1"></i> Ke Manager Panel
                 </a>
                 @endif
             </div>

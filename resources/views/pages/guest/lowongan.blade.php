@@ -122,6 +122,12 @@
                                 style="border-radius:10px;font-size:14px;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;cursor:not-allowed;">
                                 <i class="bi bi-check-circle me-2"></i>Sudah Melamar
                             </button>
+                        @elseif(in_array(auth()->user()->role, ['admin', 'hr', 'manager']))
+                            <button class="btn px-4 py-2" disabled
+                                style="border-radius:10px;font-size:14px;background:#f1f5f9;color:#64748b;border:1px solid #cbd5e1;cursor:not-allowed;"
+                                title="Role Anda tidak dapat melamar pekerjaan.">
+                                <i class="bi bi-info-circle me-2"></i>Hanya untuk Kandidat
+                            </button>
                         @else
                             <a href="{{ route('apply.create', $vacancy->id) }}"
                             class="btn btn-secondary-custom px-4 py-2"
