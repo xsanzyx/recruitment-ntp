@@ -91,6 +91,11 @@ class HRApplicationController extends Controller
     $application = Application::whereIn('job_vacancy_id', $vacancyIds)
         ->findOrFail($id);
 
+    // Cek jika status saat ini sudah final (lolos / tidak_lolos)
+    if (in_array($application->status, ['lolos', 'tidak_lolos'])) {
+        return redirect()->back()->with('error', 'Status lamaran ini sudah bersifat final dan tidak dapat diubah lagi.');
+    }
+
     $validated = $request->validate([
         'status'       => 'required|in:pending,review,lolos,tidak_lolos',
         'review_notes' => 'nullable|string|max:1000',

@@ -334,6 +334,22 @@
                 <h3 class="font-bold text-gray-900 text-base">Update Status</h3>
             </div>
             <div class="p-6">
+
+                @if(in_array($application->status, ['lolos', 'tidak_lolos']))
+                {{-- STATUS FINAL — FORM TERKUNCI --}}
+                <div class="text-center py-4">
+                    <div class="w-14 h-14 mx-auto mb-4 rounded-2xl flex items-center justify-center {{ $application->status === 'lolos' ? 'bg-emerald-50' : 'bg-rose-50' }}">
+                        <span class="material-symbols-outlined {{ $application->status === 'lolos' ? 'text-emerald-500' : 'text-rose-500' }}" style="font-size:28px;">
+                            {{ $application->status === 'lolos' ? 'verified' : 'cancel' }}
+                        </span>
+                    </div>
+                    <p class="text-sm font-bold text-gray-800 mb-1">Keputusan sudah final</p>
+                    <p class="text-xs text-gray-400 leading-relaxed max-w-[260px] mx-auto">
+                        Status <strong>{{ $application->status === 'lolos' ? 'Lolos' : 'Tidak Lolos' }}</strong> tidak dapat diubah lagi karena notifikasi email telah dikirimkan kepada kandidat.
+                    </p>
+                </div>
+                @else
+                {{-- STATUS BELUM FINAL — FORM AKTIF --}}
                 <form method="POST" action="{{ route('hr.applications.updateStatus', $application->id) }}">
                     @csrf @method('PATCH')
 
@@ -366,6 +382,8 @@
                         <span class="material-symbols-outlined" style="font-size:16px;">check_circle</span> Simpan Status
                     </button>
                 </form>
+                @endif
+
             </div>
         </div>
 
